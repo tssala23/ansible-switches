@@ -4,12 +4,8 @@ Ansible site for MOC/OCT switches
 ## Site Setup
 
 1. Install newest version of ansible
-1. Edit the file `/etc/ansible/ansible.cfg`, add the following to the file:
-    ```
-    [defaults]
-    inventory = ./hosts
-    vault_password_file = ./.vault_pass
-    ```
+1. Install the required ansible modules:
+    1. `ansible-galaxy collection install dellemc.os9`
 1. Create a file `.vault_pass` in the root location of the repo with the password to the ansible vault
 
 ## Initial Switch Setup
