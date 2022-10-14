@@ -1,0 +1,12 @@
+---
+vlans:
+  100:
+    name: "VLAN 100"
+    description: "This is the description of example vlan 100"
+    switches:
+      - oct_tors_ctrl
+  101:
+    name: "VLAN 101"
+    description: "This is the description of example vlan 101"
+    switches:
+      - oct_tors
