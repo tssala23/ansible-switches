@@ -1,0 +1,6 @@
+---
+- name: Enable SNMP
+  dellemc.os9.os9_config:
+    lines:
+      - snmp-server community private rw
+      - snmp-server community public ro
