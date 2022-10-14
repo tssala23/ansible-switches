@@ -4,6 +4,8 @@ Ansible site for MOC/OCT switches
 ## Site Setup
 
 1. Install newest version of ansible
+1. Install required PyPI packages:
+    1. `pip install --user ansible-pylibssh`
 1. Install the required ansible modules:
     1. `ansible-galaxy collection install dellemc.os9`
 1. Create a file `.vault_pass` in the root location of the repo with the password to the ansible vault
