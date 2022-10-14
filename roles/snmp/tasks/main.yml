@@ -1,0 +1,7 @@
+---
+- name: Enable SNMP
+  dellemc.os9.os9_config:
+    lines:
+      - snmp-server community private rw
+      - snmp-server community public ro
+  when: ansible_network_os == "dellemc.os9.os9"

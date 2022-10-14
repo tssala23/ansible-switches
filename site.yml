@@ -1,0 +1,9 @@
+---
+- hosts: all
+  connection: network_cli
+  collections:
+    - dellemc.os9
+  roles:
+    - role: common
+    - role: snmp
+  
