@@ -1,0 +1,17 @@
+- name: Set hostname
+  dellemc.os9.os9_config:
+    lines:
+      - hostname {{ inventory_hostname }}
+
+- name: Disable telnet server
+  dellemc.os9.os9_config:
+    lines:
+      - no ip telnet enable
+
+- name: Update VLANs
+  dellemc.os9.os9_config:
+    lines:
+      - name {{ item.value.name }}
+      - description {{ item.value.description }}
+    parents: ["interface vlan {{ item.key }}"]
+  loop: "{{ lookup('ansible.builtin.dict', vlans | get_vlan_dict(group_names), wantlist=True) }}"
