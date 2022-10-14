@@ -1,3 +1,4 @@
+# yamllint disable
 ---
 ansible_ssh_user: admin
 ansible_ssh_pass: !vault |
