@@ -6,9 +6,12 @@ Ansible site for MOC/OCT switches
 1. Install newest version of ansible
 1. Install required PyPI packages:
     1. `pip install --user ansible-pylibssh`
-1. Install the required ansible modules:
-    1. `ansible-galaxy collection install dellemc.os9`
-1. Create a file `.vault_pass` in the root location of the repo with the password to the ansible vault
+1. Install the required ansible modules: `ansible-galaxy collection install -r requirements.yml`
+1. Set up AWS CLI and be sure you can access the correct secrets
+1. On your client, you may have to enable legacy kex algorithms for some switches:
+    ```
+    KexAlgorithms +diffie-hellman-group1-sha1,diffie-hellman-group14-sha1
+    ```
 
 ## Initial Switch Setup
 
