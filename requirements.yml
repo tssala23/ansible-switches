@@ -1,0 +1,4 @@
+---
+collections:
+  - name: dellemc.os9
+  - name: amazon.aws
