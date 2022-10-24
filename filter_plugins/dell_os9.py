@@ -46,8 +46,6 @@ def os9_recurseLines(index, split_conf):
             # start a new recursion
             rec_line = os9_recurseLines(i, trimmed_split_conf)
 
-            print(rec_line)
-
             out[lastLine] = rec_line[1]
             skipint = rec_line[0]  # skip the lines that were covered by the recursion
 
@@ -61,3 +59,7 @@ def os9_getFactDict(sw_facts):
     split_conf = sw_facts["ansible_facts"]["ansible_net_config"].splitlines()
 
     return os9_recurseLines(0, split_conf)[1]
+
+class FilterModule(object):
+    def filters(self):
+        return {"os9_getFactDict": os9_getFactDict}
