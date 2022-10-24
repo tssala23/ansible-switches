@@ -1,3 +1,13 @@
+- name: Gather current configuration
+  dellemc.os9.os9_facts:
+    gather_subset:
+      - config
+  register: cur_config
+
+- name: Convert configuration to dict
+  set_fact:
+    cur_config: "{{ cur_config | os9_getFactDict() }}"
+
 - name: Set hostname
   dellemc.os9.os9_config:
     lines:
