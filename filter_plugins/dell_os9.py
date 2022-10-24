@@ -171,4 +171,9 @@ def os9_getVlanConfig(intf_dict, sw_config):
 
 class FilterModule(object):
     def filters(self):
-        return {"os9_getFactDict": os9_getFactDict}
+        return {
+            "os9_getFactDict": os9_getFactDict,
+            "os9_getFanoutConfig": os9_getFanoutConfig,
+            "os9_getIntfConfig": os9_getIntfConfig,
+            "os9_getVlanConfig": os9_getVlanConfig
+        }
