@@ -1,0 +1,15 @@
+---
+interfaces:
+  1/1:
+    description: "ex interface 1"
+    admin: "up"
+    untagged_vlan: 102
+    tagged_vlans: [100, 101]
+  1/2:
+    description: "ex interface 2"
+  1/49:
+    fanout: quad
+    fanout_speed: "10G"
+  1/49/1:
+    description: "test fanout"
+    admin: "up"
