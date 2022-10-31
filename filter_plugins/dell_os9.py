@@ -1,16 +1,17 @@
+def getSpacesInStartOfString(s):
+    return len(s) - len(s.lstrip())
+
 def os9_getLabelMap(sw_config):
     label_map = {}
 
-    intf_conf = [i for i in sw_config if i.startswith('interface')]
+    intf_conf = [ i for i in sw_config if i.startswith('interface') ]
+    intf_conf = [ x for x in intf_conf if "ManagementEthernet" not in x ]
 
     for intf in intf_conf:
         intf_parts = intf.split(" ")
-        label_map[intf_parts[2]] = " ".join(intf_parts[1:2])
+        label_map[intf_parts[2]] = " ".join(intf_parts[1:3])
 
     return label_map
-
-def getSpacesInStartOfString(s):
-    return len(s) - len(s.lstrip())
 
 def os9_recurseLines(index, split_conf):
     out = {}
@@ -62,7 +63,7 @@ def os9_getSwIntfName(intf_label, sw_config):
     label_map = os9_getLabelMap(sw_config)
 
     if intf_label not in label_map:
-        raise ValueError("Interface label not found on switch")
+        return None
 
     return label_map[intf_label]
 
@@ -78,29 +79,54 @@ def os9_getFanoutConfig(intf_dict, sw_config):
             intf_parts = intf_label.split("/")
             port_num = intf_parts[1]
 
-            conf_str = "stack-unit 1 port " + str(port_num) + " mode " + intf["fanout"] + " speed " + intf["fanout_speed"]
+            # ! TODO - add checks for valid fanout/fanout_speed regex
+            conf_str_start = "stack-unit 1 port " + str(port_num)
+            conf_str = conf_str_start + " portmode " + intf["fanout"] + " speed " + intf["fanout_speed"]
 
-            if conf_str not in sw_config:
-                out.append(conf_str)
-                # ! TODO this needs some checkes - this CANNOT run unless the intf is in def mode
+            existing_fanout_conf = [ k for k in sw_config.keys() if k.startswith(conf_str_start) ]
+            if len(existing_fanout_conf) > 1:
+                raise ValueError("Found multiple stack-unit configurations on one interface, this shouldn't happen.")
+
+            if len(existing_fanout_conf) > 0:
+                # fanout config already exists, revert existing config
+                if existing_fanout_conf[0] == conf_str:
+                    # this config is already applied on the switch so we can skip this
+                    continue
+                else:
+                    # we need to clear the old configuration first
+                    out.append("no " + existing_fanout_conf[0])
+            else:
+                # if the config doesn't exist, we need to default the interface being fanned out
+                port_label = os9_getSwIntfName(intf_label, sw_config)
+                out.append("default interface " + port_label)
+
+            out.append(conf_str)
+
+    return out
 
 def os9_getIntfConfig(intf_dict, sw_config):
 
-    out = []
+    out_all = {}
 
     for intf_label,intf in intf_dict.items():
 
+        out = []
+
         sw_label = os9_getSwIntfName(intf_label, sw_config)
+        if sw_label is None:
+            continue
 
         # determine if interface is it L2 or L3 mode
         l2_exclusive_settings = "untagged_vlan" in intf or "tagged_vlan" in intf
         l3_exclusive_settings = "ip4" in intf or "ip6" in intf or "keepalive" in intf
 
         if l2_exclusive_settings and l3_exclusive_settings:
-            raise ValueError("Interface " + intf_label + "cannot operate in both L2 and L3 mode")
+            raise ValueError("Interface " + intf_label + " cannot operate in both L2 and L3 mode")
 
         if l2_exclusive_settings:
             # L2 mode
+            out.append("no ip address")
+            out.append("no ipv6 address")
             out.append("switchport")
 
             l2_hybrid = "untagged_vlan" in intf and "tagged_vlan" in intf
@@ -123,22 +149,30 @@ def os9_getIntfConfig(intf_dict, sw_config):
             else:
                 out.append("no ipv6 address")
 
-            if "keepalive" in intf and intf["keelalive"]:
-                out.append("keepalive")
-            else:
-                out.append("no keepalive")
+        # set description
+        if "description" in intf:
+            if intf["description"] == "":
+                raise ValueError("Interface " + intf_label + " description must not be an empty string")
 
-        # set MTU
-        if "mtu" in intf:
-            out.append("mtu " + intf["mtu"])
-        else:
-            out.append("no mtu")
+            out.append("description " + intf["description"])
 
-        # set speed
-        if "speed" in intf:
-            out.append("speed " + intf["speed"])
-        else:
-            out.append("no speed")
+        # set admin state
+        if "admin" in intf:
+            if intf["admin"] == "up":
+                out.append("no shutdown")
+            elif intf["admin"] == "down":
+                out.append("shutdown")
+
+        # additional confs
+        if "additional" in intf:
+            for add_conf in intf["additional"]:
+                out.append(add_conf)
+
+        if out:
+            # output list is not empty
+            out_all[sw_label] = out
+
+    return out_all
 
 def os9_getVlanConfig(intf_dict, sw_config):
 
@@ -147,6 +181,8 @@ def os9_getVlanConfig(intf_dict, sw_config):
     for intf_label,intf in intf_dict.items():
 
         sw_label = os9_getSwIntfName(intf_label, sw_config)
+        if sw_label is None:
+            continue
 
         has_vlans = "untagged_vlan" in intf or "tagged_vlan" in intf
         if has_vlans:
@@ -168,6 +204,8 @@ def os9_getVlanConfig(intf_dict, sw_config):
                     out[vlan] = []
 
                 out[vlan].append("tagged " + str(sw_label))
+
+    return out
 
 class FilterModule(object):
     def filters(self):
