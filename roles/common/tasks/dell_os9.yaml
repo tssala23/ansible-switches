@@ -18,10 +18,30 @@
     lines:
       - no ip telnet enable
 
-- name: Update VLANs
+- name: Update interface fanout configuration
+  dellemc.os9.os9_config:
+    lines:
+      - "{{ item }}"
+  with_items: "{{ interfaces | os9_getFanoutConfig(cur_config) }}"
+
+- name: Update interface configuration
+  dellemc.os9.os9_config:
+    lines:
+      - "{{ item.1 }}"
+    parents: ["interface {{ item.0.key }}"]
+  loop: "{{ interfaces | os9_getIntfConfig(cur_config) | dict2items | subelements('value') }}"
+
+- name: Create and update VLAN configuration
   dellemc.os9.os9_config:
     lines:
       - name {{ item.value.name }}
       - description {{ item.value.description }}
     parents: ["interface vlan {{ item.key }}"]
   loop: "{{ lookup('ansible.builtin.dict', vlans | get_vlan_dict(group_names), wantlist=True) }}"
+
+- name: Update VLAN assignment configuration
+  dellemc.os9.os9_config:
+    lines:
+      - "{{ item.1 }}"
+    parents: ["interface vlan {{ item.0.key }}"]
+  loop: "{{ interfaces | os9_getVlanConfig(cur_config) | dict2items | subelements('value') }}"
