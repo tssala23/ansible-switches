@@ -1,3 +1,4 @@
+# Method which returns a label map dictionary of Switch Label > Conf Label, or the inverse
 def os9_getLabelMap(sw_config, reverse=False):
     label_map = {}
 
@@ -27,8 +28,10 @@ def os9_getLabelMap(sw_config, reverse=False):
 
     return label_map
 
+# Returns a dictionary of the VLANs assigned on each interface
 def os9_getVLANAssignmentMap(vlan_dict, sw_config):
     # helper method which takes a dell os9 interface range as an input and outputs a list as a result of the range
+    # Thanks to dell os9 this is more complicated than it has to be
     def parseRange(s):
         out = []
 
@@ -96,6 +99,7 @@ def os9_getVLANAssignmentMap(vlan_dict, sw_config):
 
                 out[conf_label][tag_str].append(vlan)
 
+# Recursive method which will return a dictionary of the plain text config returned from the os9 switch
 def os9_recurseLines(index, split_conf):
 
     # helper method for getting the number of prefixed spaces in a given string
@@ -142,11 +146,13 @@ def os9_recurseLines(index, split_conf):
 
     return lastIndex - 1,out
 
+# Filter plugin method which starts the os9_recurseLines method
 def os9_getFactDict(sw_facts):
     split_conf = sw_facts["ansible_facts"]["ansible_net_config"].splitlines()
 
     return os9_recurseLines(0, split_conf)[1]
 
+# Helper method to return the switch interface name from the conf interface label
 def os9_getSwIntfName(intf_label, sw_config):
     label_map = os9_getLabelMap(sw_config)
 
@@ -155,11 +161,10 @@ def os9_getSwIntfName(intf_label, sw_config):
 
     return label_map[intf_label]
 
+# Filter plugin which returns the appropriate commands to apply a fanout config on a dell os9 switch
 def os9_getFanoutConfig(intf_dict, sw_config):
 
     out = []
-
-    label_map = os9_getLabelMap(sw_config)
 
     for intf_label,intf in intf_dict.items():
 
@@ -169,7 +174,6 @@ def os9_getFanoutConfig(intf_dict, sw_config):
             intf_parts = intf_label.split("/")
             port_num = intf_parts[1]
 
-            # ! TODO - add checks for valid fanout/fanout_speed regex
             conf_str_start = "stack-unit 1 port " + str(port_num)
             conf_str = conf_str_start + " portmode " + intf["fanout"] + " speed " + intf["fanout_speed"] + " no-confirm"
 
@@ -200,6 +204,7 @@ def os9_getFanoutConfig(intf_dict, sw_config):
 
     return out
 
+# Filter plugin which returns the appropriate commands to apply interface configurations on a dell os9 switch
 def os9_getIntfConfig(intf_dict, sw_config):
 
     out_all = {}
@@ -215,9 +220,6 @@ def os9_getIntfConfig(intf_dict, sw_config):
         # determine if interface is it L2 or L3 mode
         l2_exclusive_settings = "untagged_vlan" in intf or "tagged_vlan" in intf
         l3_exclusive_settings = "ip4" in intf or "ip6" in intf or "keepalive" in intf
-
-        if l2_exclusive_settings and l3_exclusive_settings:
-            raise ValueError("Interface " + intf_label + " cannot operate in both L2 and L3 mode")
 
         if l2_exclusive_settings:
             # L2 mode
@@ -247,9 +249,6 @@ def os9_getIntfConfig(intf_dict, sw_config):
 
         # set description
         if "description" in intf:
-            if intf["description"] == "":
-                raise ValueError("Interface " + intf_label + " description must not be an empty string")
-
             out.append("description " + intf["description"])
 
         # set admin state
@@ -275,6 +274,7 @@ def os9_getIntfConfig(intf_dict, sw_config):
 
     return out_all
 
+# Filter method which returns the appropriate commands to assign VLANs to interfaces on a dell os9 switch
 def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
 
     out = {}
@@ -288,10 +288,6 @@ def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
         sw_label = os9_getSwIntfName(intf_label, sw_config)
         if sw_label is None:
             continue
-
-        #has_vlans = "untagged_vlan" in intf or "tagged_vlan" in intf
-        #if has_vlans:
-        #    out[sw_label] = []
 
         if "untagged_vlan" in intf:
             # has untagged vlan
@@ -324,6 +320,7 @@ def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
 
     return out
 
+# Ansible filtermodule class
 class FilterModule(object):
     def filters(self):
         return {
