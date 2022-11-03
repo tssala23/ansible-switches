@@ -12,8 +12,7 @@ def os9_getLabelMap(sw_config, reverse=False):
         "tunnel"
     ]
 
-    intf_conf = [ i for i in sw_config if i.startswith('interface') ]
-    intf_conf = [ x for x in intf_conf if not any(y in x for y in intf_blacklist) ]
+    intf_conf = [ i for i in sw_config if i.startswith('interface') and not any(y in i for y in intf_blacklist) ]
 
     for intf in intf_conf:
         intf_parts = intf.split(" ")
