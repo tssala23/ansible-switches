@@ -1,6 +1,8 @@
 import re
+import yaml
+import pathlib
 
-def validateIntfConfig(intf_dict, vlanintf_dict):
+def validateIntfConfig(intf_dict):
     def raiseValueError(intf_label, msg):
         raise ValueError("Interface " + intf_label + ": " + msg)
 
@@ -8,7 +10,8 @@ def validateIntfConfig(intf_dict, vlanintf_dict):
         raise ValueError("Interface configuration must be a yaml dictionary")
 
     # define interface label matching regex
-    intf_label_rgx = re.compile("^\d+\/\d+\/?\d+$")
+    intf_label_rgx = re.compile("^\d+\/\d+(\/\d+)?$")
+    intf_fanout_speed_rgx = re.compile("^(10|25|40|100)(g|G)")
 
     for intf_label,intf in intf_dict.items():
         if not re.fullmatch(intf_label_rgx, intf_label):
@@ -16,27 +19,30 @@ def validateIntfConfig(intf_dict, vlanintf_dict):
 
         foundL2 = False
         foundL3 = False
-        for intf_field,val in intf_dict.items():
+        for intf_field,val in intf_dict[intf_label].items():
             if intf_field == "description":
                 if type(val) is not str:
                     raiseValueError(intf_label, "Description value must be a string")
+                if val == "":
+                    raiseValueError(intf_label, "Description must not be an empty string")
 
             elif intf_field == "admin":
                 if type(val) is not str:
                     raiseValueError(intf_label, "Admin value must be a string")
-                if val != "up" or val != "down":
+                if val != "up" and val != "down":
                     raiseValueError(intf_label, "Admin value must be set to 'up' or 'down'")
 
             elif intf_field == "fanout":
                 if type(val) is not str:
                     raiseValueError(intf_label, "Fanout value must be a string")
-                if val != "single" or val != "dual" or val != "quad":
+                if val != "single" and val != "dual" and val != "quad":
                     raiseValueError(intf_label, "Fanout value must be 'single', 'dual', or 'quad'")
 
             elif intf_field == "fanout_speed":
                 if type(val) is not str:
                     raiseValueError(intf_label, "Fanout speed value must be a string")
-                # ! TODO regex for validating this field
+                if not re.fullmatch(intf_fanout_speed_rgx, val):
+                    raiseValueError(intf_label, "Fanout speed value must be 10g, 25g, 40g, or 100g")
 
             elif intf_field == "untagged_vlan":
                 if foundL3:
@@ -78,3 +84,22 @@ def validateIntfConfig(intf_dict, vlanintf_dict):
                     raiseValueError(intf_label, "MTU must be an integer")
                 if val <= 0:
                     raiseValueError(intf_label, "MTU must be greater than 0")
+
+def main():
+    host_vars_dir = pathlib.Path(__file__ + "/../../host_vars").resolve()
+    print(host_vars_dir)
+
+    file_list = [f for f in host_vars_dir.glob('**/*') if f.is_file()]
+
+    for f in file_list:
+        print("Validating file " + str(f) + "...")
+        # loop through each host var file
+        with open(f, 'r') as file:
+            yaml_import = yaml.safe_load(file)
+
+            for key in yaml_import.keys():
+                if key == "interfaces":
+                    validateIntfConfig(yaml_import[key])
+
+if __name__ == "__main__":
+    main()
