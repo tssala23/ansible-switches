@@ -16,12 +16,47 @@
 - name: Disable telnet server
   dellemc.os9.os9_config:
     lines:
-      - no ip telnet enable
+      - no ip telnet server enable
 
-- name: Update VLANs
+- name: Update interface fanout configuration
+  dellemc.os9.os9_config:
+    lines:
+      - "{{ item }}"
+  with_items: "{{ interfaces | os9_getFanoutConfig(cur_config) }}"
+  register: fanout_update
+
+- name: Gather current configuration after fanout change
+  dellemc.os9.os9_facts:
+    gather_subset:
+      - config
+  register: cur_config
+  when: fanout_update.changed
+
+- name: Convert configuration to dict after fanout change
+  set_fact:
+    cur_config: "{{ cur_config | os9_getFactDict() }}"
+  when: fanout_update.changed
+
+- name: Update interface configuration
+  dellemc.os9.os9_config:
+    lines: "{{ item.value }}"
+    parents: ["interface {{ item.key }}"]
+  loop: "{{ lookup('ansible.builtin.dict', interfaces | os9_getIntfConfig(cur_config), wantlist=True) }}"
+
+- name: Generate vlan dictionary
+  set_fact:
+    vlan_dict: "{{ vlans | get_vlan_dict(group_names) }}"
+
+- name: Create and update VLAN configuration
   dellemc.os9.os9_config:
     lines:
       - name {{ item.value.name }}
       - description {{ item.value.description }}
     parents: ["interface vlan {{ item.key }}"]
-  loop: "{{ lookup('ansible.builtin.dict', vlans | get_vlan_dict(group_names), wantlist=True) }}"
+  loop: "{{ lookup('ansible.builtin.dict', vlan_dict, wantlist=True) }}"
+
+- name: Update VLAN assignment configuration
+  dellemc.os9.os9_config:
+    lines: "{{ item.value }}"
+    parents: ["interface vlan {{ item.key }}"]
+  loop: "{{ lookup('ansible.builtin.dict', interfaces | os9_getVlanConfig(vlan_dict, cur_config), wantlist=True) }}"
