@@ -1,0 +1,45 @@
+$id: https://massopen.cloud/schemas/interface_configuration.yaml
+title: Interface Configuration
+type: object
+patternProperties:
+  "^[0-9]+(/[0-9]+)+$":
+    $ref: "#/$defs/interface"
+additionalProperties: false
+$defs:
+  interface:
+    type: object
+    additionalProperties: false
+    properties:
+      description:
+        type: string
+      admin:
+        type: string
+        enum:
+          - up
+          - down
+      untagged_vlan:
+        type: integer
+      tagged_vlans:
+        type: array
+        items:
+          type: integer
+      mtu:
+        type: integer
+        minimum: 0
+      fanout:
+        type: string
+        enum:
+          - single
+          - dual
+          - quad
+      fanout_speed:
+        type: string
+        enum:
+          - 10G
+          - 25G
+          - 40G
+          - 100G
+      ip4:
+        type: string
+      ip6:
+        type: string
