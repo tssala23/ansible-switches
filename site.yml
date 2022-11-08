@@ -1,6 +1,35 @@
 ---
+- name: Validate configuration
+  hosts: all
+  gather_facts: false
+  tags: [validate]
+
+  # Abort the playbook if any host fails validation
+  any_errors_fatal: true
+
+  tasks:
+    - name: Validate vlan configuration
+      run_once: true
+      include_role:
+        name: validate
+      vars:
+        schema_path: vlan_configuration.yaml
+        data: "{{ vlans }}"
+
+    - name: Validate interface configuration
+      when: interfaces is defined
+      include_role:
+        name: validate
+        apply:
+          delegate_to: localhost
+      vars:
+        schema_path: interface_configuration.yaml
+        data: "{{ interfaces }}"
+
 - hosts: all
   connection: network_cli
-  roles:
-    - role: common
-    - role: snmp
+  tasks:
+    - include_role:
+        name: common
+    - include_role:
+        name: snmp
