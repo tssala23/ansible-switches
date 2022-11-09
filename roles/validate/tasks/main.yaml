@@ -1,0 +1,25 @@
+- name: Load schema
+  set_fact:
+    schema: >-
+      {{
+        lookup('ansible.builtin.file', schema_path) | from_yaml
+      }}
+
+- name: Validate data
+  set_fact:
+    validation_errors: >-
+      {{
+      lookup('ansible.utils.validate', data, schema,
+      engine='ansible.utils.jsonschema',
+      draft=jsonschema_draft)
+      }}
+
+- when: validation_errors
+  block:
+    - name: Display validation errors
+      debug:
+        var: validation_errors
+
+    - name: Fail due to validation errors
+      fail:
+        msg: Failing due to validation errors.

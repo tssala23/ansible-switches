@@ -1,0 +1,23 @@
+$id: https://massopen.cloud/schemas/vlan_configuration.yaml
+title: VLAN Configuration
+type: object
+patternProperties:
+  "^[0-9]+$":
+    $ref: "#/$defs/vlan"
+additionalProperties: false
+$defs:
+  vlan:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      switches:
+        type: array
+        items:
+          type: string
+    required:
+      - name
+      - description
+      - switches
