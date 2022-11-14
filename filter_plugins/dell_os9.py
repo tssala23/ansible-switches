@@ -1,3 +1,5 @@
+import warnings
+
 def os9_getLabelMap(sw_config, reverse=False):
     """
     Creates a dictionary with a label map which looks something like this:
@@ -200,7 +202,7 @@ def os9_recurseLines(index, split_conf):
 
 def os9_getFactDict(sw_facts):
     """
-    This function is called from playbooks and is what started the recursive os9_recurseLines method
+    Ansible filter plugin which is what starts the recursive os9_recurseLines method
 
     :param sw_facts: raw configuration output from switch
     :type sw_facts: str
@@ -210,24 +212,6 @@ def os9_getFactDict(sw_facts):
     split_conf = sw_facts["ansible_facts"]["ansible_net_config"].splitlines()
 
     return os9_recurseLines(0, split_conf)[1]
-
-def os9_getSwIntfName(intf_label, sw_config):
-    """
-    Gets the interface label on the switch using the configuration interface label
-
-    :param intf_label: Conf label of interface
-    :type intf_label: str
-    :param sw_config: Switch configuration dict
-    :type sw_config: dict
-    :return: Switch label of interface
-    :rtype: str
-    """
-    label_map = os9_getLabelMap(sw_config)
-
-    if intf_label not in label_map:
-        return None
-
-    return label_map[intf_label]
 
 def os9_getFanoutConfig(intf_dict, sw_config):
     """
@@ -241,23 +225,31 @@ def os9_getFanoutConfig(intf_dict, sw_config):
     :rtype: dict
     """
 
+    # prepare label map
+    label_map = os9_getLabelMap(sw_config)
+
     out = []
 
     for intf_label,intf in intf_dict.items():
+        # check that interface exists
+        if intf_label not in label_map:
+            warnings.warn("Warning: Skipping " + intf_label + " because it was not found on the switch")
+            continue
+
+        # get port number
+        intf_parts = intf_label.split("/")
+        port_num = intf_parts[1]
+
+        conf_str_start = "stack-unit 1 port " + str(port_num)
+        conf_str = conf_str_start + " portmode " + intf["fanout"] + " speed " + intf["fanout_speed"] + " no-confirm"
+
+        existing_fanout_conf = [ k for k in sw_config.keys() if k.startswith(conf_str_start) ]
+
+        if len(existing_fanout_conf) > 1:
+            raise ValueError("Found multiple stack-unit configurations on one interface, this shouldn't happen.")
 
         has_fanout = "fanout" in intf and "fanout_speed" in intf
         if has_fanout:
-            # get port number
-            intf_parts = intf_label.split("/")
-            port_num = intf_parts[1]
-
-            conf_str_start = "stack-unit 1 port " + str(port_num)
-            conf_str = conf_str_start + " portmode " + intf["fanout"] + " speed " + intf["fanout_speed"] + " no-confirm"
-
-            existing_fanout_conf = [ k for k in sw_config.keys() if k.startswith(conf_str_start) ]
-            if len(existing_fanout_conf) > 1:
-                raise ValueError("Found multiple stack-unit configurations on one interface, this shouldn't happen.")
-
             if len(existing_fanout_conf) > 0:
                 # fanout config already exists, revert existing config
                 if existing_fanout_conf[0] == conf_str:
@@ -274,14 +266,22 @@ def os9_getFanoutConfig(intf_dict, sw_config):
                     out.append("no " + existing_revert + " no-confirm")
             else:
                 # if the config doesn't exist, we need to default the interface being fanned out
-                port_label = os9_getSwIntfName(intf_label, sw_config)
+                port_label = label_map[intf_label]
                 out.append("default interface " + port_label)
 
             out.append(conf_str)
+        else:
+            # fanout config doesn't exist - verify that there is nothing to revert
+            if len(existing_fanout_conf) > 0:
+                for x in [ k for k in sw_config.keys() if intf_label in k and k.startswith("interface") ]:
+                    out.append("default " + x)
+
+                existing_revert = existing_fanout_conf[0].split("speed")[0].strip()
+                out.append("no " + existing_revert + " no-confirm")
 
     return out
 
-def os9_getIntfConfig(intf_dict, sw_config):
+def os9_getIntfConfig(intf_dict, vlan_dict, sw_config, type="intf"):
     """
     Ansible filter plugin which generates the os9 commands for interface configuration
 
@@ -289,19 +289,35 @@ def os9_getIntfConfig(intf_dict, sw_config):
     :type intf_dict: dict
     :param sw_config: Switch configuration dict
     :type sw_config: dict
+    :param type: Type of interface ("intf", "vlan", or "port-channel")
+    :type type: str
     :return: interface configuration dict
     :rtype: dict
     """
 
+    # prepare label map if regular interface
+    if type == "intf":
+        label_map = os9_getLabelMap(sw_config)
+
     out_all = {}
 
     for intf_label,intf in intf_dict.items():
+        # check that interface exists
+        if type == "intf" and intf_label not in label_map:
+            warnings.warn("Warning: Skipping " + intf_label + " because it was not found on the switch")
+            continue
+        elif type == "vlan" and intf_label not in vlan_dict:
+            warnings.warn("Warning: Skipping interface vlan " + intf_label + " because that VLAN doesn't exist")
+            continue
 
         out = []
 
-        sw_label = os9_getSwIntfName(intf_label, sw_config)
-        if sw_label is None:
-            continue
+        if type == "intf":
+            sw_label = label_map[intf_label]
+        elif type == "vlan":
+            sw_label = "vlan " + str(intf_label)
+        elif type == "port-channel":
+            sw_label = "port-channel " + str(intf_label)
 
         # determine if interface is it L2 or L3 mode
         l2_exclusive_settings = "untagged_vlan" in intf or "tagged_vlan" in intf
@@ -309,6 +325,9 @@ def os9_getIntfConfig(intf_dict, sw_config):
 
         if l2_exclusive_settings:
             # L2 mode
+            if type == "vlan":
+                raise ValueError("VLAN interfaces cannot operate in L2 mode")
+
             out.append("no ip address")
             out.append("no ipv6 address")
             out.append("switchport")
@@ -320,8 +339,9 @@ def os9_getIntfConfig(intf_dict, sw_config):
                 out.append("no portmode hybrid")
         elif l3_exclusive_settings:
             # L3 mode
-            out.append("no portmode")
-            out.append("no switchport")
+            if "type" != "vlan":
+                out.append("no portmode")
+                out.append("no switchport")
 
             if "ip4" in intf:
                 out.append("ip address " + intf["ip4"])
@@ -332,6 +352,12 @@ def os9_getIntfConfig(intf_dict, sw_config):
                 out.append("ipv6 address " + intf["ip6"])
             else:
                 out.append("no ipv6 address")
+
+            if "keepalive" in intf:
+                if intf["keepalive"]:
+                    out.append("keepalive")
+                else:
+                    out.append("no keepalive")
 
         # set description
         if "description" in intf:
@@ -374,6 +400,9 @@ def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
     :rtype: dict
     """
 
+    # prepare label map
+    label_map = os9_getLabelMap(sw_config)
+
     out = {}
 
     vlanMap = os9_getVLANAssignmentMap(vlan_dict, sw_config)
@@ -382,11 +411,13 @@ def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
 
     for intf_label,intf in intf_dict.items():
 
+        if intf_label not in label_map:
+            warnings.warn("Warning: Skipping " + intf_label + " because it was not found on the switch")
+            continue
+
         existing_vlans = vlanMap[intf_label]
 
-        sw_label = os9_getSwIntfName(intf_label, sw_config)
-        if sw_label is None:
-            continue
+        sw_label = label_map[intf_label]
 
         for field in field_list:
             for vlan in intf[field]:
