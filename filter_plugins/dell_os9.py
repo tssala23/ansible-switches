@@ -1,5 +1,21 @@
-# Method which returns a label map dictionary of Switch Label > Conf Label, or the inverse
 def os9_getLabelMap(sw_config, reverse=False):
+    """
+    Creates a dictionary with a label map which looks something like this:
+
+    {
+        "1/1": "tengigabitethernet 1/1",
+        "1/54": "hundredgigabitethernet 1/54"
+        ...
+    }
+
+    :param sw_config: dictionary of switch configuration
+    :type sw_config: dict
+    :param reverse: return the reverse lookup dict
+    :type reverse: bool
+    :returns: Dictionary of interface label map
+    :rtype: dict
+    """
+
     label_map = {}
 
     # don't include these interface types in the label map
@@ -28,11 +44,39 @@ def os9_getLabelMap(sw_config, reverse=False):
 
     return label_map
 
-# Returns a dictionary of the VLANs assigned on each interface
 def os9_getVLANAssignmentMap(vlan_dict, sw_config):
-    # helper method which takes a dell os9 interface range as an input and outputs a list as a result of the range
-    # Thanks to dell os9 this is more complicated than it has to be
+    """
+    Creates a dictionary where the keys are interfaces, such as:
+
+    {
+        "1/1": {
+            "untagged": 100
+            "tagged": [101,102]
+        },
+        "1/2": {
+            "untagged": None
+            "tagged": [101,102]
+        }
+    }
+
+    :param vlan_dict: VLAN dictionary set by the user
+    :type vlan_dict: dict
+    :param sw_config: dict of switch configuration
+    :type sw_config: dict
+    :returns: dict of VLANs assigned to each interface
+    :rtype: dict
+    """
+
     def parseRange(s):
+        """
+        Helper method which parses interface ranges (1/1-1/5, 1/6/1-1/6/4, etc.)
+
+        :param s: Input range
+        :type s: str
+        :return: List of all interfaces in range
+        :rtype: list
+        """
+
         out = []
 
         s_parts = s.split(",")
@@ -99,10 +143,18 @@ def os9_getVLANAssignmentMap(vlan_dict, sw_config):
 
                 out[conf_label][tag_str].append(vlan)
 
-# Recursive method which will return a dictionary of the plain text config returned from the os9 switch
 def os9_recurseLines(index, split_conf):
+    """
+    Recurseive method which takes a nested configuration from a dell switch and converts it into a usable dict
 
-    # helper method for getting the number of prefixed spaces in a given string
+    :param index: Index to begin recursing through
+    :type index: int
+    :param split_conf: List of lines from raw switch output configuration
+    :type split_conf: list
+    :return: dict of parsed switch configuration
+    :rtype: dict
+    """
+
     def getSpacesInStartOfString(s):
         return len(s) - len(s.lstrip())
 
@@ -146,14 +198,30 @@ def os9_recurseLines(index, split_conf):
 
     return lastIndex - 1,out
 
-# Filter plugin method which starts the os9_recurseLines method
 def os9_getFactDict(sw_facts):
+    """
+    This function is called from playbooks and is what started the recursive os9_recurseLines method
+
+    :param sw_facts: raw configuration output from switch
+    :type sw_facts: str
+    :return: dict of parsed switch configuration
+    :rtype: dict
+    """
     split_conf = sw_facts["ansible_facts"]["ansible_net_config"].splitlines()
 
     return os9_recurseLines(0, split_conf)[1]
 
-# Helper method to return the switch interface name from the conf interface label
 def os9_getSwIntfName(intf_label, sw_config):
+    """
+    Gets the interface label on the switch using the configuration interface label
+
+    :param intf_label: Conf label of interface
+    :type intf_label: str
+    :param sw_config: Switch configuration dict
+    :type sw_config: dict
+    :return: Switch label of interface
+    :rtype: str
+    """
     label_map = os9_getLabelMap(sw_config)
 
     if intf_label not in label_map:
@@ -161,8 +229,17 @@ def os9_getSwIntfName(intf_label, sw_config):
 
     return label_map[intf_label]
 
-# Filter plugin which returns the appropriate commands to apply a fanout config on a dell os9 switch
 def os9_getFanoutConfig(intf_dict, sw_config):
+    """
+    Ansible filter plugin which generates the os9 commands for fanout config
+
+    :param intf_dict: Interface configuration dict
+    :type intf_dict: dict
+    :param sw_config: Switch configuration dict
+    :type sw_config: dict
+    :return: fanout configuration dict
+    :rtype: dict
+    """
 
     out = []
 
@@ -204,8 +281,17 @@ def os9_getFanoutConfig(intf_dict, sw_config):
 
     return out
 
-# Filter plugin which returns the appropriate commands to apply interface configurations on a dell os9 switch
 def os9_getIntfConfig(intf_dict, sw_config):
+    """
+    Ansible filter plugin which generates the os9 commands for interface configuration
+
+    :param intf_dict: Interface configuration dict
+    :type intf_dict: dict
+    :param sw_config: Switch configuration dict
+    :type sw_config: dict
+    :return: interface configuration dict
+    :rtype: dict
+    """
 
     out_all = {}
 
@@ -274,12 +360,25 @@ def os9_getIntfConfig(intf_dict, sw_config):
 
     return out_all
 
-# Filter method which returns the appropriate commands to assign VLANs to interfaces on a dell os9 switch
 def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
+    """
+    Ansible filter plugin which generates the VLAN configuration commands
+
+    :param intf_dict: Interface configuration dict
+    :type intf_dict: dict
+    :param vlan_dict: VLAN configuration dict
+    :type vlan_dict: dict
+    :param sw_config: Switch configuration dict
+    :type sw_config: dict
+    :return: interface configuration dict
+    :rtype: dict
+    """
 
     out = {}
 
     vlanMap = os9_getVLANAssignmentMap(vlan_dict, sw_config)
+
+    field_list = ["untagged_vlan", "tagged_vlan"]
 
     for intf_label,intf in intf_dict.items():
 
@@ -289,28 +388,15 @@ def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
         if sw_label is None:
             continue
 
-        if "untagged_vlan" in intf:
-            # has untagged vlan
-            vlan = intf["untagged_vlan"]
-
-            if vlan not in out:
-                out[vlan] = []
-
-            if vlan in existing_vlans["untagged"]:
-                existing_vlans["untagged"].remove(vlan)
-
-            out[vlan].append("untagged " + str(sw_label))
-
-        if "tagged_vlans" in intf:
-            # has untagged vlans
-            for vlan in intf["tagged_vlans"]:
+        for field in field_list:
+            for vlan in intf[field]:
                 if vlan not in out:
                     out[vlan] = []
 
-                if vlan in existing_vlans["tagged"]:
-                    existing_vlans["tagged"].remove(vlan)
+                if vlan in existing_vlans[field]:
+                    existing_vlans[field].remove(vlan)
 
-                out[vlan].append("tagged " + str(sw_label))
+                out[vlan].append(field + " " + str(sw_label))
 
         # remove any old vlans no longer in config
         for untg_vlan in existing_vlans["untagged"]:
