@@ -5,6 +5,7 @@ interfaces:
     admin: "up"
     untagged_vlan: 102
     tagged_vlans: [100, 101]
+    ip4: "10.0.80.2/20"
     mtu: 9216
   1/2:
     description: "ex interface 2"
