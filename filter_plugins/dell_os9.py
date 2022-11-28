@@ -1,5 +1,46 @@
 import warnings
 
+def parseRange(s):
+        """
+        Helper method which parses interface ranges (1/1-1/5, 1/6/1-1/6/4, etc.)
+
+        :param s: Input range
+        :type s: str
+        :return: List of all interfaces in range
+        :rtype: list
+        """
+
+        out = []
+
+        s_parts = s.split(",")
+        for cur in s_parts:
+            if "-" in cur:
+                # this is a range
+                cur_parts = cur.split("-")
+                first_elem_parts = cur_parts[0].split("/")
+                last_elem_parts = cur_parts[1].split("/")
+                part_size = len(first_elem_parts)
+
+                index = -1
+                if part_size >= 1 and first_elem_parts[0] != last_elem_parts[0]:
+                    # this is unlikely
+                    index = 0
+                elif part_size >= 2 and first_elem_parts[1] != last_elem_parts[1]:
+                    index = 1
+                elif part_size >= 3 and first_elem_parts[2] != last_elem_parts[2]:
+                    index = 2
+
+                if index >= 0:
+                    for x in range(first_elem_parts[index], last_elem_parts[index] + 1):
+                        out_str = first_elem_parts
+                        out_str[index] = x
+                        out.append(out_str)
+            else:
+                # this is not a range
+                out.append(cur)
+
+        return out
+
 def os9_getLabelMap(sw_config, reverse=False):
     """
     Creates a dictionary with a label map which looks something like this:
@@ -69,60 +110,14 @@ def os9_getVLANAssignmentMap(vlan_dict, sw_config):
     :rtype: dict
     """
 
-    def parseRange(s):
-        """
-        Helper method which parses interface ranges (1/1-1/5, 1/6/1-1/6/4, etc.)
-
-        :param s: Input range
-        :type s: str
-        :return: List of all interfaces in range
-        :rtype: list
-        """
-
-        out = []
-
-        s_parts = s.split(",")
-        for cur in s_parts:
-            if "-" in cur:
-                # this is a range
-                cur_parts = cur.split("-")
-                first_elem_parts = cur_parts[0].split("/")
-                last_elem_parts = cur_parts[1].split("/")
-                part_size = len(first_elem_parts)
-
-                index = -1
-                if part_size >= 1 and first_elem_parts[0] != last_elem_parts[0]:
-                    # this is unlikely
-                    index = 0
-                elif part_size >= 2 and first_elem_parts[1] != last_elem_parts[1]:
-                    index = 1
-                elif part_size >= 3 and first_elem_parts[2] != last_elem_parts[2]:
-                    index = 2
-
-                if index >= 0:
-                    for x in range(first_elem_parts[index], last_elem_parts[index] + 1):
-                        out_str = first_elem_parts
-                        out_str[index] = x
-                        out.append(out_str)
-            else:
-                # this is not a range
-                out.append(cur)
-
-        return out
-
     out = {}
 
     revLabelMap = os9_getLabelMap(sw_config, reverse=True)
 
     for vlan in vlan_dict.keys():
-        intf_label = "interface vlan " + str(vlan)
+        intf_label = "interface Vlan " + str(vlan)
         cur_vlan_dict = sw_config[intf_label]
-        if conf_label not in out:
-            out[conf_label] = {}
-        if "untagged" not in out[conf_label]:
-            out[conf_label]["untagged"] = []
-        if "tagged" not in out[conf_label]:
-            out[conf_label]["tagged"] = []
+
 
         for vlan_entry in cur_vlan_dict.keys():
             if vlan_entry.startswith("untagged"):
@@ -143,7 +138,16 @@ def os9_getVLANAssignmentMap(vlan_dict, sw_config):
                 full_swname = untag_port_type + " " + port
                 conf_label = revLabelMap[full_swname]
 
+                if conf_label not in out:
+                    out[conf_label] = {}
+                if "untagged" not in out[conf_label]:
+                    out[conf_label]["untagged"] = []
+                if "tagged" not in out[conf_label]:
+                    out[conf_label]["tagged"] = []
+
                 out[conf_label][tag_str].append(vlan)
+
+    return out
 
 def os9_recurseLines(index, split_conf):
     """
@@ -241,7 +245,6 @@ def os9_getFanoutConfig(intf_dict, sw_config):
         port_num = intf_parts[1]
 
         conf_str_start = "stack-unit 1 port " + str(port_num)
-        conf_str = conf_str_start + " portmode " + intf["fanout"] + " speed " + intf["fanout_speed"] + " no-confirm"
 
         existing_fanout_conf = [ k for k in sw_config.keys() if k.startswith(conf_str_start) ]
 
@@ -250,6 +253,8 @@ def os9_getFanoutConfig(intf_dict, sw_config):
 
         has_fanout = "fanout" in intf and "fanout_speed" in intf
         if has_fanout:
+            conf_str = conf_str_start + " portmode " + intf["fanout"] + " speed " + intf["fanout_speed"] + " no-confirm"
+
             if len(existing_fanout_conf) > 0:
                 # fanout config already exists, revert existing config
                 if existing_fanout_conf[0] == conf_str:
@@ -296,8 +301,7 @@ def os9_getIntfConfig(intf_dict, vlan_dict, sw_config, type="intf"):
     """
 
     # prepare label map if regular interface
-    if type == "intf":
-        label_map = os9_getLabelMap(sw_config)
+    label_map = os9_getLabelMap(sw_config)
 
     out_all = {}
 
@@ -319,6 +323,27 @@ def os9_getIntfConfig(intf_dict, vlan_dict, sw_config, type="intf"):
         elif type == "port-channel":
             sw_label = "port-channel " + str(intf_label)
 
+            if intf["mode"] == "normal":
+                # remove any channel interfaces that need to be removed
+                existing_conf = [ k for k in sw_config[sw_label].keys() if k.startswith("channel-member") ]
+                for channel_line in existing_conf:
+                    range_part = channel_line.split(" ")[2]
+                    range_list = parseRange(range_part)
+                    diff_list = list(set(range_list) - set(intf["interfaces"]))
+
+                    for removed_intf in diff_list:
+                        out.append("no channel-member " + label_map[removed_intf])
+
+                # add channel members
+                for channel_intf in intf["interfaces"]:
+                    out.append("channel-member " + label_map[channel_intf])
+            elif intf["mode"] == "lacp":
+                if "lacp_rate" in intf:
+                    if intf["lacp_rate"] == "fast":
+                        out.append("lacp fast-switchover")
+                    else:
+                        out.append("no lacp fast-switchover")
+
         # determine if interface is it L2 or L3 mode
         l2_exclusive_settings = "untagged_vlan" in intf or "tagged_vlan" in intf
         l3_exclusive_settings = "ip4" in intf or "ip6" in intf or "keepalive" in intf
@@ -330,13 +355,14 @@ def os9_getIntfConfig(intf_dict, vlan_dict, sw_config, type="intf"):
 
             out.append("no ip address")
             out.append("no ipv6 address")
-            out.append("switchport")
 
-            l2_hybrid = "untagged_vlan" in intf and "tagged_vlan" in intf
-            if l2_hybrid:
-                out.append("portmode hybrid")
-            else:
-                out.append("no portmode hybrid")
+            # portmode hybrid cannot be applied while interface is in switchport mode, so we check that it's not
+            cur_intf_config = sw_config["interface " + label_map[intf_label]]
+            if "switchport" in cur_intf_config:
+                out.append("no switchport")
+
+            out.append("portmode hybrid")
+            out.append("switchport")
         elif l3_exclusive_settings:
             # L3 mode
             if "type" != "vlan":
@@ -386,6 +412,35 @@ def os9_getIntfConfig(intf_dict, vlan_dict, sw_config, type="intf"):
 
     return out_all
 
+def os9_getLACPConfig(pc_dict, sw_config):
+    """
+    Ansible filter plugin which generates LACP configuration commands
+
+    :param pc_dict: Port channel dictionary
+    :type pc_dict: dict
+    :param sw_config: Switch configuration dict
+    :type sw_config: dict
+    :return: dict with nested lacp interface configuration
+    :rtype: dict
+    """
+
+    label_map = os9_getLabelMap(sw_config)
+
+    out = {}
+
+    for pc_label,pc in pc_dict.items():
+        if pc["mode"] != "lacp":
+            continue
+
+        if "interfaces" in pc:
+            for cur_intf in pc["interfaces"]:
+                sw_label = label_map[cur_intf]
+
+                out[sw_label] = []
+                out[sw_label].append("port-channel " + str(pc_label) + " mode active")
+
+    return out
+
 def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
     """
     Ansible filter plugin which generates the VLAN configuration commands
@@ -407,7 +462,7 @@ def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
 
     vlanMap = os9_getVLANAssignmentMap(vlan_dict, sw_config)
 
-    field_list = ["untagged_vlan", "tagged_vlan"]
+    field_list = ["untagged", "tagged"]
 
     for intf_label,intf in intf_dict.items():
 
@@ -415,25 +470,40 @@ def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
             warnings.warn("Warning: Skipping " + intf_label + " because it was not found on the switch")
             continue
 
-        existing_vlans = vlanMap[intf_label]
+        if intf_label in vlanMap:
+            existing_vlans = vlanMap[intf_label]
+        else:
+            existing_vlans = None
 
         sw_label = label_map[intf_label]
 
-        for field in field_list:
-            for vlan in intf[field]:
+        if "untagged" in intf:
+            vlan = intf["untagged"]
+
+            if vlan not in out:
+                out[vlan] = []
+
+            if existing_vlans is not None and vlan in existing_vlans["untagged"]:
+                existing_vlans["untagged"].remove(vlan)
+
+            out[vlan].append("untagged " + str(sw_label))
+
+        if "tagged" in intf:
+            for vlan in intf["tagged"]:
                 if vlan not in out:
                     out[vlan] = []
 
-                if vlan in existing_vlans[field]:
-                    existing_vlans[field].remove(vlan)
+                if existing_vlans is not None and vlan in existing_vlans["tagged"]:
+                    existing_vlans["tagged"].remove(vlan)
 
-                out[vlan].append(field + " " + str(sw_label))
+                out[vlan].append("tagged " + str(sw_label))
 
         # remove any old vlans no longer in config
-        for untg_vlan in existing_vlans["untagged"]:
-            out[untg_vlan].append("no untagged " + str(sw_label))
-        for tg_vlan in existing_vlans["tagged"]:
-            out[tg_vlan].append("no tagged " + str(sw_label))
+        if existing_vlans is not None:
+            for field in field_list:
+                if field in existing_vlans:
+                    for vlan in existing_vlans[field]:
+                        out[vlan].append("no " + field + str(sw_label))
 
     return out
 
@@ -444,5 +514,6 @@ class FilterModule(object):
             "os9_getFactDict": os9_getFactDict,
             "os9_getFanoutConfig": os9_getFanoutConfig,
             "os9_getIntfConfig": os9_getIntfConfig,
+            "os9_getLACPConfig": os9_getLACPConfig,
             "os9_getVlanConfig": os9_getVlanConfig
         }

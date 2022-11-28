@@ -3,8 +3,8 @@ interfaces:
   1/1:
     description: "ex interface 1"
     admin: "up"
-    untagged_vlan: 102
-    tagged_vlans: [100, 101]
+    untagged: 102
+    tagged: [100, 101]
     ip4: "10.0.80.2/20"
     mtu: 9216
   1/2:
@@ -15,3 +15,14 @@ interfaces:
   1/49/1:
     description: "test fanout"
     admin: "up"
+
+vlan_interfaces:
+  100:
+    ip4: "10.0.80.3/20"
+
+port_channels:
+  79:
+    description: "example port channel"
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/2", "1/1"]

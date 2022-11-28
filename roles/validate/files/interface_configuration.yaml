@@ -17,11 +17,11 @@ $defs:
         enum:
           - up
           - down
-      untagged_vlan:
+      untagged:
         type: integer
         minimum: 0
         maximum: 4096
-      tagged_vlans:
+      tagged:
         type: array
         items:
           type: integer
