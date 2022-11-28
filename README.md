@@ -6,7 +6,7 @@ Ansible site for MOC/OCT switches
 1. Install newest version of ansible
 1. Install required PyPI packages:
     1. `pip install --user ansible-pylibssh`
-1. Install the required ansible modules: `ansible-galaxy collection install -r requirements.yml`
+1. Install the required ansible modules: `ansible-galaxy collection install -r requirements.yaml`
 1. Set up AWS CLI and be sure you can access the correct secrets
 1. On your client, you may have to enable legacy kex algorithms for some switches:
     ```
@@ -17,7 +17,7 @@ Ansible site for MOC/OCT switches
 
 ### Interfaces
 
-Interfaces are configured in the file `host_vars/HOST/interfaces.yml`
+Interfaces are configured in the file `host_vars/HOST/interfaces.yaml`
 
 An example of this file is below:
 
