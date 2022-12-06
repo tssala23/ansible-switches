@@ -7,8 +7,10 @@ interfaces:
     tagged: [100, 101]
     ip4: "10.0.80.2/20"
     mtu: 9216
+    keepalive: "true"
   1/2:
     description: "ex interface 2"
+    stp-edge: "true"
   1/49:
     fanout: quad
     fanout_speed: "10G"
