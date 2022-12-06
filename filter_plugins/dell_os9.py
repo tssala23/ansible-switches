@@ -286,7 +286,7 @@ def os9_getFanoutConfig(intf_dict, sw_config):
 
     return out
 
-def os9_getIntfConfig(intf_dict, vlan_dict, sw_config, type="intf"):
+def os9_getIntfConfig(intf_dict, sw_config, type="intf"):
     """
     Ansible filter plugin which generates the os9 commands for interface configuration
 
@@ -310,7 +310,7 @@ def os9_getIntfConfig(intf_dict, vlan_dict, sw_config, type="intf"):
         if type == "intf" and intf_label not in label_map:
             warnings.warn("Warning: Skipping " + intf_label + " because it was not found on the switch")
             continue
-        elif type == "vlan" and intf_label not in vlan_dict:
+        elif type == "vlan" and intf_label not in intf_dict:
             warnings.warn("Warning: Skipping interface vlan " + intf_label + " because that VLAN doesn't exist")
             continue
 

@@ -41,7 +41,19 @@
   dellemc.os9.os9_config:
     lines: "{{ item.value }}"
     parents: ["interface {{ item.key }}"]
-  loop: "{{ lookup('ansible.builtin.dict', interfaces | os9_getIntfConfig(vlan_interfaces, cur_config), wantlist=True) }}"
+  loop: "{{ lookup('ansible.builtin.dict', interfaces | os9_getIntfConfig(cur_config, type='intf'), wantlist=True) }}"
+
+- name: Update port-channel interface configuration
+  dellemc.os9.os9_config:
+    lines: "{{ item.value }}"
+    parents: ["interface {{ item.key }}"]
+  loop: "{{ lookup('ansible.builtin.dict', port_channels | os9_getIntfConfig(cur_config, type='port-channel'), wantlist=True) }}"
+
+- name: Update LACP members
+  dellemc.os9.os9_config:
+    lines: "{{ item.value }}"
+    parents: ["interface port-channel {{ item.key }}", "port-channel-protocol lacp"]
+  loop: "{{ lookup('ansible.builtin.dict', port_channels | os9_getLACPConfig(cur_config), wantlist=True) }}"
 
 - name: Generate vlan dictionary
   set_fact:
@@ -55,14 +67,14 @@
     parents: ["interface vlan {{ item.key }}"]
   loop: "{{ lookup('ansible.builtin.dict', vlan_dict, wantlist=True) }}"
 
-- name: Update LACP members
-  dellemc.os9.os9_config:
-    lines: "{{ item.value }}"
-    parents: ["interface port-channel {{ item.key }}", "port-channel-protocol lacp"]
-  loop: "{{ lookup('ansible.builtin.dict', port_channels | os9_getLACPConfig(cur_config), wantlist=True) }}"
-
 - name: Update VLAN assignment configuration
   dellemc.os9.os9_config:
     lines: "{{ item.value }}"
     parents: ["interface vlan {{ item.key }}"]
   loop: "{{ lookup('ansible.builtin.dict', interfaces | os9_getVlanConfig(vlan_dict, cur_config), wantlist=True) }}"
+
+- name: Update VLAN interface configuration
+  dellemc.os9.os9_config:
+    lines: "{{ item.value }}"
+    parents: ["interface {{ item.key }}"]
+  loop: "{{ lookup('ansible.builtin.dict', vlan_interfaces | os9_getIntfConfig(cur_config, type='vlan'), wantlist=True) }}"
