@@ -18,6 +18,12 @@
     lines:
       - no ip telnet server enable
 
+- name: Update system configuration
+  dellemc.os9.os9_config:
+    lines: "{{ item.value }}"
+    parents: ["{{ item.key }}"]
+  loop: "{{ lookup('ansible.builtin.dict', system | os9_getSystemConfig(cur_config), wantlist=True) }}"
+
 - name: Update interface fanout configuration
   dellemc.os9.os9_config:
     lines:
@@ -54,6 +60,12 @@
     lines: "{{ item.value }}"
     parents: ["interface port-channel {{ item.key }}", "port-channel-protocol lacp"]
   loop: "{{ lookup('ansible.builtin.dict', port_channels | os9_getLACPConfig(cur_config), wantlist=True) }}"
+
+- name: Clean up disabled LACP interfaces
+  dellemc.os9.os9_config:
+    lines: "{{ item.value }}"
+    parents: ["{{ item.key }}"]
+  loop: "{{ lookup('ansible.builtin.dict', interfaces | os9_cleanupLACPConfig(cur_config), wantlist=True) }}"
 
 - name: Generate vlan dictionary
   set_fact:

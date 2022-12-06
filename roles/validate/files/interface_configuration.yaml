@@ -27,6 +27,8 @@ $defs:
           type: integer
           minimum: 0
           maximum: 4096
+      stp-edge:
+        type: string
       mtu:
         type: integer
         minimum: 0
@@ -46,6 +48,8 @@ $defs:
       ip4:
         type: string
       ip6:
+        type: string
+      keepalive:
         type: string
   required:
     - description
