@@ -1,6 +1,10 @@
 # Ansible Site for Managing MOC/OCT Switches
 Ansible site for MOC/OCT switches
 
+## Supported Switch OSes
+
+* Dell OS9 (FTOS9)
+
 ## Site Setup
 
 1. Install newest version of ansible
@@ -14,6 +18,42 @@ Ansible site for MOC/OCT switches
     ```
 
 ## Configuration
+
+### System
+
+System configuration is in the file `host_vars/HOST/config.yaml`
+
+An example of this file is below:
+```
+---
+system:
+  stp:
+    type: "rstp"
+    bridge-priority: 4096
+  vlt:
+    domain: 1
+    priority: 10
+    peer-address: "10.0.0.1/20"
+    port-channel: 50
+```
+
+Each section is an individual section in the "system" yaml dictionary.
+
+#### Spanning Tree (`stp`)
+
+| Field Label     | Description                            | Possible Values                            |
+|-----------------|----------------------------------------|--------------------------------------------|
+| type            | Type of spanning tree to enable        | "rstp", "mstp", or "pvst"                  |
+| bridge-priority | Bridge priority of RSTP                | Integer in the range 0-61440 (RSTP Only)   |
+
+#### Virtual Link Trunking - Dell OS9/OS10 ONLY (`vlt`)
+
+| Field Label     | Description                            | Possible Values                               |
+|-----------------|----------------------------------------|-----------------------------------------------|
+| domain          | VLT Domain                             | Integer in the range 1-1000                   |
+| priority        | Priority of the current system         | Integer in the range 1-65535                  |
+| peer-address    | IP address of peer VLT switch          | [IP]/[Prefix] formatted string                |
+| port-channel    | VLT trunk port-channel number          | Integer port-channel as defined in interfaces |
 
 ### Interfaces
 
@@ -31,20 +71,34 @@ interfaces:
 
 The interface label must be in the format `STACK/PORT` or `STACK/PORT/FANOUT`
 
-The following table has all of the available fields for interfaces
+The following tables list all available fields for interface configuration. L2 configurations are mutually exclusive with L3 configurations.
 
-| Field Label   | Description                            | Examples                                   | Mutually Exclusive With     |
-|---------------|----------------------------------------|--------------------------------------------|-----------------------------|
-| description   | Description of the interface           | "Example interface"                        |                             |
-| admin         | Admin state of interface               | "up" or "down"                             |                             |
-| fanout        | Fanout configuration                   | "single", "dual", or "quad"                |                             |
-| fanout_speed  | Fanout speed                           | In the format ##G, such as "10G"           |                             |
-| untagged      | VLAN to untag on this interface        | Integer value, ie. 780                     | ip4, ip6                    |
-| tagged        | List of VLANs to tag on this interface | [780, 630]                                 | ip4, ip6                    |
-| ip4           | IPv4 address for this interface        | 10.0.0.1/24                                | untagged_vlan, tagged_vlans |
-| ip6           | IPv6 address for this interface        | 2001:0db8:85a3:0000:0000:8a2e:0370:7334/64 | untagged_vlan, tagged_vlans |
-| mtu           | MTU of interface                       | 9216                                       |                             |
-| keepalive     | Keepalive status                       | "true", "false"                            | untagged_vlan, tagged_vlans |
+#### General Fields
+
+| Field Label   | Description                            | Possible Values                            |
+|---------------|----------------------------------------|--------------------------------------------|
+| description   | Description of the interface           | Any string                                 |
+| admin         | Admin state of interface               | "up" or "down"                             |
+| fanout        | Fanout configuration                   | "single", "dual", or "quad"                |
+| fanout_speed  | Fanout speed                           | In the format ##G, such as "10G"           |
+| mtu           | MTU of interface                       | Integer with range 1-9216                  |
+| custom        | Custom fields in switch conf format    | List of strings                            |
+
+#### L2 Fields
+
+| Field Label   | Description                            | Possible Values                            |
+|---------------|----------------------------------------|--------------------------------------------|
+| untagged      | VLAN to untag on this interface        | Integer with range 1-4096                  |
+| tagged        | List of VLANs to tag on this interface | List of integers with range 1-4096         |
+| stp-edge      | Set this port to be an edge port       | "true" or "false"                          |
+
+#### L3 Fields
+
+| Field Label   | Description                            | Possible Values                            |
+|---------------|----------------------------------------|--------------------------------------------|
+| ip4           | IPv4 address for this interface        | [IP]/[Prefix] IPv4 formatted string        |
+| ip6           | IPv6 address for this interface        | [IP]/[Prefix] IPv6 formatted string        |
+| keepalive     | Keepalive status                       | "true", "false"                            |
 
 ### VLAN Interfaces
 
@@ -72,11 +126,44 @@ port_channels:
 
 All fields in interface configuration are available, with the following additional fields:
 
-| Field Label   | Description                            | Examples                                   | Mutually Exclusive With     |
-|---------------|----------------------------------------|--------------------------------------------|-----------------------------|
-| mode          | LAG mode (LACP or normal)              | "LACP"                                     |                             |
-| lacp-rate     | LACP rate configuration                | "fast" or "slow"                           | mode: "normal"              |
-| interfaces    | Interfaces that are a part of this LAG | ["1/1", "1/2"]                             |                             |
+| Field Label   | Description                            | Possible Values                            |
+|---------------|----------------------------------------|--------------------------------------------|
+| mode          | LAG mode (LACP or normal)              | "LACP" or "normal"                         |
+| lacp-rate     | LACP rate configuration                | "fast" or "slow"                           |
+| interfaces    | Interfaces that are a part of this LAG | ["1/1", "1/2"]                             |
+
+### VLANs
+
+VLANs are defined in the `group_vars/all/vlans.yaml` file. An example of this file is below:
+
+```
+vlans:
+  100:
+    name: "VLAN 100"
+    description: "This is the description of example vlan 100"
+    switches:
+      - oct_tors
+  101:
+    name: "VLAN 101"
+    description: "This is the description of example vlan 101"
+    switches:
+      - oct_tors
+  102:
+    name: "VLAN 102"
+    description: "hello world"
+    switches:
+      - oct_tors
+```
+
+The following fields are available for each VLAN:
+
+| Field Label   | Description                                          | Possible Values                            |
+|---------------|------------------------------------------------------|--------------------------------------------|
+| name          | Name of VLAN                                         | Short string                               |
+| description   | Description of VLAN                                  | Any string                                 |
+| switches      | Switches and groups that the VLAN should be added to | List of ansible groups or switch hostnames |
+
+**NOTE** VLANs are created on each switch defined here, however, they are not assigned to anything. That must be done in the interface configuration.
 
 ## Switch Configuration
 
