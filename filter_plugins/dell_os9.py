@@ -217,6 +217,81 @@ def os9_getFactDict(sw_facts):
 
     return os9_recurseLines(0, split_conf)[1]
 
+def os9_getSystemConfig(sys_dict, sw_config):
+    """
+    Ansible filter plugin which generates the os9 commands for system config
+
+    :param sys_dict: System configuration dict
+    :type sys_dict: dict
+    :param sw_config: Switch configuration dict
+    :type sw_config: dict
+    :return: system configuration dict
+    :rtype: dict
+    """
+
+    out = {}
+
+    num_stp_prot = 3
+    stp_types = ["rstp", "mstp", "pvst"]
+
+    for sys_field,sys in sys_dict.items():
+        if sys_field == "stp":
+            # make sure all other stp protocols are disabled
+            stp_types.remove(sys["type"])
+            if len(stp_types) < num_stp_prot - 1:
+                raise ValueError("Multiple STP types cannot be specified")
+
+            for unused_stp in stp_types:
+                unused_field_name = "protocol spanning-tree " + unused_stp
+                out[unused_field_name] = []
+                out[unused_field_name].append("disable")
+
+            field_name = "protocol spanning-tree " + sys["type"]
+            out[field_name] = []
+            if "enabled" in sys and sys["enabled"]:
+                out[field_name].append("no disable")
+            else:
+                out[field_name].append("disable")
+
+            if "bridge-priority" in sys:
+                if sys["type"] == "rstp":
+                    out[field_name].append("bridge-priority " + str(sys["bridge-priority"]))
+                else:
+                    warnings.warn("Skipping bridge-priority field, since that applies to RSTP only")
+            else:
+                if sys["type"] == "rstp":
+                    out[field_name].append("no bridge-priority")
+        elif sys_field == "vlt":
+            # does a current VLT domain exist and is it the same?
+            existing_vlt_conf = [ k for k in sw_config.keys() if k.startswith("vlt domain") ]
+            for existing_conf in existing_vlt_conf:
+                cur_vlt_domain = existing_conf.split(" ")[2]
+                conf_domain = sys["domain"]
+                if conf_domain != int(cur_vlt_domain):
+                    # remove this domain
+                    out["no vlt domain " + str(cur_vlt_domain)] = []
+
+            field_name = "vlt domain " + str(sys["domain"])
+            out[field_name] = []
+
+            if "priority" in sys:
+                out[field_name].append("primary-priority " + str(sys["priority"]))
+            else:
+                out[field_name].append("no primary-priority")
+
+            if "peer-link" in sys:
+                out[field_name].append("back-up destination " + str(sys["peer-link"]))
+            else:
+                out[field_name].append("no back-up destination")
+
+            if "port-channel" in sys:
+                out[field_name].append("peer-link port-channel " + str(sys["port-channel"]))
+            else:
+                out[field_name].append("no peer-link port-channel")
+
+    return out
+
+
 def os9_getFanoutConfig(intf_dict, sw_config):
     """
     Ansible filter plugin which generates the os9 commands for fanout config
@@ -344,50 +419,88 @@ def os9_getIntfConfig(intf_dict, sw_config, type="intf"):
                     else:
                         out.append("no lacp fast-switchover")
 
+        # gather current interface configuration
+        cur_intf_config = sw_config["interface " + sw_label]
+
         # determine if interface is it L2 or L3 mode
-        l2_exclusive_settings = "untagged_vlan" in intf or "tagged_vlan" in intf
-        l3_exclusive_settings = "ip4" in intf or "ip6" in intf or "keepalive" in intf
+        vlans_included = "untagged_vlan" in intf \
+                                    or "tagged_vlan" in intf
+        l2_exclusive_settings = "untagged_vlan" in intf \
+                                    or "tagged_vlan" in intf \
+                                    or "stp-edge" in intf
+        l3_exclusive_settings = "ip4" in intf \
+                                    or "ip6" in intf \
+                                    or "keepalive" in intf
 
         if l2_exclusive_settings:
             # L2 mode
             if type == "vlan":
                 raise ValueError("VLAN interfaces cannot operate in L2 mode")
 
-            out.append("no ip address")
-            out.append("no ipv6 address")
+            if any(item.startswith("ip address") for item in cur_intf_config):
+                out.append("no ip address")
 
-            # portmode hybrid cannot be applied while interface is in switchport mode, so we check that it's not
-            cur_intf_config = sw_config["interface " + label_map[intf_label]]
-            if "switchport" in cur_intf_config:
-                out.append("no switchport")
+            if any(item.startswith("ipv6 address") for item in cur_intf_config):
+                out.append("no ipv6 address")
 
-            out.append("portmode hybrid")
-            out.append("switchport")
+            if vlans_included:
+                # portmode hybrid cannot be applied while interface is in switchport mode, so we check that it's not
+                if "switchport" in cur_intf_config:
+                    # TODO if the port is part of a non-default vlan, this fails!
+                    out.append("no switchport")
+
+                out.append("portmode hybrid")
+                out.append("switchport")
+
+            if "stp-edge" in intf and intf["stp-edge"]:
+                # define edge-port for every stp protocol in os9 (only live one will take effect)
+                out.append("spanning-tree rstp edge-port")
+                out.append("spanning-tree mstp edge-port")
+                out.append("spanning-tree pvst edge-port")
+            else:
+                # disable spanning tree edge port if currently enabled
+                if "spanning-tree rstp edge-port" in cur_intf_config:
+                    out.append("no spanning-tree rstp edge-port")
+
+                if "spanning-tree mstp edge-port" in cur_intf_config:
+                    out.append("no spanning-tree mstp edge-port")
+
+                if "spanning-tree pvst edge-port" in cur_intf_config:
+                    out.append("no spanning-tree pvst edge-port")
+
         elif l3_exclusive_settings:
             # L3 mode
             if "type" != "vlan":
+                # TODO if the port is part of a non-default vlan, this fails!
                 out.append("no portmode")
                 out.append("no switchport")
 
             if "ip4" in intf:
                 out.append("ip address " + intf["ip4"])
             else:
-                out.append("no ip address")
+                if any(item.startswith("ip address") for item in cur_intf_config):
+                    out.append("no ip address")
 
             if "ip6" in intf:
                 out.append("ipv6 address " + intf["ip6"])
             else:
-                out.append("no ipv6 address")
+                if any(item.startswith("ipv6 address") for item in cur_intf_config):
+                    out.append("no ipv6 address")
 
             if "keepalive" in intf:
+                # keepalive being ON is the default
                 if intf["keepalive"]:
-                    out.append("keepalive")
+                    if "no keepalive" in cur_intf_config:
+                        out.append("keepalive")
                 else:
                     out.append("no keepalive")
 
         # set description
         if "description" in intf:
             out.append("description " + intf["description"])
+        else:
+            if any(item.startswith("description") for item in cur_intf_config):
+                out.append("no description")
 
         # set admin state
         if "admin" in intf:
@@ -399,11 +512,12 @@ def os9_getIntfConfig(intf_dict, sw_config, type="intf"):
         if "mtu" in intf:
             out.append("mtu " + str(intf["mtu"]))
         else:
-            out.append("no mtu")
+            if any(item.startswith("mtu") for item in cur_intf_config):
+                out.append("no mtu")
 
         # additional confs
-        if "additional" in intf:
-            for add_conf in intf["additional"]:
+        if "custom" in intf:
+            for add_conf in intf["custom"]:
                 out.append(add_conf)
 
         if out:
@@ -424,6 +538,21 @@ def os9_getLACPConfig(pc_dict, sw_config):
     :rtype: dict
     """
 
+    # get a map of current LACP members (used to revert later)
+    lacpmembers = {}
+
+    for cur_intf in [ k for k in sw_config.keys() if k.startswith("interface") ]:
+        # loop through every interface
+        if "port-channel-protocol lacp" in sw_config[cur_intf]:
+            channel_member_list = sw_config[cur_intf]["port-channel-protocol lacp"].keys()
+            pc_id = channel_member_list[0].split(" ")[1]
+            intf_id = cur_intf.split(" ")[2]
+
+            if pc_id not in lacpmembers:
+                lacpmembers[pc_id] = []
+
+            lacpmembers[pc_id].append(intf_id)
+
     label_map = os9_getLabelMap(sw_config)
 
     out = {}
@@ -433,13 +562,63 @@ def os9_getLACPConfig(pc_dict, sw_config):
             continue
 
         if "interfaces" in pc:
+            leftover_interfaces = lacpmembers[str(pc_label)]
             for cur_intf in pc["interfaces"]:
                 sw_label = label_map[cur_intf]
 
-                out[sw_label] = []
+                if sw_label not in out:
+                    out[sw_label] = []
+
                 out[sw_label].append("port-channel " + str(pc_label) + " mode active")
+                leftover_interfaces.delete(cur_intf)
+
+            # revert any LACP members that aren't in the config anymore
+            for cur_intf in leftover_interfaces:
+                sw_label = label_map[cur_intf]
+
+                if sw_label not in out:
+                    out[sw_label] = []
+
+                out[sw_label].append("no port-channel " + str(pc_label))
 
     return out
+
+def os9_cleanupLACPConfig(intf_dict, sw_config):
+    """
+    After os9_getLACPConfig, some interfaces may be left with LACP active with no ports assigned, this method cleans that up.
+
+    :param pc_dict: Port channel dictionary
+    :type pc_dict: dict
+    :param sw_config: Switch configuration dict
+    :type sw_config: dict
+    :return: dict with nested lacp interface configuration
+    :rtype: dict
+    """
+    label_map = os9_getLabelMap(sw_config)
+
+    out = {}
+
+    for intf in intf_dict.keys():
+        if intf not in label_map:
+            warnings.warn("Warning: Skipping " + intf + " because it was not found on the switch")
+            continue
+
+        # get switch label
+        sw_label = label_map[intf]
+
+        # gather current interface configuration
+        cur_intf_config = sw_config["interface " + sw_label]
+
+        # disable port-channel-protocol if empty (since this runs AFTER lacp config)
+        if "port-channel-protocol lacp" in cur_intf_config:
+            if len(cur_intf_config["port-channel-protocol lacp"] == 0):
+                if sw_label not in out:
+                    out[sw_label] = []
+
+                out[sw_label].append("no port-channel-protocol lacp")
+
+    return out
+
 
 def os9_getVlanConfig(intf_dict, vlan_dict, sw_config):
     """
@@ -512,8 +691,10 @@ class FilterModule(object):
     def filters(self):
         return {
             "os9_getFactDict": os9_getFactDict,
+            "os9_getSystemConfig": os9_getSystemConfig,
             "os9_getFanoutConfig": os9_getFanoutConfig,
             "os9_getIntfConfig": os9_getIntfConfig,
             "os9_getLACPConfig": os9_getLACPConfig,
+            "os9_cleanupLACPConfig": os9_cleanupLACPConfig,
             "os9_getVlanConfig": os9_getVlanConfig
         }
