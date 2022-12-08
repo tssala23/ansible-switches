@@ -243,8 +243,8 @@ def os9_getSystemConfig(sys_dict, sw_config):
 
             for unused_stp in stp_types:
                 unused_field_name = "protocol spanning-tree " + unused_stp
-                out[unused_field_name] = []
-                out[unused_field_name].append("disable")
+                if unused_field_name in sw_config and "no disable" in sw_config[unused_field_name]:
+                    out[unused_field_name] = ["disable"]
 
             field_name = "protocol spanning-tree " + sys["type"]
             out[field_name] = []
@@ -253,14 +253,12 @@ def os9_getSystemConfig(sys_dict, sw_config):
             else:
                 out[field_name].append("disable")
 
-            if "bridge-priority" in sys:
-                if sys["type"] == "rstp":
+            if sys["type"] == "rstp":
+                if "bridge-priority" in sys:
                     out[field_name].append("bridge-priority " + str(sys["bridge-priority"]))
                 else:
-                    warnings.warn("Skipping bridge-priority field, since that applies to RSTP only")
-            else:
-                if sys["type"] == "rstp":
                     out[field_name].append("no bridge-priority")
+
         elif sys_field == "vlt":
             # does a current VLT domain exist and is it the same?
             existing_vlt_conf = [ k for k in sw_config.keys() if k.startswith("vlt domain") ]
@@ -291,6 +289,19 @@ def os9_getSystemConfig(sys_dict, sw_config):
 
     return out
 
+def os9_cleanupSystemConfig(sw_config):
+    """
+    Cleanup lasting configs from system config
+    """
+
+    out = []
+
+    # clean up stp
+    for key,value in sw_config.items():
+        if key.startswith("protocol spanning-tree"):
+            if "disable" in value:
+                out.append("no " + key)
+
 
 def os9_getFanoutConfig(intf_dict, sw_config):
     """
@@ -310,10 +321,6 @@ def os9_getFanoutConfig(intf_dict, sw_config):
     out = []
 
     for intf_label,intf in intf_dict.items():
-        # check that interface exists
-        if intf_label not in label_map:
-            warnings.warn("Warning: Skipping " + intf_label + " because it was not found on the switch")
-            continue
 
         # get port number
         intf_parts = intf_label.split("/")
@@ -323,23 +330,30 @@ def os9_getFanoutConfig(intf_dict, sw_config):
 
         existing_fanout_conf = [ k for k in sw_config.keys() if k.startswith(conf_str_start) ]
 
-        if len(existing_fanout_conf) > 1:
-            raise ValueError("Found multiple stack-unit configurations on one interface, this shouldn't happen.")
+        if len(intf_parts) > 2:
+            # This is a subbport - skip
+            continue
+
+        if intf_label not in label_map and len(existing_fanout_conf) == 0:
+            warnings.warn("Warning: Skipping " + intf_label + " because it was not found on the switch")
+            continue
 
         has_fanout = "fanout" in intf and "fanout_speed" in intf
         if has_fanout:
-            conf_str = conf_str_start + " portmode " + intf["fanout"] + " speed " + intf["fanout_speed"] + " no-confirm"
+            conf_str = conf_str_start + " portmode " + intf["fanout"] + " speed " + intf["fanout_speed"]
 
             if len(existing_fanout_conf) > 0:
-                # fanout config already exists, revert existing config
+                # fanout config already exists, revert existing config if needed
                 if existing_fanout_conf[0] == conf_str:
                     # this config is already applied on the switch so we can skip this
+                    # TODO this doesn't seem to fire
                     continue
                 else:
                     # we need to clear the old configuration first
 
                     # first, set all interfaces to default state within the stack
                     for x in [ k for k in sw_config.keys() if intf_label in k and k.startswith("interface") ]:
+                        # TODO this only appends the first interface?
                         out.append("default " + x)
 
                     existing_revert = existing_fanout_conf[0].split("speed")[0].strip()
@@ -349,7 +363,7 @@ def os9_getFanoutConfig(intf_dict, sw_config):
                 port_label = label_map[intf_label]
                 out.append("default interface " + port_label)
 
-            out.append(conf_str)
+            out.append(conf_str + " no-confirm")
         else:
             # fanout config doesn't exist - verify that there is nothing to revert
             if len(existing_fanout_conf) > 0:
@@ -382,6 +396,10 @@ def os9_getIntfConfig(intf_dict, sw_config, type="intf"):
 
     for intf_label,intf in intf_dict.items():
         # check that interface exists
+        if type == "intf" and "fanout" in intf:
+            # skip fanout interfaces here
+            continue
+
         if type == "intf" and intf_label not in label_map:
             warnings.warn("Warning: Skipping " + intf_label + " because it was not found on the switch")
             continue
@@ -444,13 +462,14 @@ def os9_getIntfConfig(intf_dict, sw_config, type="intf"):
                 out.append("no ipv6 address")
 
             if vlans_included:
-                # portmode hybrid cannot be applied while interface is in switchport mode, so we check that it's not
-                if "switchport" in cur_intf_config:
-                    # TODO if the port is part of a non-default vlan, this fails!
-                    out.append("no switchport")
+                if "portmode hybrid" in cur_intf_config:
+                    # portmode hybrid cannot be applied while interface is in switchport mode, so we check that it's not
+                    if "switchport" in cur_intf_config:
+                        # TODO if the port is part of a non-default vlan, this fails!
+                        out.append("no switchport")
 
-                out.append("portmode hybrid")
-                out.append("switchport")
+                    out.append("portmode hybrid")
+                    out.append("switchport")
 
             if "stp-edge" in intf and intf["stp-edge"]:
                 # define edge-port for every stp protocol in os9 (only live one will take effect)
@@ -471,9 +490,13 @@ def os9_getIntfConfig(intf_dict, sw_config, type="intf"):
         elif l3_exclusive_settings:
             # L3 mode
             if "type" != "vlan":
-                # TODO if the port is part of a non-default vlan, this fails!
-                out.append("no portmode")
-                out.append("no switchport")
+                if "portmode hybrid" in cur_intf_config:
+                    # TODO if the port is part of a non-default vlan, this fails!
+                    out.append("no portmode hybrid")
+
+                if "switchport" in cur_intf_config:
+                    # TODO if the port is part of a non-default vlan, this fails!
+                    out.append("no switchport")
 
             if "ip4" in intf:
                 out.append("ip address " + intf["ip4"])
@@ -692,6 +715,7 @@ class FilterModule(object):
         return {
             "os9_getFactDict": os9_getFactDict,
             "os9_getSystemConfig": os9_getSystemConfig,
+            "os9_cleanupSystemConfig": os9_cleanupSystemConfig,
             "os9_getFanoutConfig": os9_getFanoutConfig,
             "os9_getIntfConfig": os9_getIntfConfig,
             "os9_getLACPConfig": os9_getLACPConfig,
