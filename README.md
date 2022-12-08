@@ -79,10 +79,17 @@ The following tables list all available fields for interface configuration. L2 c
 |---------------|----------------------------------------|--------------------------------------------|
 | description   | Description of the interface           | Any string                                 |
 | admin         | Admin state of interface               | "up" or "down"                             |
-| fanout        | Fanout configuration                   | "single", "dual", or "quad"                |
-| fanout_speed  | Fanout speed                           | In the format ##G, such as "10G"           |
 | mtu           | MTU of interface                       | Integer with range 1-9216                  |
 | custom        | Custom fields in switch conf format    | List of strings                            |
+
+#### Fanout Fields
+
+If you enable fanout on a port, **none** of the other fields can be used. Instead, make subport configurations.
+
+| Field Label   | Description                            | Possible Values                            |
+|---------------|----------------------------------------|--------------------------------------------|
+| fanout        | Fanout configuration                   | "single", "dual", or "quad"                |
+| fanout_speed  | Fanout speed                           | In the format ##G, such as "10G"           |
 
 #### L2 Fields
 
