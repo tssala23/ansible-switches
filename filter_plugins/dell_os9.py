@@ -412,9 +412,9 @@ def os9_getIntfConfig(intf_dict, sw_config, type="intf"):
         if type == "intf":
             sw_label = label_map[intf_label]
         elif type == "vlan":
-            sw_label = "vlan " + str(intf_label)
+            sw_label = "Vlan " + str(intf_label)
         elif type == "port-channel":
-            sw_label = "port-channel " + str(intf_label)
+            sw_label = "Port-channel " + str(intf_label)
 
             if intf["mode"] == "normal":
                 # remove any channel interfaces that need to be removed
@@ -585,15 +585,22 @@ def os9_getLACPConfig(pc_dict, sw_config):
             continue
 
         if "interfaces" in pc:
-            leftover_interfaces = lacpmembers[str(pc_label)]
+            if str(pc_label) in lacpmembers:
+                leftover_interfaces = lacpmembers[str(pc_label)]
+            else:
+                leftover_interfaces = []
+
             for cur_intf in pc["interfaces"]:
                 sw_label = label_map[cur_intf]
 
                 if sw_label not in out:
                     out[sw_label] = []
 
-                out[sw_label].append("port-channel " + str(pc_label) + " mode active")
-                leftover_interfaces.delete(cur_intf)
+                conf_line = "port-channel " + str(pc_label) + " mode active"
+                out[sw_label].append(conf_line)
+
+                if conf_line in leftover_interfaces:
+                    leftover_interfaces.delete(cur_intf)
 
             # revert any LACP members that aren't in the config anymore
             for cur_intf in leftover_interfaces:
@@ -634,7 +641,7 @@ def os9_cleanupLACPConfig(intf_dict, sw_config):
 
         # disable port-channel-protocol if empty (since this runs AFTER lacp config)
         if "port-channel-protocol lacp" in cur_intf_config:
-            if len(cur_intf_config["port-channel-protocol lacp"] == 0):
+            if len(cur_intf_config["port-channel-protocol lacp"]) == 0:
                 if sw_label not in out:
                     out[sw_label] = []
 
