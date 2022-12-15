@@ -18,30 +18,19 @@
     lines:
       - no ip telnet server enable
 
-- name: Update system configuration
-  dellemc.os9.os9_config:
-    lines: "{{ item.value }}"
-    parents: ["{{ item.key }}"]
-  loop: "{{ lookup('ansible.builtin.dict', system | os9_getSystemConfig(cur_config), wantlist=True) }}"
-
 - name: Update interface fanout configuration
   dellemc.os9.os9_config:
-    lines:
-      - "{{ item }}"
-  with_items: "{{ interfaces | os9_getFanoutConfig(cur_config) }}"
-  register: fanout_update
+    lines: "{{ interfaces | os9_getFanoutConfig(cur_config) }}"
 
 - name: Gather current configuration after fanout change
   dellemc.os9.os9_facts:
     gather_subset:
       - config
   register: cur_config
-  when: fanout_update.changed
 
 - name: Convert configuration to dict after fanout change
   set_fact:
     cur_config: "{{ cur_config | os9_getFactDict() }}"
-  when: fanout_update.changed
 
 - name: Update interface configuration
   dellemc.os9.os9_config:
@@ -66,6 +55,16 @@
     lines: "{{ item.value }}"
     parents: ["{{ item.key }}"]
   loop: "{{ lookup('ansible.builtin.dict', interfaces | os9_cleanupLACPConfig(cur_config), wantlist=True) }}"
+
+- name: Update system configuration
+  dellemc.os9.os9_config:
+    lines: "{{ item.value }}"
+    parents: ["{{ item.key }}"]
+  loop: "{{ lookup('ansible.builtin.dict', system | os9_getSystemConfig(cur_config), wantlist=True) }}"
+
+- name: Cleanup system configuration
+  dellemc.os9.os9_config:
+    lines: "{{ cur_config | os9_cleanupSystemConfig() }}"
 
 - name: Generate vlan dictionary
   set_fact:
