@@ -346,14 +346,12 @@ def os9_getFanoutConfig(intf_dict, sw_config):
                 # fanout config already exists, revert existing config if needed
                 if existing_fanout_conf[0] == conf_str:
                     # this config is already applied on the switch so we can skip this
-                    # TODO this doesn't seem to fire
                     continue
                 else:
                     # we need to clear the old configuration first
 
                     # first, set all interfaces to default state within the stack
                     for x in [ k for k in sw_config.keys() if intf_label in k and k.startswith("interface") ]:
-                        # TODO this only appends the first interface?
                         out.append("default " + x)
 
                     existing_revert = existing_fanout_conf[0].split("speed")[0].strip()
@@ -443,6 +441,8 @@ def os9_getIntfConfig(intf_dict, sw_config, type="intf"):
         # determine if interface is it L2 or L3 mode
         vlans_included = "untagged_vlan" in intf \
                                     or "tagged_vlan" in intf
+        hybrid_port = "untagged_vlan" in intf \
+                                    and "tagged_vlan" in intf
         l2_exclusive_settings = "untagged_vlan" in intf \
                                     or "tagged_vlan" in intf \
                                     or "stp-edge" in intf
@@ -462,14 +462,15 @@ def os9_getIntfConfig(intf_dict, sw_config, type="intf"):
                 out.append("no ipv6 address")
 
             if vlans_included:
-                if "portmode hybrid" in cur_intf_config:
-                    # portmode hybrid cannot be applied while interface is in switchport mode, so we check that it's not
+                if hybrid_port:
+                    # portmode hybrid cannot apply if port is already in L2 mode
                     if "switchport" in cur_intf_config:
                         # TODO if the port is part of a non-default vlan, this fails!
                         out.append("no switchport")
 
                     out.append("portmode hybrid")
-                    out.append("switchport")
+
+                out.append("switchport")
 
             if "stp-edge" in intf and intf["stp-edge"]:
                 # define edge-port for every stp protocol in os9 (only live one will take effect)
