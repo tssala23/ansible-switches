@@ -1,4 +1,3 @@
----
 system:
   stp:
     enabled: "true"
@@ -8,4 +7,4 @@ system:
     domain: 1
     priority: 10
     peer-address: "10.0.0.1/20"
-    port-channel: 50
+    port-channel: 79
