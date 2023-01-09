@@ -46,7 +46,7 @@
         schema_path: port_channel_configuration.yaml
         data: "{{ port_channels }}"
 
-- hosts: OCT7-SW-TORS
+- hosts: all
   connection: network_cli
   tasks:
     - include_role:
