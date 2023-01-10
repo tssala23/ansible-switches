@@ -8,7 +8,7 @@
   any_errors_fatal: true
 
   tasks:
-    - name: Validate vlan configuration
+    - name: Validate VLAN Configuration
       run_once: true
       include_role:
         name: validate
@@ -16,7 +16,7 @@
         schema_path: vlan_configuration.yaml
         data: "{{ vlans }}"
 
-    - name: Validate interface configuration
+    - name: Validate Interface Configuration
       when: interfaces is defined
       include_role:
         name: validate
@@ -25,6 +25,26 @@
       vars:
         schema_path: interface_configuration.yaml
         data: "{{ interfaces }}"
+
+    - name: Validate VLAN Interface Configuration
+      when: vlan_interfaces is defined
+      include_role:
+        name: validate
+        apply:
+          delegate_to: localhost
+      vars:
+        schema_path: vlan_interface_configuration.yaml
+        data: "{{ vlan_interfaces }}"
+
+    - name: Validate Port Channel Configuration
+      when: port_channels is defined
+      include_role:
+        name: validate
+        apply:
+          delegate_to: localhost
+      vars:
+        schema_path: port_channel_configuration.yaml
+        data: "{{ port_channels }}"
 
 - hosts: all
   connection: network_cli

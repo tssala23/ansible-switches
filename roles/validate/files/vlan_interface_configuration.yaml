@@ -1,0 +1,30 @@
+$id: https://massopen.cloud/schemas/interface_configuration.yaml
+title: VLAN Interface Configuration
+type: object
+patternProperties:
+  "^[0-9]+$":
+    $ref: "#/$defs/vlan_interface"
+additionalProperties: false
+$defs:
+  vlan_interface:
+    type: object
+    additionalProperties: false
+    properties:
+      description:
+        type: string
+      admin:
+        type: string
+        enum:
+          - up
+          - down
+      mtu:
+        type: integer
+        minimum: 0
+      ip4:
+        type: string
+      ip6:
+        type: string
+      keepalive:
+        type: string
+  required:
+    - description
