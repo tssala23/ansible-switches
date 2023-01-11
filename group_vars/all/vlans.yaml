@@ -238,7 +238,7 @@ vlans:
     switches:
   2471:
     name: "NERC-EXTERNAL-200"
-    description: "*eth3: external network (vlan 200) - public API / endpoints	"
+    description: "*eth3: external network (vlan 200) - public API / endpoints"
     switches:
   2472:
     name: "NERC-INTERNAL-101"
@@ -258,7 +258,7 @@ vlans:
     switches:
   2478:
     name: "NERC-STORAGE-103"
-    description: "eth2: storage (vlan 103) - ceph/jumboframe? 10.255	"
+    description: "eth2: storage (vlan 103) - ceph/jumboframe? 10.255"
     switches:
   3801:
     name: "CSAIL-3801"
