@@ -164,7 +164,7 @@ vlans:
       - oct_data
   701:
     name: "ENGAGE1-FOREMAN"
-    description: "Foreman Provisioning. SNMP for OpenStack and Ceph	"
+    description: "Foreman Provisioning. SNMP for OpenStack and Ceph"
     switches:
   702:
     name: "ENGAGE1-OPENSTACK-INTERNAL"
