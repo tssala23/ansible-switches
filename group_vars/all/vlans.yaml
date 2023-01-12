@@ -255,6 +255,56 @@ vlans:
     name: "NERC-STORAGE-103"
     description: "eth2: storage (vlan 103) - ceph/jumboframe? 10.255"
     switches:
+  3100:
+    name: "AL2S-3100"
+    description: "AL2S VLAN 3100 for Fabric"
+    switches:
+      - oct_hub
+  3101:
+    name: "AL2S-3101"
+    description: "AL2S VLAN 3101 for Fabric"
+    switches:
+      - oct_hub
+  3102:
+    name: "AL2S-3102"
+    description: "AL2S VLAN 3102 for Fabric"
+    switches:
+      - oct_hub
+  3103:
+    name: "AL2S-3103"
+    description: "AL2S VLAN 3103 for Fabric"
+    switches:
+      - oct_hub
+  3104:
+    name: "AL2S-3104"
+    description: "AL2S VLAN 3104 for Fabric"
+    switches:
+      - oct_hub
+  3105:
+    name: "AL2S-3105"
+    description: "AL2S VLAN 3105 for Fabric"
+    switches:
+      - oct_hub
+  3106:
+    name: "AL2S-3106"
+    description: "AL2S VLAN 3106 for Fabric"
+    switches:
+      - oct_hub
+  3107:
+    name: "AL2S-3107"
+    description: "AL2S VLAN 3107 for Fabric"
+    switches:
+      - oct_hub
+  3108:
+    name: "AL2S-3108"
+    description: "AL2S VLAN 3108 for Fabric"
+    switches:
+      - oct_hub
+  3109:
+    name: "AL2S-3109"
+    description: "AL2S VLAN 3109 for Fabric"
+    switches:
+      - oct_hub
   3801:
     name: "CSAIL-3801"
     description: "CSAIL - ESI Floating IP"
