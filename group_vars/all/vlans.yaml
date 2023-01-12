@@ -1,7 +1,7 @@
 vlans:
   10:
     name: "CSAIL-MAIN"
-    description: "Openstack public facing services (horizon, keystone)"
+    description: "Openshift public facing services (horizon, keystone)"
     switches:
       - oct_data
   57:
@@ -129,7 +129,7 @@ vlans:
     switches:
   277:
     name: "MOC-MAAS"
-    description: "****"
+    description: "MAAS Internal Network"
     switches:
       - oct_data
   280:
@@ -154,11 +154,6 @@ vlans:
       - oct_data
   500:
     name: "MOC_BMI"
-    description: "****"
-    switches:
-      - oct_data
-  501:
-    name: "MOC-BMI"
     description: "****"
     switches:
       - oct_data
@@ -262,7 +257,7 @@ vlans:
     switches:
   3801:
     name: "CSAIL-3801"
-    description: "CSAIL Floating IP 1"
+    description: "CSAIL - ESI Floating IP"
     switches:
       - oct_data
   3802:
@@ -272,7 +267,7 @@ vlans:
       - oct_data
   3803:
     name: "CSAIL-3803"
-    description: "CSAIL Floating IP 3"
+    description: "CSAIL MaaS"
     switches:
       - oct_data
   3808:
