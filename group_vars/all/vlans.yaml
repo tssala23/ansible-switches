@@ -99,7 +99,7 @@ vlans:
       - oct_data
   252:
     name: "MOC-RESEARCH-CEPH"
-    description: "****"
+    description: "MOC Research Ceph"
     switches:
       - oct_data
   259:
@@ -139,12 +139,12 @@ vlans:
       - oct_data
   300:
     name: "UNITY-INTERNAL"
-    description: "****"
+    description: "Unity Cluster at UMass Internal Net"
     switches:
       - oct_data
   301:
     name: "UNITY-MGMT"
-    description: "****"
+    description: "Unity Cluster at UMass Mgmt Net"
     switches:
       - oct_data
   308:
@@ -154,7 +154,7 @@ vlans:
       - oct_data
   500:
     name: "MOC_BMI"
-    description: "****"
+    description: "MOC BMI Provisioning"
     switches:
       - oct_data
   701:
