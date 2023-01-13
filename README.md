@@ -19,42 +19,6 @@ Ansible site for MOC/OCT switches
 
 ## Configuration
 
-### System
-
-System configuration is in the file `host_vars/HOST/config.yaml`
-
-An example of this file is below:
-```
----
-system:
-  stp:
-    type: "rstp"
-    bridge-priority: 4096
-  vlt:
-    domain: 1
-    priority: 10
-    peer-address: "10.0.0.1/20"
-    port-channel: 50
-```
-
-Each section is an individual section in the "system" yaml dictionary.
-
-#### Spanning Tree (`stp`)
-
-| Field Label     | Description                            | Possible Values                            |
-|-----------------|----------------------------------------|--------------------------------------------|
-| type            | Type of spanning tree to enable        | "rstp", "mstp", or "pvst"                  |
-| bridge-priority | Bridge priority of RSTP                | Integer in the range 0-61440 (RSTP Only)   |
-
-#### Virtual Link Trunking - Dell OS9/OS10 ONLY (`vlt`)
-
-| Field Label     | Description                            | Possible Values                               |
-|-----------------|----------------------------------------|-----------------------------------------------|
-| domain          | VLT Domain                             | Integer in the range 1-1000                   |
-| priority        | Priority of the current system         | Integer in the range 1-65535                  |
-| peer-address    | IP address of peer VLT switch          | [IP]/[Prefix] formatted string                |
-| port-channel    | VLT trunk port-channel number          | Integer port-channel as defined in interfaces |
-
 ### Interfaces
 
 Interfaces are configured in the file `host_vars/HOST/interfaces.yaml`
