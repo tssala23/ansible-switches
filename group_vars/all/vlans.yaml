@@ -108,7 +108,7 @@ vlans:
     switches:
   267:
     name: "MOC-RESEARCH-CEPH-EXTRA"
-    description: "****"
+    description: "MOC research ceph students"
     switches:
       - oct_data
   270:
@@ -134,7 +134,7 @@ vlans:
       - oct_data
   280:
     name: "MOC-MAAS-NIC1"
-    description: "****"
+    description: "MAAS Internal Network 2"
     switches:
       - oct_data
   300:
@@ -145,11 +145,6 @@ vlans:
   301:
     name: "UNITY-MGMT"
     description: "Unity Cluster at UMass Mgmt Net"
-    switches:
-      - oct_data
-  308:
-    name: "MOC-JIANZZHA"
-    description: "****"
     switches:
       - oct_data
   500:
@@ -305,6 +300,10 @@ vlans:
     description: "AL2S VLAN 3109 for Fabric"
     switches:
       - oct_hub
+  3800:
+    name: "CSAIL-3800"
+    description: "CSAIL 3800"
+    switches:
   3801:
     name: "CSAIL-3801"
     description: "CSAIL - ESI Floating IP"
@@ -320,7 +319,3 @@ vlans:
     description: "CSAIL MaaS"
     switches:
       - oct_data
-  3808:
-    name: "****"
-    description: "Public IPs****"
-    switches:
