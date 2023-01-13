@@ -93,11 +93,11 @@ If you enable fanout on a port, **none** of the other fields can be used. Instea
 
 #### L2 Fields
 
-| Field Label   | Description                            | Possible Values                            |
-|---------------|----------------------------------------|--------------------------------------------|
-| untagged      | VLAN to untag on this interface        | Integer with range 1-4096                  |
-| tagged        | List of VLANs to tag on this interface | List of integers with range 1-4096         |
-| stp-edge      | Set this port to be an edge port       | "true" or "false"                          |
+| Field Label   | Description                            | Possible Values                                                          |
+|---------------|----------------------------------------|--------------------------------------------------------------------------|
+| untagged      | VLAN to untag on this interface        | Integer with range 1-4095                                                |
+| tagged        | List of VLANs to tag on this interface | List of integers with range 1-4095, or "all" for all VLANs on the switch |
+| stp-edge      | Set this port to be an edge port       | "true" or "false"                                                        |
 
 #### L3 Fields
 
