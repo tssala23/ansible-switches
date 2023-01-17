@@ -7,7 +7,7 @@
 
 # This task creates a dictionary of VLANs created from
 # the global configuration
-- name: Generate Various Dictionaries and Maps
+- name: Generate VLAN dictionary
   set_fact:
     vlan_dict: "{{ vlans | get_vlan_dict(group_names) }}"
 

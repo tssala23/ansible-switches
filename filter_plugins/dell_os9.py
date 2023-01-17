@@ -640,7 +640,13 @@ def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
             assignments[vlan].append("untagged " + str(sw_label))
 
         if "tagged" in intf:
-            for vlan in intf["tagged"]:
+            if intf["tagged"] == "all":
+                # all vlans on the switch should be tagged
+                vlan_list = vlan_names
+            else:
+                vlan_list = intf["tagged"]
+
+            for vlan in vlan_list:
                 if vlan not in assignments:
                     assignments[vlan] = []
 
