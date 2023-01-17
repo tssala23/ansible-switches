@@ -17,6 +17,8 @@ vlans:
   86:
     name: "UMA-86"
     description: "UMass VLAN 86 Public IPs for Fabric"
+    switches:
+      - oct_data
   105:
     name: "MOC-BU-PUBLIC"
     description: "Public IPs from BU"
