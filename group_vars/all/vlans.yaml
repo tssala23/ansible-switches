@@ -1,7 +1,7 @@
 vlans:
   10:
     name: "CSAIL-MAIN"
-    description: "Openshift public facing services (horizon, keystone)"
+    description: "Various Openshift clusters"
     switches:
       - oct_data
   57:
