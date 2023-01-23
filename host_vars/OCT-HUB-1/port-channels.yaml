@@ -3,50 +3,7 @@ port_channels:
     description: "Core OCT port-channel, connects to OCT-HUB-3 and OCT-HUB-4"
     admin: "up"
     untagged: 1
-    tagged:
-      - 10
-      - 57
-      - 84
-      - 105
-      - 127
-      - 201
-      - 204
-      - 207
-      - 208
-      - 209
-      - 210
-      - 211
-      - 213
-      - 250
-      - 252
-      - 267
-      - 277
-      - 280
-      - 300
-      - 301
-      - 308
-      - 500
-      - 623
-      - 910
-      - 911
-      - 912
-      - 920
-      - 930
-      - 980
-      - 2500
-      - 3100
-      - 3101
-      - 3102
-      - 3103
-      - 3104
-      - 3105
-      - 3106
-      - 3107
-      - 3108
-      - 3109
-      - 3801
-      - 3802
-      - 3803
+    tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
