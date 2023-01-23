@@ -169,5 +169,6 @@ interfaces:
     description: "Member of PC 1000 - CSAIL"
     admin: "up"
   1/34:
-    description: "Member of PC 1000 - CSAIL"
-    adming: "up"
+    description: "VLT heartbeat link"
+    admin: "up"
+    ip4: "10.255.255.1/30"
