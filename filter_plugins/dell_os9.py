@@ -356,7 +356,7 @@ def os9_getFanoutConfig(intf_dict, sw_config, label_map):
     out_tuple = [([], out)]
     return out_tuple, sw_config
 
-def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
+def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
     """
     Generates os9 commands for interface configuration
 
@@ -373,6 +373,7 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
     """
 
     out_all = []
+    vlan_cmd = []
 
     for intf_label,intf in intf_dict.items():
         # check that interface exists
@@ -427,6 +428,8 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
                                     or "ip6" in intf \
                                     or "keepalive" in intf
 
+        switching_modes = False
+
         if l2_exclusive_settings:
             # L2 mode
             if type == "vlan":
@@ -442,7 +445,7 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
                 if hybrid_port:
                     # portmode hybrid cannot apply if port is already in L2 mode
                     if "switchport" in cur_intf_config:
-                        # TODO if the port is part of a non-default vlan, this fails!
+                        switching_modes = True
                         out.append("no switchport")
 
                     out.append("portmode hybrid")
@@ -453,11 +456,11 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
             # L3 mode
             if "type" != "vlan":
                 if "portmode hybrid" in cur_intf_config:
-                    # TODO if the port is part of a non-default vlan, this fails!
+                    switching_modes = True
                     out.append("no portmode hybrid")
 
                 if "switchport" in cur_intf_config:
-                    # TODO if the port is part of a non-default vlan, this fails!
+                    switching_modes = True
                     out.append("no switchport")
 
             if "ip4" in intf:
@@ -479,6 +482,28 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
                         out.append("keepalive")
                 else:
                     out.append("no keepalive")
+
+        if switching_modes:
+            # we need to remove this interface from any non-default vlan before continuing
+            # the interface will be readded in the VLAN section. This will result in a few
+            # seconds of interface downtime
+
+            # search vlan map for this interface
+            if intf_label in vlan_map:
+                cur_vlan_assignments = vlan_map[intf_label]
+                if "untagged" in cur_vlan_assignments:
+                    cur_vlan = cur_vlan_assignments["untagged"]
+                    if int(cur_vlan) == 1:
+                        continue
+
+                    vlan_cmd.append((["interface Vlan " + str(cur_vlan)], "no untagged " + sw_label))
+
+                if "tagged" in cur_vlan_assignments:
+                    for cur_vlan in cur_vlan_assignments["tagged"]:
+                        if int(cur_vlan) == 1:
+                            continue
+
+                        vlan_cmd.append((["interface Vlan " + str(cur_vlan)], "no tagged " + sw_label))
 
         if "stp-edge" in intf and intf["stp-edge"]:
             # define edge-port for every stp protocol in os9 (only live one will take effect)
@@ -524,6 +549,8 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
         if out:
             # output list is not empty
             out_all.append(([sw_label], out))
+
+        out_all = vlan_cmd + out_all
 
     return out_all
 
@@ -727,11 +754,11 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     label_map = os9_getLabelMap(fanout_cfg[1])
 
     # Update interface configuration
-    intf_cfg = os9_getIntfConfig(intf_dict, sw_config, label_map, type = "intf")
+    intf_cfg = os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type = "intf")
     out += intf_cfg
 
     # Update port channel interface configuration
-    po_cfg = os9_getIntfConfig(po_dict, sw_config, label_map, type = "port-channel")
+    po_cfg = os9_getIntfConfig(po_dict, sw_config, label_map, vlan_map, type = "port-channel")
     out += po_cfg
 
     lacp_cfg = os9_getLACPConfig(po_dict, sw_config, label_map)
@@ -739,7 +766,7 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
 
     # Create/update vlan interfaces
     vlan_cfg = os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names)
-    vlan_intf_cfg = os9_getIntfConfig(vlan_dict, sw_config, label_map, type = "vlan")
+    vlan_intf_cfg = os9_getIntfConfig(vlan_dict, sw_config, label_map, vlan_map, type = "vlan")
 
     out += combineTuples(vlan_cfg, vlan_intf_cfg)
 
