@@ -163,4 +163,3 @@ interfaces:
     description: "VLT heartbeat link"
     admin: "up"
     ip4: "10.255.255.2/30"
-
