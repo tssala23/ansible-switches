@@ -154,6 +154,11 @@ vlans:
     description: "MOC BMI Provisioning"
     switches:
       - oct_data
+  623:
+    name: "ESI-INSPECTION"
+    description: "ESI Inspection and provisioning network"
+    switches:
+      - oct_data
   701:
     name: "ENGAGE1-FOREMAN"
     description: "Foreman Provisioning. SNMP for OpenStack and Ceph"
