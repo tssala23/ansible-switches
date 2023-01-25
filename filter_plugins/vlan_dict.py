@@ -2,7 +2,8 @@ def get_vlan_dict(vlan_dict, group_names):
     return {
         vlan: vlan_dict[vlan]
         for vlan in vlan_dict
-        if any(group in group_names for group in vlan_dict[vlan]["switches"])
+        if type(vlan_dict[vlan]["switches"]) == list and \
+            any(group in group_names for group in vlan_dict[vlan]["switches"])
     }
 
 
