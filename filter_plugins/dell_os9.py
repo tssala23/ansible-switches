@@ -1,5 +1,3 @@
-import warnings
-
 #
 # Helper methods
 #
@@ -665,6 +663,10 @@ def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
     out_tuple = []
 
     for vlan in vlan_names:
+        if int(vlan) == 1:
+            # skip default vlan
+            continue
+
         out = []
 
         out.append("name " + vlan_names[vlan]["name"])
@@ -732,7 +734,6 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     po_cfg = os9_getIntfConfig(po_dict, sw_config, label_map, type = "port-channel")
     out += po_cfg
 
-    # TODO, this step can probably be done more efficienty combined with above
     lacp_cfg = os9_getLACPConfig(po_dict, sw_config, label_map)
     out += lacp_cfg
 
