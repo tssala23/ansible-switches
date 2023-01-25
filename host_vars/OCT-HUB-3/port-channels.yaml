@@ -1,0 +1,85 @@
+port_channels:
+  1:
+    description: "Uplink to CL-SW-TORS"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/3/1", "1/4/1"]
+  2:
+    description: "Uplink to OCT1-SW-TORS"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/5/1", "1/6/1"]
+  3:
+    description: "Uplink to OCT2-SW-TORS"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/7/1", "1/8/1"]
+  4:
+    description: "Uplink to OCT3-SW-TORS-A"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/9/1", "1/10/1"]
+  5:
+    description: "Uplink to OCT4-SW-TORS"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/11/1", "1/12/1"]
+  6:
+    description: "Uplink to OCT9-SW-TORS-A"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/15", "1/16"]
+  7:
+    description: "Uplink to OCT9-SW-TORS-B"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/13", "1/14"]
+  10:
+    description: "Core link to OCT-HUB-1 and OCT-HUB-2"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/1", "1/2"]
+    custom:
+      - "vlt-peer-lag port-channel 10"
+  100:
+    description: "VLT link"
+    admin: "up"
+    mode: "normal"
+    interfaces: ["1/27", "1/28"]
+  200:
+    description: "Unity uplink"
+    admin: "up"
+    tagged: [300, 301]
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/31/1", "1/32/2"]
+  300:
+    description: "OCT-MHUB-2 uplink"
+    admin: "up"
+    untagged: 1
+    tagged: [910,911,912,930]
