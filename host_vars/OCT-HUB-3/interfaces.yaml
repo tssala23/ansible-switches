@@ -2,11 +2,11 @@ interfaces:
   1/1:
     description: "Member of port channel 10, oct core link"
     admin: "up"
-    mtu: 9416
+    mtu: 9216
   1/2:
     description: "Member of port channel 10, oct core link"
     admin: "up"
-    mtu: 9416
+    mtu: 9216
   1/3:
     fanout: "single"
     fanout_speed: "40G"
