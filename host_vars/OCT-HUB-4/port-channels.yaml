@@ -1,0 +1,21 @@
+port_channels:
+  10:
+    description: "Core link to OCT-HUB-1 and OCT-HUB-2"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/1", "1/2"]
+    custom:
+      - "vlt-peer-lag port-channel 10"
+  100:
+    description: "VLT link"
+    admin: "up"
+    mode: "normal"
+    interfaces: ["1/27", "1/28"]
+  300:
+    description: "OCT-MHUB-2 uplink"
+    admin: "up"
+    untagged: 1
+    tagged: [910,911,912,930]
