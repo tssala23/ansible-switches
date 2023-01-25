@@ -228,8 +228,11 @@ def os9_getVLANAssignmentMap(vlan_dict, sw_config, revLabelMap):
 
     for vlan in vlan_dict.keys():
         intf_label = "interface Vlan " + str(vlan)
-        cur_vlan_dict = sw_config[intf_label]
 
+        if intf_label in sw_config:
+            cur_vlan_dict = sw_config[intf_label]
+        else:
+            cur_vlan_dict = {}
 
         for vlan_entry in cur_vlan_dict.keys():
             if vlan_entry.startswith("untagged"):
@@ -491,19 +494,14 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
             # search vlan map for this interface
             if intf_label in vlan_map:
                 cur_vlan_assignments = vlan_map[intf_label]
-                if "untagged" in cur_vlan_assignments:
-                    cur_vlan = cur_vlan_assignments["untagged"]
-                    if int(cur_vlan) == 1:
-                        continue
 
-                    vlan_cmd.append((["interface Vlan " + str(cur_vlan)], "no untagged " + sw_label))
+                for assign_type in ["untagged", "tagged"]:
+                    if assign_type in cur_vlan_assignments:
+                        for cur_vlan in cur_vlan_assignments[assign_type]:
+                            if int(cur_vlan) == 1:
+                                continue
 
-                if "tagged" in cur_vlan_assignments:
-                    for cur_vlan in cur_vlan_assignments["tagged"]:
-                        if int(cur_vlan) == 1:
-                            continue
-
-                        vlan_cmd.append((["interface Vlan " + str(cur_vlan)], "no tagged " + sw_label))
+                            vlan_cmd.append((["interface Vlan " + str(cur_vlan)], "no " + assign_type + " " + sw_label))
 
         if "stp-edge" in intf and intf["stp-edge"]:
             # define edge-port for every stp protocol in os9 (only live one will take effect)
@@ -685,6 +683,9 @@ def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
             for field in field_list:
                 if field in existing_vlans:
                     for vlan in existing_vlans[field]:
+                        if vlan not in assignments:
+                            assignments[vlan] = []
+
                         assignments[vlan].append("no " + field + str(sw_label))
 
     out_tuple = []
@@ -745,28 +746,37 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     # Based on current configuration, generate various maps
     label_map = os9_getLabelMap(sw_config)
     rev_label_map = os9_getLabelMap(sw_config, reverse = True)
-    vlan_map = os9_getVLANAssignmentMap(vlan_dict, sw_config, rev_label_map)
+    vlan_map = os9_getVLANAssignmentMap(vlan_names, sw_config, rev_label_map)
 
     # Figure out the interface fanout configuration
-    fanout_cfg = os9_getFanoutConfig(intf_dict, sw_config, label_map)
-    out += fanout_cfg[0]
-    # update label map after updating fanout config
-    label_map = os9_getLabelMap(fanout_cfg[1])
+    if intf_dict is not None:
+        fanout_cfg = os9_getFanoutConfig(intf_dict, sw_config, label_map)
+        out += fanout_cfg[0]
+        # update label map after updating fanout config
+        label_map = os9_getLabelMap(fanout_cfg[1])
 
-    # Update interface configuration
-    intf_cfg = os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type = "intf")
-    out += intf_cfg
+        # Update interface configuration
+        intf_cfg = os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type = "intf")
+        out += intf_cfg
 
     # Update port channel interface configuration
-    po_cfg = os9_getIntfConfig(po_dict, sw_config, label_map, vlan_map, type = "port-channel")
-    out += po_cfg
+    if po_dict is not None:
+        po_cfg = os9_getIntfConfig(po_dict, sw_config, label_map, vlan_map, type = "port-channel")
+        out += po_cfg
 
-    lacp_cfg = os9_getLACPConfig(po_dict, sw_config, label_map)
-    out += lacp_cfg
+        lacp_cfg = os9_getLACPConfig(po_dict, sw_config, label_map)
+        out += lacp_cfg
 
     # Create/update vlan interfaces
-    vlan_cfg = os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names)
-    vlan_intf_cfg = os9_getIntfConfig(vlan_dict, sw_config, label_map, vlan_map, type = "vlan")
+    if intf_dict is not None:
+        vlan_cfg = os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names)
+    else:
+        vlan_cfg = []
+
+    if vlan_dict is not None:
+        vlan_intf_cfg = os9_getIntfConfig(vlan_dict, sw_config, label_map, vlan_map, type = "vlan")
+    else:
+        vlan_intf_cfg = []
 
     out += combineTuples(vlan_cfg, vlan_intf_cfg)
 
