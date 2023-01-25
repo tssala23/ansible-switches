@@ -2,7 +2,6 @@ interfaces:
   1/1:
     fanout: "quad"
     fanout_speed: "25G"
-  # [PR] MTU 9140 instead of 9216?
   1/1/1:
     description: "****"
     admin: "up"
