@@ -139,6 +139,11 @@ vlans:
     description: "MAAS Internal Network 2"
     switches:
       - oct_data
+  290:
+    name: "OKD-INTERNAL"
+    description: "OKD Internal Network"
+    switches:
+      - OCT4-SW-TORS
   300:
     name: "UNITY-INTERNAL"
     description: "Unity Cluster at UMass Internal Net"
