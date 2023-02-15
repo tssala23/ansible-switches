@@ -506,22 +506,6 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
                             # delete from vlan map so future methods don't touch this
                             vlan_map[intf_label][assign_type].remove(cur_vlan)
 
-        if "stp-edge" in intf and intf["stp-edge"]:
-            # define edge-port for every stp protocol in os9 (only live one will take effect)
-            out.append("spanning-tree rstp edge-port")
-            out.append("spanning-tree mstp edge-port")
-            out.append("spanning-tree pvst edge-port")
-        else:
-            # disable spanning tree edge port if currently enabled
-            if "spanning-tree rstp edge-port" in cur_intf_config:
-                out.append("no spanning-tree rstp edge-port")
-
-            if "spanning-tree mstp edge-port" in cur_intf_config:
-                out.append("no spanning-tree mstp edge-port")
-
-            if "spanning-tree pvst edge-port" in cur_intf_config:
-                out.append("no spanning-tree pvst edge-port")
-
         # set description
         if "description" in intf:
             out.append("description " + intf["description"])
