@@ -1,0 +1,172 @@
+interfaces:
+  1/1:
+    description: "Member of port channel 10, oct core link"
+    admin: "up"
+    mtu: 9216
+  1/2:
+    description: "Member of port channel 10, oct core link"
+    admin: "up"
+    mtu: 9216
+  1/3:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/3/1:
+    description: "Member of port channel 1, uplink for CL-SW-TORS"
+    admin: "up"
+    mtu: 9216
+  1/4:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/4/1:
+    description: "Member of port channel 1, uplink for CL-SW-TORS"
+    admin: "up"
+    mtu: 9216
+  1/5:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/5/1:
+    description: "Member of port channel 2, uplink for OCT1-SW-TORS"
+    admin: "up"
+    mtu: 9216
+  1/6:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/6/1:
+    description: "Member of port channel 2, uplink for OCT1-SW-TORS"
+    admin: "up"
+    mtu: 9216
+  1/7:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/7/1:
+    description: "Member of port channel 3, uplink for OCT2-SW-TORS"
+    admin: "up"
+    mtu: 9216
+  1/8:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/8/1:
+    description: "Member of port channel 3, uplink for OCT2-SW-TORS-A"
+    admin: "up"
+    mtu: 9216
+  1/9:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/9/1:
+    description: "Member of port channel 4, uplink for OCT3-SW-TORS-A"
+    admin: "up"
+    mtu: 9216
+  1/10:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/10/1:
+    description: "Member of port channel 4, uplink for OCT3-SW-TORS"
+    admin: "up"
+    mtu: 9216
+  1/11:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/11/1:
+    description: "Member of port channel 5, uplink for OCT4-SW-TORS"
+    admin: "up"
+    mtu: 9216
+  1/12:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/12/1:
+    description: "Member of port channel 5, uplink for OCT4-SW-TORS"
+    admin: "up"
+    mtu: 9216
+  1/13:
+    description: "Member of port channel 7, uplink for OCT9-SW-TORS-B"
+    admin: "up"
+    mtu: 9216
+  1/14:
+    description: "Member of port channel 6, uplink for OCT9-SW-TORS-A"
+    admin: "up"
+    mtu: 9216
+  1/15:
+    description: "unallocated"
+    admin: "down"
+  1/16:
+    description: "unallocated"
+    admin: "down"
+  1/17:
+    description: "unallocated"
+    admin: "down"
+  1/18:
+    description: "unallocated"
+    admin: "down"
+  1/19:
+    description: "unallocated"
+    admin: "down"
+  1/20:
+    description: "unallocated"
+    admin: "down"
+  1/21:
+    description: "unallocated"
+    admin: "down"
+  1/22:
+    description: "unallocated"
+    admin: "down"
+  1/23:
+    description: "unallocated"
+    admin: "down"
+  1/24:
+    description: "unallocated"
+    admin: "down"
+  1/25:
+    description: "unallocated"
+    admin: "down"
+  1/26:
+    description: "unallocated"
+    admin: "down"
+  1/27:
+    description: "VLT link"
+    admin: "up"
+  1/28:
+    description: "VLT link"
+    admin: "up"
+  1/29:
+    description: "****"
+    admin: "up"
+    mtu: 9216
+    custom:
+      - "no intf-type cr4 autoneg"
+  1/30:
+    fanout: "quad"
+    fanout_speed: "10G"
+  1/30/1:
+    description: "Link to UMA PA-3220"
+    admin: "up"
+  1/30/2:
+    description: "Inaccessible"
+    admin: "down"
+  1/30/3:
+    description: "Inaccessible"
+    admin: "down"
+  1/30/4:
+    description: "Inaccessible"
+    admin: "down"
+  1/31:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/31/1:
+    description: "Member of port channel 200, uplink to Unity"
+    admin: "up"
+    mtu: 9216
+  1/32:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/32/1:
+    description: "Member of port channel 200, uplink to Unity"
+    admin: "up"
+    mtu: 9216
+  1/33:
+    description: "Member of port channel 300, uplink to ****"
+    admin: "up"
+    mtu: 9216
+  1/34:
+    description: "VLT heartbeat link"
+    admin: "up"
+    ip4: "10.255.255.1/30"
