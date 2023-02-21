@@ -205,6 +205,22 @@ vlans:
     description: "For OCT/UMass nodes IPMI for operate first"
     switches:
       - oct_mgmthub
+  913:
+    name: "OKD-OBM"
+    description: "OKD management net"
+    switches:
+      - oct_data
+      - oct_mgmt
+  920:
+    name: "CL-ESI-TESTBED-EXP"
+    description: "Cl/ESI testbed network"
+    switches:
+      - oct_data
+  921:
+    name: "CL-ESI-TESTBED-MGMT"
+    description: "Cl/ESI mgmt network"
+    switches:
+      - oct_data
   930:
     name: "OCT-SWMGMT"
     description: "Switch management network for OCT"
