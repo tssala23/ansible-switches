@@ -328,6 +328,56 @@ vlans:
     description: "AL2S VLAN 3109 for Fabric"
     switches:
       - oct_hub
+  3110:
+    name: "FABRIC-OCT-3110"
+    description: "FABRIC facility port VLAN 3110 for OCT"
+    switches:
+      - oct_data
+  3111:
+    name: "FABRIC-OCT-3111"
+    description: "FABRIC facility port VLAN 3111 for OCT"
+    switches:
+      - oct_data
+  3112:
+    name: "FABRIC-OCT-3112"
+    description: "FABRIC facility port VLAN 3112 for OCT"
+    switches:
+      - oct_data
+  3113:
+    name: "FABRIC-OCT-3113"
+    description: "FABRIC facility port VLAN 3113 for OCT"
+    switches:
+      - oct_data
+  3114:
+    name: "FABRIC-OCT-3114"
+    description: "FABRIC facility port VLAN 3114 for OCT"
+    switches:
+      - oct_data
+  3115:
+    name: "FABRIC-OCT-3115"
+    description: "FABRIC facility port VLAN 3115 for OCT"
+    switches:
+      - oct_data
+  3116:
+    name: "FABRIC-OCT-3116"
+    description: "FABRIC facility port VLAN 3116 for OCT"
+    switches:
+      - oct_data
+  3117:
+    name: "FABRIC-OCT-3117"
+    description: "FABRIC facility port VLAN 3117 for OCT"
+    switches:
+      - oct_data
+  3118:
+    name: "FABRIC-OCT-3118"
+    description: "FABRIC facility port VLAN 3118 for OCT"
+    switches:
+      - oct_data
+  3119:
+    name: "FABRIC-OCT-3119"
+    description: "FABRIC facility port VLAN 3119 for OCT"
+    switches:
+      - oct_data
   3800:
     name: "CSAIL-3800"
     description: "CSAIL 3800"
