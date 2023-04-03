@@ -1,0 +1,188 @@
+interfaces:
+  1/1:
+    description: "CL-MASS-1"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
+  1/2:
+    description: "CL-MASS-2"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
+  1/3:
+    description: "CL-MASS-3"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
+  1/4:
+    description: "CL-MASS-4"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
+  1/5:
+    description: "CL-MASS-5"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
+  1/6:
+    description: "unallocated"
+    admin: "down"
+  1/7:
+    description: "unallocated"
+    admin: "down"
+  1/8:
+    description: "unallocated"
+    admin: "down"
+  1/9:
+    description: "unallocated"
+    admin: "down"
+  1/10:
+    description: "unallocated"
+    admin: "down"
+  1/11:
+    description: "unallocated"
+    admin: "down"
+  1/12:
+    description: "unallocated"
+    admin: "down"
+  1/13:
+    description: "unallocated"
+    admin: "down"
+  1/14:
+    description: "unallocated"
+    admin: "down"
+  1/15:
+    description: "PC 10 Member 1"
+    admin: "up"
+    mtu: 9216
+  1/16:
+    description: "PC 10 Member 2"
+    admin: "up"
+    mtu: 9216
+  1/17:
+    description: "CL-MASS-1-MGMT"
+    admin: "up"
+    untagged: 910
+  1/18:
+    description: "CL-MASS-2-MGMT"
+    admin: "up"
+    untagged: 910
+  1/19:
+    description: "CL-MASS-3-MGMT"
+    admin: "up"
+    untagged: 910
+  1/20:
+    description: "CL-MASS-4-MGMT"
+    admin: "up"
+    untagged: 910
+  1/21:
+    description: "CL-MASS-5-MGMT"
+    admin: "up"
+    untagged: 910
+  1/22:
+    description: "unallocated"
+    admin: "down"
+  1/23:
+    description: "unallocated"
+    admin: "down"
+  1/24:
+    description: "unallocated"
+    admin: "down"
+  1/25:
+    description: "unallocated"
+    admin: "down"
+  1/26:
+    description: "unallocated"
+    admin: "down"
+  1/27:
+    description: "unallocated"
+    admin: "down"
+  1/28:
+    description: "unallocated"
+    admin: "down"
+  1/29:
+    description: "unallocated"
+    admin: "down"
+  1/30:
+    description: "unallocated"
+    admin: "down"
+  1/31:
+    description: "unallocated"
+    admin: "down"
+  1/32:
+    description: "MGMT uplink"
+    admin: "up"
+    tagged: [910, 930]
+  1/33:
+    description: "CL-MASS-1-CTRL"
+    admin: "up"
+    untagged: 84
+  1/34:
+    description: "CL-MASS-2-CTRL"
+    admin: "up"
+    untagged: 84
+  1/35:
+    description: "CL-MASS-3-CTRL"
+    admin: "up"
+    untagged: 84
+  1/36:
+    description: "CL-MASS-4-CTRL"
+    admin: "up"
+    untagged: 84
+  1/37:
+    description: "CL-MASS-5-CTRL"
+    admin: "up"
+    untagged: 84
+  1/38:
+    description: "unallocated"
+    admin: "down"
+  1/39:
+    description: "unallocated"
+    admin: "down"
+  1/40:
+    description: "unallocated"
+    admin: "down"
+  1/41:
+    description: "unallocated"
+    admin: "down"
+  1/42:
+    description: "unallocated"
+    admin: "down"
+  1/43:
+    description: "unallocated"
+    admin: "down"
+  1/44:
+    description: "unallocated"
+    admin: "down"
+  1/45:
+    description: "unallocated"
+    admin: "down"
+  1/46:
+    description: "unallocated"
+    admin: "down"
+  1/47:
+    description: "unallocated"
+    admin: "down"
+  1/48:
+    description: "unallocated"
+    admin: "down"
+  1/49:
+    description: "unallocated"
+    admin: "down"
+  1/50:
+    description: "unallocated"
+    admin: "down"
+  1/51:
+    description: "unallocated"
+    admin: "down"
+  1/52:
+    description: "unallocated"
+    admin: "down"
+  1/53:
+    description: "PC 1 Member 1"
+    admin: "up"
+    mtu: 9216
+  1/54:
+    description: "PC 1 Member 2"
+    admin: "up"
+    mtu: 9216
