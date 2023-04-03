@@ -5,6 +5,3 @@ vlan_interfaces:
   910:
     admin: "up"
     ip4: "10.0.0.4/22"
-  930:
-    admin: "up"
-    ip4: "10.80.2.11/20"
