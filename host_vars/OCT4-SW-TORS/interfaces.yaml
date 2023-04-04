@@ -107,14 +107,12 @@ interfaces:
     description: "OCT4-1 2nd"
     admin: "up"
     mtu: 9216
-    untagged: 127
-    tagged: [207]
+    managed-l2: true
   1/22:
     description: "OCT4-2 2nd"
     admin: "up"
     mtu: 9216
-    untagged: 127
-    tagged: [207, 3801]
+    managed-l2: true
   1/23:
     description: "unallocated"
     admin: "down"
