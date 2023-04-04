@@ -63,17 +63,20 @@ interfaces:
     description: "OCT4-5"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    untagged: 208
+    tagged: [213, 250, 623, 626, 911, 3801]
   1/14:
     description: "OCT4-4"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    untagged: 208
+    tagged: [213, 250, 623, 626, 911, 3801]
   1/15:
     description: "OCT4-3"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    untagged: 208
+    tagged: [213, 250, 911]
   1/16:
     description: "OCT4-2"
     admin: "up"
@@ -88,25 +91,26 @@ interfaces:
     description: "OCT4-0"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    untagged: 127
+    tagged: [207, 213, 911]
   1/19:
     description: "unallocated"
     admin: "down"
     mtu: 9216
   1/20:
-    description: "OCT4-0 2"
+    description: "OCT4-0 2nd"
     admin: "up"
     mtu: 9216
     untagged: 208
     tagged: [623]
   1/21:
-    description: "OCT4-1 2"
+    description: "OCT4-1 2nd"
     admin: "up"
     mtu: 9216
     untagged: 127
     tagged: [207]
   1/22:
-    description: "OCT4-2 2"
+    description: "OCT4-2 2nd"
     admin: "up"
     mtu: 9216
     untagged: 127
@@ -115,13 +119,13 @@ interfaces:
     description: "unallocated"
     admin: "down"
   1/24:
-    description: "OCT4-4 2"
+    description: "OCT4-4 2nd"
     admin: "up"
     mtu: 9216
     untagged: 127
     tagged: [207]
   1/25:
-    description: "OCT4-5 2"
+    description: "OCT4-5 2nd"
     admin: "up"
     mtu: 9216
     untagged: 127
