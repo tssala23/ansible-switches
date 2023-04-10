@@ -9,7 +9,7 @@
 # the global configuration
 - name: Generate VLAN dictionary
   set_fact:
-    vlan_dict: "{{ vlans | get_vlan_dict(group_names) }}"
+    vlan_dict: "{{ vlans | get_vlan_dict(inventory_hostname, group_names) }}"
 
 # Set the hostname of the switch to the value in the hosts file
 - name: Set hostname
