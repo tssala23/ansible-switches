@@ -420,13 +420,17 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
         cur_intf_config = sw_config["interface " + sw_label]
 
         # determine if interface is it L2 or L3 mode
+        managed_l2 = "managed-l2" in intf and intf["managed-l2"]
         vlans_included = "untagged_vlan" in intf \
-                                    or "tagged_vlan" in intf
-        hybrid_port = "untagged_vlan" in intf \
-                                    and "tagged_vlan" in intf
+                                    or "tagged_vlan" in intf \
+                                    or managed_l2
+        hybrid_port = ("untagged_vlan" in intf \
+                                    and "tagged_vlan" in intf) \
+                                    or managed_l2
         l2_exclusive_settings = "untagged_vlan" in intf \
                                     or "tagged_vlan" in intf \
-                                    or "stp-edge" in intf
+                                    or "stp-edge" in intf \
+                                    or "managed-l2" in intf
         l3_exclusive_settings = "ip4" in intf \
                                     or "ip6" in intf \
                                     or "keepalive" in intf
@@ -447,7 +451,7 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
             if vlans_included:
                 if hybrid_port:
                     # portmode hybrid cannot apply if port is already in L2 mode
-                    if "switchport" in cur_intf_config:
+                    if "switchport" in cur_intf_config and "portmode hybrid" not in cur_intf_config:
                         switching_modes = True
                         out.append("no switchport")
 
@@ -526,6 +530,12 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
             if any(item.startswith("mtu") for item in cur_intf_config):
                 out.append("no mtu")
 
+        # STP edge port
+        if "stp-edge" in intf and intf["stp-edge"]:
+            out.append("spanning-tree mstp edge-port")
+            out.append("spanning-tree rstp edge-port")
+            out.append("spanning-tree pvst edge-port")
+
         # additional confs
         if "custom" in intf:
             for add_conf in intf["custom"]:
@@ -533,7 +543,7 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
 
         if out:
             # output list is not empty
-            out_all.append(([sw_label], out))
+            out_all.append((["interface " + sw_label], out))
 
         out_all = vlan_cmd + out_all
 
@@ -603,7 +613,7 @@ def os9_getLACPConfig(pc_dict, sw_config, label_map):
 
     out_all = []
     for cur_intf in out:
-        out_all.append(([cur_intf, "port-channel-protocol lacp"], out[cur_intf]))
+        out_all.append((["interface " + cur_intf, "port-channel-protocol lacp"], out[cur_intf]))
 
     return out_all
 
@@ -734,6 +744,8 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     label_map = os9_getLabelMap(sw_config)
     rev_label_map = os9_getLabelMap(sw_config, reverse = True)
     vlan_map = os9_getVLANAssignmentMap(vlan_names, sw_config, rev_label_map)
+
+    #! TODO we should use the switch labels for this whole system instead of intf labels
 
     # Figure out the interface fanout configuration
     if intf_dict is not None:
