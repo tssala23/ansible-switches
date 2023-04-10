@@ -1,0 +1,261 @@
+interfaces:
+  1/1:
+    description: "OCT3-1"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/2:
+    description: "OCT3-3"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/3:
+    description: "OCT3-5"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/4:
+    description: "OCT3-6"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/5:
+    description: "OCT3-7"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/6:
+    description: "OCT3-8"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/7:
+    description: "OCT3-9"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/8:
+    description: "OCT3-10"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/9:
+    description: "OCT3-11"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/10:
+    description: "OCT3-12"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/11:
+    description: "OCT3-13"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/12:
+    description: "OCT3-14"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/13:
+    description: "OCT3-15"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/14:
+    description: "OCT3-16"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/15:
+    description: "OCT3-17"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/16:
+    description: "OCT3-18"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/17:
+    description: "OCT3-19"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/18:
+    description: "OCT3-20"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/19:
+    description: "OCT3-21"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/20:
+    description: "OCT3-22"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/21:
+    description: "OCT3-23"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/22:
+    description: "OCT3-24"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/23:
+    description: "OCT3-25"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/24:
+    description: "OCT3-26"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/25:
+    description: "OCT3-27"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/26:
+    description: "OCT3-28"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/27:
+    description: "OCT3-29"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/28:
+    description: "OCT3-30"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/29:
+    description: "OCT3-31"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/30:
+    description: "OCT3-32"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/31:
+    description: "OCT3-33"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/32:
+    description: "OCT3-34"
+    admin: "up"
+    mtu: 9216
+    untagged: 10
+    tagged: [210, 211]
+  1/33:
+    description: "unallocated"
+    admin: "down"
+  1/34:
+    description: "unallocated"
+    admin: "down"
+  1/35:
+    description: "unallocated"
+    admin: "down"
+  1/36:
+    description: "unallocated"
+    admin: "down"
+  1/37:
+    description: "unallocated"
+    admin: "down"
+  1/38:
+    description: "unallocated"
+    admin: "down"
+  1/39:
+    description: "unallocated"
+    admin: "down"
+  1/40:
+    description: "unallocated"
+    admin: "down"
+  1/41:
+    description: "unallocated"
+    admin: "down"
+  1/42:
+    description: "unallocated"
+    admin: "down"
+  1/43:
+    description: "unallocated"
+    admin: "down"
+  1/44:
+    description: "unallocated"
+    admin: "down"
+  1/45:
+    description: "unallocated"
+    admin: "down"
+  1/46:
+    description: "unallocated"
+    admin: "down"
+  1/47:
+    description: "unallocated"
+    admin: "down"
+  1/48:
+    description: "unallocated"
+    admin: "down"
+  1/49:
+    description: "unallocated"
+    admin: "down"
+  1/50:
+    description: "unallocated"
+    admin: "down"
+  1/51:
+    description: "unallocated"
+    admin: "down"
+  1/52:
+    description: "unallocated"
+    admin: "down"
+  1/53:
+    description: "PC 1 Member 1"
+    admin: "up"
+    mtu: 9216
+  1/54:
+    description: "PC 1 Member 2"
+    admin: "up"
+    mtu: 9216

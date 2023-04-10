@@ -1,19 +1,29 @@
 interfaces:
   1/1:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-1"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
   1/2:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-2"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
   1/3:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-3"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
   1/4:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-4"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
   1/5:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-5"
+    admin: "up"
+    mtu: 9216
+    untagged: 1
   1/6:
     description: "unallocated"
     admin: "down"
@@ -42,26 +52,33 @@ interfaces:
     description: "unallocated"
     admin: "down"
   1/15:
-    description: "unallocated"
-    admin: "down"
+    description: "PC 10 Member 1"
+    admin: "up"
+    mtu: 9216
   1/16:
-    description: "unallocated"
-    admin: "down"
+    description: "PC 10 Member 2"
+    admin: "up"
+    mtu: 9216
   1/17:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-1-MGMT"
+    admin: "up"
+    untagged: 910
   1/18:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-2-MGMT"
+    admin: "up"
+    untagged: 910
   1/19:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-3-MGMT"
+    admin: "up"
+    untagged: 910
   1/20:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-4-MGMT"
+    admin: "up"
+    untagged: 910
   1/21:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-5-MGMT"
+    admin: "up"
+    untagged: 910
   1/22:
     description: "unallocated"
     admin: "down"
@@ -93,23 +110,29 @@ interfaces:
     description: "unallocated"
     admin: "down"
   1/32:
-    description: "unallocated"
-    admin: "down"
+    description: "MGMT uplink"
+    admin: "up"
+    tagged: [910, 930]
   1/33:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-1-CTRL"
+    admin: "up"
+    untagged: 84
   1/34:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-2-CTRL"
+    admin: "up"
+    untagged: 84
   1/35:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-3-CTRL"
+    admin: "up"
+    untagged: 84
   1/36:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-4-CTRL"
+    admin: "up"
+    untagged: 84
   1/37:
-    description: "unallocated"
-    admin: "down"
+    description: "CL-MASS-5-CTRL"
+    admin: "up"
+    untagged: 84
   1/38:
     description: "unallocated"
     admin: "down"

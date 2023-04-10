@@ -1,0 +1,284 @@
+interfaces:
+  1/1:
+    description: "OCT5-1"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/2:
+    description: "OCT5-2"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/3:
+    description: "OCT5-3"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/4:
+    description: "OCT5-4"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/5:
+    description: "OCT5-5"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/6:
+    description: "OCT5-6"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/7:
+    description: "OCT5-7"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/8:
+    description: "OCT5-8"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/9:
+    description: "OCT5-9"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/10:
+    description: "OCT5-10"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/11:
+    description: "OCT5-11"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/12:
+    description: "OCT5-12"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/13:
+    description: "OCT5-13"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/14:
+    description: "OCT5-14"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/15:
+    description: "OCT5-15"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/16:
+    description: "OCT5-16"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/17:
+    description: "OCT5-17"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/18:
+    description: "OCT5-18"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/19:
+    description: "OCT5-19"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/20:
+    description: "OCT5-20"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/21:
+    description: "OCT5-21"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/22:
+    description: "OCT5-22"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/23:
+    description: "OCT5-23"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/24:
+    description: "OCT5-24"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/25:
+    description: "OCT5-25"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/26:
+    description: "OCT5-26"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/27:
+    description: "OCT5-27"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/28:
+    description: "OCT5-28"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/29:
+    description: "OCT5-29"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/30:
+    description: "OCT5-30"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/31:
+    description: "OCT5-31"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/32:
+    description: "OCT5-32"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/33:
+    description: "OCT5-33"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/34:
+    description: "OCT5-34"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/35:
+    description: "OCT5-35"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/36:
+    description: "OCT5-36"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/37:
+    description: "OCT5-37"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/38:
+    description: "OCT5-38"
+    admin: "up"
+    mtu: 9216
+    untagged: 209
+    tagged: [250]
+  1/39:
+    description: "unallocated"
+    admin: "down"
+  1/40:
+    description: "unallocated"
+    admin: "down"
+  1/41:
+    description: "unallocated"
+    admin: "down"
+  1/42:
+    description: "unallocated"
+    admin: "down"
+  1/43:
+    description: "unallocated"
+    admin: "down"
+  1/44:
+    description: "unallocated"
+    admin: "down"
+  1/45:
+    description: "unallocated"
+    admin: "down"
+  1/46:
+    description: "unallocated"
+    admin: "down"
+  1/47:
+    description: "unallocated"
+    admin: "down"
+  1/48:
+    description: "VLT heartbeat"
+    admin: "up"
+    ip4: "10.255.255.2/30"
+  1/49:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/49/1:
+    description: "Alan Liu DPDK"
+    admin: "up"
+  1/50:
+    description: "unallocated"
+    admin: "down"
+  1/51:
+    description: "VLT link 1"
+    admin: "up"
+    mtu: 9216
+  1/52:
+    description: "VLT link 2"
+    admin: "up"
+    mtu: 9216
+  1/53:
+    description: "unallocated"
+    admin: "down"
+  1/54:
+    description: "PC 1 Member 2"
+    admin: "up"
+    mtu: 9216

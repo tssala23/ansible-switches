@@ -1,0 +1,17 @@
+port_channels:
+  10:
+    description: "Uplink port channel"
+    admin: "up"
+    tagged: "all"
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/54"]
+    custom:
+      - "vlt-peer-link port-channel 10"
+  100:
+    description: "VLT link"
+    admin: "up"
+    mtu: 9216
+    mode: "normal"
+    interfaces: ["1/51", "1/52"]

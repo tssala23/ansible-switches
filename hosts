@@ -1,52 +1,50 @@
-[oct_hub]
-OCT-HUB-1       ansible_host=10.80.1.1
-OCT-HUB-2       ansible_host=10.80.1.2
-OCT-HUB-3       ansible_host=10.80.1.3
-OCT-HUB-4       ansible_host=10.80.1.5
+[oct_core]
+OCT-CORE-1       ansible_host=10.80.1.1
+OCT-CORE-2       ansible_host=10.80.1.2
+OCT-CORE-3       ansible_host=10.80.1.3
+OCT-CORE-4       ansible_host=10.80.1.5
 
-[oct_mgmthub]
-OCT-MHUB-1      ansible_host=10.80.1.11
-OCT-MHUB-2      ansible_host=10.80.1.12
+[oct_mgmtcore]
+OCT-MCORE-1      ansible_host=10.80.1.11
+OCT-MCORE-2      ansible_host=10.80.1.12
 
 [oct_tors]
 CL-SW-TORS      ansible-host=10.80.2.1
 OCT1-SW-TORS    ansible_host=10.80.2.11
 OCT2-SW-TORS    ansible_host=10.80.2.21
-OCT3-SW-TORS-A  ansible_host=10.80.2.31
-#OCT3-SW-TORS-B  ansible_host=10.80.2.32
+OCT3-SW-TORS    ansible_host=10.80.2.31
 OCT4-SW-TORS    ansible_host=10.80.2.41
 OCT5-SW-TORS-A  ansible_host=10.80.2.51
 OCT5-SW-TORS-B  ansible_host=10.80.2.52
-#OCT6-SW-TORS-A  ansible_host=10.80.2.61
-#OCT6-SW-TORS-B  ansible_host=10.80.2.62
+OCT6-SW-TORS    ansible_host=10.80.2.61
 OCT7-SW-TORS    ansible_host=10.80.2.71
 OCT8-SW-TORS    ansible_host=10.80.2.81
 
 [oct_tors_mgmt]
 OCT5-SW-MGMT    ansible_host=10.80.2.53
-#OCT6-SW-MGMT    ansible_host=10.80.2.63
+OCT6-SW-MGMT    ansible_host=10.80.2.62
 OCT7-SW-MGMT    ansible_host=10.80.2.72
 OCT8-SW-MGMT    ansible_host=10.80.2.82
 OCT9-SW-HYB     ansible_host=10.80.2.93
 
 [oct_tors_ctrl]
 OCT5-SW-CTRL    ansible_host=10.80.2.54
-#OCT6-SW-CTRL    ansible_host=10.80.2.64
+OCT6-SW-CTRL    ansible_host=10.80.2.63
 OCT7-SW-CTRL    ansible_host=10.80.2.73
 OCT8-SW-CTRL    ansible_host=10.80.2.83
 OCT9-SW-HYB     ansible_host=10.80.2.93
 
 [oct_data:children]
-oct_hub
+oct_core
 oct_tors
 
 [oct_mgmt:children]
-oct_mgmthub
+oct_mgmtcore
 oct_tors_mgmt
 
 [oct:children]
-oct_hub
-oct_mgmthub
+oct_core
+oct_mgmtcore
 oct_tors
 oct_tors_mgmt
 oct_tors_ctrl

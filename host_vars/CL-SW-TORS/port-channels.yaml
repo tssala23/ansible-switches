@@ -7,3 +7,11 @@ port_channels:
     mode: "lacp"
     lacp-rate: "fast"
     interfaces: ["1/53", "1/54"]
+  10:
+    description: "Link to CL head node"
+    admin: "up"
+    tagged: [84, 910]
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces: ["1/15", "1/16"]

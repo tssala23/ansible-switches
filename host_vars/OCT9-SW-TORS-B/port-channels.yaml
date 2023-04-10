@@ -6,4 +6,4 @@ port_channels:
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/53", "1/54"]
+    interfaces: ["1/32"]
