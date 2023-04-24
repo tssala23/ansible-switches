@@ -23,6 +23,20 @@
     lines:
       - no ip telnet server enable
 
+# Fanout is done separately since it changes the interface config
+- name: Apply Fanout Configuration
+  dellemc.os9.os9_config:
+    lines: "{{ item.1 }}"
+    parents: "{{ item.0 }}"
+  loop: "{{ cur_config | os9_getFanoutConfiguration(interfaces) }}"
+
+# Update config after fanout change (can't ever be skipped, even if above changed nothing, because than variable will register as error)
+- name: Update current configuration after fanout changes
+  dellemc.os9.os9_facts:
+    gather_subset:
+      - config
+  register: cur_config
+
 # This task reads the host vars and updates configuration
 - name: Apply Host Configuration
   dellemc.os9.os9_config:

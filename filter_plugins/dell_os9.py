@@ -1,44 +1,61 @@
+import re
+
 #
 # Helper methods
 #
-def parseRange(s):
-    """
-    Helper method which parses interface ranges (1/1-1/5, 1/6/1-1/6/4, etc.)
+def parseRange(s, sw_config):
+    sw_keys = [key.split()[-1] for key in sw_config if key.startswith("interface") and not key.startswith("interface Vlan")]
+    sw_keys = [value + "/0" * (2 - value.count("/")) for value in sw_keys]
 
-    :param s: Input range
-    :type s: str
-    :return: List of all interfaces in range
-    :rtype: list
-    """
+    def iterateIntf(intf, sw_keys):
+        def remove_trailing_zeros(value):
+            parts = value.split("/")
+            while parts and parts[-1] == "0":
+                parts.pop()
+            return "/".join(parts)
+
+        intf = intf + "/0" * (2 - intf.count("/"))  # normalize length
+        intf_parts = intf.split("/")
+
+        iterate_parts = [str(int(part) + 1) for part in intf_parts]
+
+        # generate list to check (001 > 111)
+        checkList = [
+            "/".join([intf_parts[0], intf_parts[1], iterate_parts[2]]),
+            "/".join([intf_parts[0], iterate_parts[1], "0"]),
+            "/".join([intf_parts[0], iterate_parts[1], "1"]),
+            "/".join([iterate_parts[0], "0", "0"]),
+            "/".join([iterate_parts[0], "0", "1"]),
+            "/".join([iterate_parts[0], "1", "0"]),
+            "/".join([iterate_parts[0], "1", "1"])
+        ]
+
+        for item in checkList:
+            if item in sw_keys:
+                return remove_trailing_zeros(item)
+            
+        return None
 
     out = []
 
+    # split into commas
     s_parts = s.split(",")
-    for cur in s_parts:
-        if "-" in cur:
+
+    for s_cur in s_parts:
+        if "-" in s_cur:
             # this is a range
-            cur_parts = cur.split("-")
-            first_elem_parts = cur_parts[0].split("/")
-            last_elem_parts = cur_parts[1].split("/")
-            part_size = len(first_elem_parts)
+            range_parts = s_cur.split("-")
 
-            index = -1
-            if part_size >= 1 and first_elem_parts[0] != last_elem_parts[0]:
-                # this is unlikely
-                index = 0
-            elif part_size >= 2 and first_elem_parts[1] != last_elem_parts[1]:
-                index = 1
-            elif part_size >= 3 and first_elem_parts[2] != last_elem_parts[2]:
-                index = 2
+            cur_part = range_parts[0]
+            while cur_part != range_parts[1]:
+                out.append(cur_part)
 
-            if index >= 0:
-                for x in range(first_elem_parts[index], last_elem_parts[index] + 1):
-                    out_str = first_elem_parts
-                    out_str[index] = x
-                    out.append(out_str)
+                cur_part = iterateIntf(cur_part, sw_keys)
+
+            # add final element
+            out.append(range_parts[1])
         else:
-            # this is not a range
-            out.append(cur)
+            out.append(s_cur)
 
     return out
 
@@ -199,7 +216,7 @@ def os9_getLabelMap(sw_config, reverse=False):
 
     return label_map
 
-def os9_getVLANAssignmentMap(vlan_dict, sw_config, revLabelMap):
+def os9_getVLANAssignmentMap(vlan_dict, sw_config):
     """
     Creates a dictionary where the keys are interfaces, such as:
 
@@ -244,23 +261,23 @@ def os9_getVLANAssignmentMap(vlan_dict, sw_config, revLabelMap):
 
             # found untagged entry
             vlan_entry_parts = vlan_entry.split(" ")
-            untag_port_type = vlan_entry_parts[1]
-            untag_port_range = vlan_entry_parts[2]
+            port_type = vlan_entry_parts[1]
+            port_range = vlan_entry_parts[2]
 
-            cur_portlist = parseRange(untag_port_range)
+            cur_portlist = parseRange(port_range, sw_config)
 
             for port in cur_portlist:
-                full_swname = untag_port_type + " " + port
-                conf_label = revLabelMap[full_swname]
+                full_swname = port_type + " " + str(port)
+                #conf_label = revLabelMap[full_swname]
 
-                if conf_label not in out:
-                    out[conf_label] = {}
-                if "untagged" not in out[conf_label]:
-                    out[conf_label]["untagged"] = []
-                if "tagged" not in out[conf_label]:
-                    out[conf_label]["tagged"] = []
+                if full_swname not in out:
+                    out[full_swname] = {}
+                if "untagged" not in out[full_swname]:
+                    out[full_swname]["untagged"] = []
+                if "tagged" not in out[full_swname]:
+                    out[full_swname]["tagged"] = []
 
-                out[conf_label][tag_str].append(vlan)
+                out[full_swname][tag_str].append(vlan)
 
     return out
 
@@ -281,6 +298,17 @@ def os9_getFanoutConfig(intf_dict, sw_config, label_map):
     :rtype: list
     """
 
+    def getInterfaceChildren(port_num, label_map):
+        out = []
+            
+        checkStr = ["1", str(port_num), "1"]
+        while "/".join(checkStr) in label_map:
+            out.append(label_map["/".join(checkStr)])
+
+            checkStr[2] = str(int(checkStr[2]) + 1)
+
+        return out
+
     out_tuple = []
     out = []
 
@@ -292,7 +320,7 @@ def os9_getFanoutConfig(intf_dict, sw_config, label_map):
 
         conf_str_start = "stack-unit 1 port " + str(port_num)
 
-        existing_fanout_conf = [ k for k in sw_config.keys() if k.startswith(conf_str_start) ]
+        existing_fanout_conf = [ k for k in sw_config.keys() if k.split("portmode")[0].strip() == conf_str_start ]
 
         if len(intf_parts) > 2:
             # This is a subbport - skip
@@ -300,19 +328,22 @@ def os9_getFanoutConfig(intf_dict, sw_config, label_map):
 
         has_fanout = "fanout" in intf and "fanout_speed" in intf
         if has_fanout:
-            conf_str = conf_str_start + " portmode " + intf["fanout"] + " speed " + intf["fanout_speed"]
+            conf_str = conf_str_start + " portmode " + intf["fanout"]
+            conf_str_speed = conf_str + " speed " + intf["fanout_speed"]
 
             if len(existing_fanout_conf) > 0:
                 # fanout config already exists, revert existing config if needed
-                if existing_fanout_conf[0] == conf_str:
+                check_norm = "speed" not in existing_fanout_conf[0] and conf_str == existing_fanout_conf[0]
+                check_speed = conf_str_speed == existing_fanout_conf[0]
+                if check_norm or check_speed:
                     # this config is already applied on the switch so we can skip this
                     continue
                 else:
                     # we need to clear the old configuration first
 
                     # first, set all interfaces to default state within the stack
-                    for x in [ k for k in sw_config.keys() if intf_label in k and k.startswith("interface") ]:
-                        out.append("default " + x)
+                    for child in getInterfaceChildren(port_num, label_map):
+                        out.append("default interface " + child)
 
                     existing_revert = existing_fanout_conf[0].split("speed")[0].strip()
                     out.append("no " + existing_revert + " no-confirm")
@@ -321,43 +352,19 @@ def os9_getFanoutConfig(intf_dict, sw_config, label_map):
                 port_label = label_map[intf_label]
                 out.append("default interface " + port_label)
 
-            out.append(conf_str + " no-confirm")
-
-            # we need to update the switch config
-            new_intf_str = ""
-            if intf["fanout_speed"] == "10G":
-                new_intf_str = "tengigabitethernet"
-            elif intf["fanout_speed"] == "25G":
-                new_intf_str = "twentyFiveGigE"
-            elif intf["fanout_speed"] == "40G":
-                new_intf_str = "fortyGigE"
-            elif intf["fanout_speed"] == "100G":
-                new_intf_str = "hundredGigE"
-
-            num_new_ports = 0
-            if intf["fanout"] == "single":
-                num_new_ports = 1
-            elif intf["fanout"] == "dual":
-                num_new_ports = 2
-            elif intf["fanout"] == "quad":
-                num_new_ports = 4
-
-            for i in range(num_new_ports):
-                sw_config["interface " + new_intf_str + " 1/" + str(port_num) + "/" + str(i + 1)] = {
-                    "no ip address": {},
-                    "shutdown": {}
-                }
+            out.append(conf_str_speed + " no-confirm")
         else:
             # fanout config doesn't exist - verify that there is nothing to revert
             if len(existing_fanout_conf) > 0:
-                for x in [ k for k in sw_config.keys() if intf_label in k and k.startswith("interface") ]:
-                    out.append("default " + x)
 
+                for child in getInterfaceChildren(port_num, label_map):
+                    out.append("default interface " + child)
+                
                 existing_revert = existing_fanout_conf[0].split("speed")[0].strip()
                 out.append("no " + existing_revert + " no-confirm")
 
-    out_tuple = [([], out)]
-    return out_tuple, sw_config
+    out_tuple = [([], s) for s in out]
+    return out_tuple
 
 def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
     """
@@ -376,7 +383,6 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
     """
 
     out_all = []
-    vlan_cmd = []
 
     for intf_label,intf in intf_dict.items():
         # check that interface exists
@@ -385,6 +391,7 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
             continue
 
         out = []
+        reset_cmd = ""
 
         if type == "intf":
             sw_label = label_map[intf_label]
@@ -494,21 +501,7 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
             # we need to remove this interface from any non-default vlan before continuing
             # the interface will be readded in the VLAN section. This will result in a few
             # seconds of interface downtime
-
-            # search vlan map for this interface
-            if intf_label in vlan_map:
-                cur_vlan_assignments = vlan_map[intf_label]
-
-                for assign_type in ["untagged", "tagged"]:
-                    if assign_type in cur_vlan_assignments:
-                        for cur_vlan in cur_vlan_assignments[assign_type]:
-                            if int(cur_vlan) == 1:
-                                continue
-
-                            vlan_cmd.append((["interface Vlan " + str(cur_vlan)], "no " + assign_type + " " + sw_label))
-
-                            # delete from vlan map so future methods don't touch this
-                            vlan_map[intf_label][assign_type].remove(cur_vlan)
+            reset_cmd = "default interface " + sw_label
 
         # set description
         if "description" in intf:
@@ -543,9 +536,10 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
 
         if out:
             # output list is not empty
+            if reset_cmd != "":
+                out_all.append(([], reset_cmd))
+            
             out_all.append((["interface " + sw_label], out))
-
-        out_all = vlan_cmd + out_all
 
     return out_all
 
@@ -641,12 +635,16 @@ def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
 
     for intf_label,intf in intf_dict.items():
 
-        if intf_label in vlan_map:
-            existing_vlans = vlan_map[intf_label]
-        else:
-            existing_vlans = None
+        if "fanout" in intf:
+            # skip fanout interfaces here
+            continue
 
         sw_label = label_map[intf_label]
+
+        if sw_label in vlan_map:
+            existing_vlans = vlan_map[sw_label]
+        else:
+            existing_vlans = None
 
         if "untagged" in intf:
             vlan = intf["untagged"]
@@ -707,6 +705,18 @@ def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
 #
 # Main compilation method
 #
+def os9_getFanoutConfiguration(sw_facts, intf_dict):
+    # first, convert the switch configuration to a dict
+    sw_config = os9_getFactDict(sw_facts)
+
+    # Based on current configuration, generate various maps
+    label_map = os9_getLabelMap(sw_config)
+
+    # Figure out the interface fanout configuration
+    fanout_cfg = os9_getFanoutConfig(intf_dict, sw_config, label_map)
+
+    return fanout_cfg
+
 def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     """
     Main ansible filter plugin which gets called. The result of the filter is a list of tuples:
@@ -742,18 +752,10 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
 
     # Based on current configuration, generate various maps
     label_map = os9_getLabelMap(sw_config)
-    rev_label_map = os9_getLabelMap(sw_config, reverse = True)
-    vlan_map = os9_getVLANAssignmentMap(vlan_names, sw_config, rev_label_map)
+    vlan_map = os9_getVLANAssignmentMap(vlan_names, sw_config)
 
-    #! TODO we should use the switch labels for this whole system instead of intf labels
-
-    # Figure out the interface fanout configuration
+    # set interface configuration
     if intf_dict is not None:
-        fanout_cfg = os9_getFanoutConfig(intf_dict, sw_config, label_map)
-        out += fanout_cfg[0]
-        # update label map after updating fanout config
-        label_map = os9_getLabelMap(fanout_cfg[1])
-
         # Update interface configuration
         intf_cfg = os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type = "intf")
         out += intf_cfg
@@ -785,5 +787,6 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
 class FilterModule(object):
     def filters(self):
         return {
-            "os9_getConfiguration": os9_getConfiguration
+            "os9_getConfiguration": os9_getConfiguration,
+            "os9_getFanoutConfiguration": os9_getFanoutConfiguration
         }
