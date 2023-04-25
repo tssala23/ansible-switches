@@ -1,5 +1,3 @@
-import re
-
 #
 # Helper methods
 #
@@ -33,7 +31,7 @@ def parseRange(s, sw_config):
         for item in checkList:
             if item in sw_keys:
                 return remove_trailing_zeros(item)
-            
+
         return None
 
     out = []
@@ -300,7 +298,7 @@ def os9_getFanoutConfig(intf_dict, sw_config, label_map):
 
     def getInterfaceChildren(port_num, label_map):
         out = []
-            
+
         checkStr = ["1", str(port_num), "1"]
         while "/".join(checkStr) in label_map:
             out.append(label_map["/".join(checkStr)])
@@ -359,7 +357,7 @@ def os9_getFanoutConfig(intf_dict, sw_config, label_map):
 
                 for child in getInterfaceChildren(port_num, label_map):
                     out.append("default interface " + child)
-                
+
                 existing_revert = existing_fanout_conf[0].split("speed")[0].strip()
                 out.append("no " + existing_revert + " no-confirm")
 
@@ -538,7 +536,7 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
             # output list is not empty
             if reset_cmd != "":
                 out_all.append(([], reset_cmd))
-            
+
             out_all.append((["interface " + sw_label], out))
 
     return out_all
@@ -782,6 +780,8 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     out += combineTuples(vlan_cfg, vlan_intf_cfg)
 
     return out
+
+    # ! TODO add check items, ie. make sure this doesn't fail with a fanout change running in --check mode
 
 # This class is required for ansible to find the filter plugins
 class FilterModule(object):
