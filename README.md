@@ -39,36 +39,38 @@ The following tables list all available fields for interface configuration. L2 c
 
 #### General Fields
 
-| Field Label   | Description                            | Possible Values                            |
-|---------------|----------------------------------------|--------------------------------------------|
-| description   | Description of the interface           | Any string                                 |
-| admin         | Admin state of interface               | "up" or "down"                             |
-| mtu           | MTU of interface                       | Integer with range 1-9216                  |
-| custom        | Custom fields in switch conf format    | List of strings                            |
+| Field Label | Description                         | Possible Values           |
+| ----------- | ----------------------------------- | ------------------------- |
+| description | Description of the interface        | Any string                |
+| admin       | Admin state of interface            | "up" or "down"            |
+| mtu         | MTU of interface                    | Integer with range 1-9216 |
+| custom      | Custom fields in switch conf format | List of strings           |
 
 #### Fanout Fields
 
 If you enable fanout on a port, **none** of the other fields can be used. Instead, make subport configurations.
 
-| Field Label   | Description                            | Possible Values                            |
-|---------------|----------------------------------------|--------------------------------------------|
-| fanout        | Fanout configuration                   | "single", "dual", or "quad"                |
-| fanout_speed  | Fanout speed                           | In the format ##G, such as "10G"           |
+| Field Label  | Description          | Possible Values                  |
+| ------------ | -------------------- | -------------------------------- |
+| fanout       | Fanout configuration | "single", "dual", or "quad"      |
+| fanout_speed | Fanout speed         | In the format ##G, such as "10G" |
 
 #### L2 Fields
 
-| Field Label   | Description                            | Possible Values                                                          |
-|---------------|----------------------------------------|--------------------------------------------------------------------------|
-| untagged      | VLAN to untag on this interface        | Integer with range 1-4095                                                |
-| tagged        | List of VLANs to tag on this interface | List of integers with range 1-4095, or "all" for all VLANs on the switch |
+| Field Label | Description                                                            | Possible Values                                                          |
+| ----------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| untagged    | VLAN to untag on this interface                                        | Integer with range 1-4095                                                |
+| tagged      | List of VLANs to tag on this interface                                 | List of integers with range 1-4095, or "all" for all VLANs on the switch |
+| managed-l2  | Port management from external source (disables untagged/tagged fields) | true, false                                                              |
+| stp-edge    | Sets this port to be an STP edge-port in all available STP modes       | true, false                                                              |
 
 #### L3 Fields
 
-| Field Label   | Description                            | Possible Values                            |
-|---------------|----------------------------------------|--------------------------------------------|
-| ip4           | IPv4 address for this interface        | [IP]/[Prefix] IPv4 formatted string        |
-| ip6           | IPv6 address for this interface        | [IP]/[Prefix] IPv6 formatted string        |
-| keepalive     | Keepalive status                       | "true", "false"                            |
+| Field Label | Description                     | Possible Values                     |
+| ----------- | ------------------------------- | ----------------------------------- |
+| ip4         | IPv4 address for this interface | [IP]/[Prefix] IPv4 formatted string |
+| ip6         | IPv6 address for this interface | [IP]/[Prefix] IPv6 formatted string |
+| keepalive   | Keepalive status                | "true", "false"                     |
 
 ### VLAN Interfaces
 
@@ -96,11 +98,11 @@ port_channels:
 
 All fields in interface configuration are available, with the following additional fields:
 
-| Field Label   | Description                            | Possible Values                            |
-|---------------|----------------------------------------|--------------------------------------------|
-| mode          | LAG mode (LACP or normal)              | "LACP" or "normal"                         |
-| lacp-rate     | LACP rate configuration                | "fast" or "slow"                           |
-| interfaces    | Interfaces that are a part of this LAG | ["1/1", "1/2"]                             |
+| Field Label | Description                            | Possible Values    |
+| ----------- | -------------------------------------- | ------------------ |
+| mode        | LAG mode (LACP or normal)              | "LACP" or "normal" |
+| lacp-rate   | LACP rate configuration                | "fast" or "slow"   |
+| interfaces  | Interfaces that are a part of this LAG | ["1/1", "1/2"]     |
 
 ### VLANs
 
@@ -127,11 +129,11 @@ vlans:
 
 The following fields are available for each VLAN:
 
-| Field Label   | Description                                          | Possible Values                            |
-|---------------|------------------------------------------------------|--------------------------------------------|
-| name          | Name of VLAN                                         | Short string                               |
-| description   | Description of VLAN                                  | Any string                                 |
-| switches      | Switches and groups that the VLAN should be added to | List of ansible groups or switch hostnames |
+| Field Label | Description                                          | Possible Values                            |
+| ----------- | ---------------------------------------------------- | ------------------------------------------ |
+| name        | Name of VLAN                                         | Short string                               |
+| description | Description of VLAN                                  | Any string                                 |
+| switches    | Switches and groups that the VLAN should be added to | List of ansible groups or switch hostnames |
 
 **NOTE** VLANs are created on each switch defined here, however, they are not assigned to anything. That must be done in the interface configuration.
 
