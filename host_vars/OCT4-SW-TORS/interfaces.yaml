@@ -96,7 +96,6 @@ interfaces:
   1/19:
     description: "unallocated"
     admin: "down"
-    mtu: 9216
   1/20:
     description: "OCT4-0 2nd"
     admin: "up"
