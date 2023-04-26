@@ -1,56 +1,54 @@
 #
 # Helper methods
 #
-def parseRange(s, sw_config):
-    sw_keys = [key.split()[-1] for key in sw_config if key.startswith("interface") and not key.startswith("interface Vlan")]
-    sw_keys = [value + "/0" * (2 - value.count("/")) for value in sw_keys]
+def os9_parseRange(s, sw_config):
+    def remove_trailing_zeros(value):
+        parts = value.split("/")
+        while parts and parts[-1] == "0":
+            parts.pop()
+        return "/".join(parts)
 
-    def iterateIntf(intf, sw_keys):
-        def remove_trailing_zeros(value):
-            parts = value.split("/")
-            while parts and parts[-1] == "0":
-                parts.pop()
-            return "/".join(parts)
+    def normalize_length(intf):
+        return intf + "/0" * (2 - intf.count("/"))
 
-        intf = intf + "/0" * (2 - intf.count("/"))  # normalize length
-        intf_parts = intf.split("/")
+    def increment_parts(parts):
+        return [str(int(part) + 1) for part in parts]
 
-        iterate_parts = [str(int(part) + 1) for part in intf_parts]
-
-        # generate list to check (001 > 111)
-        checkList = [
+    def generate_check_list(intf_parts, iterate_parts):
+        return [
             "/".join([intf_parts[0], intf_parts[1], iterate_parts[2]]),
             "/".join([intf_parts[0], iterate_parts[1], "0"]),
             "/".join([intf_parts[0], iterate_parts[1], "1"]),
             "/".join([iterate_parts[0], "0", "0"]),
             "/".join([iterate_parts[0], "0", "1"]),
             "/".join([iterate_parts[0], "1", "0"]),
-            "/".join([iterate_parts[0], "1", "1"])
+            "/".join([iterate_parts[0], "1", "1"]),
         ]
 
-        for item in checkList:
+    def iterate_intf(intf, sw_keys):
+        intf = normalize_length(intf)
+        intf_parts = intf.split("/")
+        iterate_parts = increment_parts(intf_parts)
+        check_list = generate_check_list(intf_parts, iterate_parts)
+
+        for item in check_list:
             if item in sw_keys:
                 return remove_trailing_zeros(item)
-
         return None
 
+    sw_keys = [normalize_length(key.split()[-1]) for key in sw_config if key.startswith("interface") and not key.startswith("interface Vlan")]
     out = []
 
-    # split into commas
     s_parts = s.split(",")
 
     for s_cur in s_parts:
         if "-" in s_cur:
-            # this is a range
             range_parts = s_cur.split("-")
-
             cur_part = range_parts[0]
+
             while cur_part != range_parts[1]:
                 out.append(cur_part)
-
-                cur_part = iterateIntf(cur_part, sw_keys)
-
-            # add final element
+                cur_part = iterate_intf(cur_part, sw_keys)
             out.append(range_parts[1])
         else:
             out.append(s_cur)
@@ -68,6 +66,7 @@ def combineTuples(list1, list2):
     :return: Combined list with duplicates removed
     :rtype: list
     """
+
     out = []
 
     removeList = []
@@ -108,6 +107,9 @@ def os9_getFactDict(sw_facts):
     :rtype: dict
     """
 
+    def getSpacesInStartOfString(s):
+        return len(s) - len(s.lstrip())
+
     def os9_recurseLines(index, split_conf):
         """
         Recurseive method which takes a nested configuration from a dell switch and converts it into a usable dict
@@ -119,9 +121,6 @@ def os9_getFactDict(sw_facts):
         :return: dict of parsed switch configuration
         :rtype: dict
         """
-
-        def getSpacesInStartOfString(s):
-            return len(s) - len(s.lstrip())
 
         out = {}
 
@@ -219,11 +218,11 @@ def os9_getVLANAssignmentMap(vlan_dict, sw_config):
     Creates a dictionary where the keys are interfaces, such as:
 
     {
-        "1/1": {
+        "TenGigabitEthernet 1/1": {
             "untagged": 100
             "tagged": [101,102]
         },
-        "1/2": {
+        "TenGigabitEthernet 1/2": {
             "untagged": None
             "tagged": [101,102]
         }
@@ -262,11 +261,10 @@ def os9_getVLANAssignmentMap(vlan_dict, sw_config):
             port_type = vlan_entry_parts[1]
             port_range = vlan_entry_parts[2]
 
-            cur_portlist = parseRange(port_range, sw_config)
+            cur_portlist = os9_parseRange(port_range, sw_config)
 
             for port in cur_portlist:
                 full_swname = port_type + " " + str(port)
-                #conf_label = revLabelMap[full_swname]
 
                 if full_swname not in out:
                     out[full_swname] = {}
@@ -403,7 +401,7 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
                 existing_conf = [ k for k in sw_config[sw_label].keys() if k.startswith("channel-member") ]
                 for channel_line in existing_conf:
                     range_part = channel_line.split(" ")[2]
-                    range_list = parseRange(range_part)
+                    range_list = os9_parseRange(range_part)
                     diff_list = list(set(range_list) - set(intf["interfaces"]))
 
                     for removed_intf in diff_list:
@@ -777,7 +775,8 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     else:
         vlan_intf_cfg = []
 
-    out += combineTuples(vlan_cfg, vlan_intf_cfg)
+    merged_vlan_conf = combineTuples(vlan_cfg, vlan_intf_cfg)
+    out += merged_vlan_conf
 
     return out
 
