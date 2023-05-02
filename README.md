@@ -147,3 +147,4 @@ Switches will need some manual configuration before being able to be set up from
 1. Set the ssh user `username admin password <DEFAULT_OS9_PASSWD>`
 1. Enable ssh server `ip ssh server enable`
 1. Set the access IP (usually `managementethernet 1/1`)
+1. Set SSH rate limit `ip ssh connection-rate-limit 60`
