@@ -1,8 +1,0 @@
----
-- hosts: OCT7-SW-TORS
-  connection: network_cli
-  tasks:
-    - include_role:
-        name: common
-    - include_role:
-        name: snmp
