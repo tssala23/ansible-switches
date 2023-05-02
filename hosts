@@ -22,16 +22,16 @@ OCT8-SW-TORS    ansible_host=10.80.2.81
 
 [oct_tors_mgmt]
 OCT5-SW-MGMT    ansible_host=10.80.2.53
-OCT6-SW-MGMT    ansible_host=10.80.2.62
-OCT7-SW-MGMT    ansible_host=10.80.2.72
-OCT8-SW-MGMT    ansible_host=10.80.2.82
+#OCT6-SW-MGMT    ansible_host=10.80.2.62
+#OCT7-SW-MGMT    ansible_host=10.80.2.72
+#OCT8-SW-MGMT    ansible_host=10.80.2.82
 OCT9-SW-HYB     ansible_host=10.80.2.93
 
 [oct_tors_ctrl]
 OCT5-SW-CTRL    ansible_host=10.80.2.54
-OCT6-SW-CTRL    ansible_host=10.80.2.63
-OCT7-SW-CTRL    ansible_host=10.80.2.73
-OCT8-SW-CTRL    ansible_host=10.80.2.83
+#OCT6-SW-CTRL    ansible_host=10.80.2.63
+#OCT7-SW-CTRL    ansible_host=10.80.2.73
+#OCT8-SW-CTRL    ansible_host=10.80.2.83
 OCT9-SW-HYB     ansible_host=10.80.2.93
 
 [oct_data:children]
