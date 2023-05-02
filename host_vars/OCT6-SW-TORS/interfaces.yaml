@@ -3,192 +3,192 @@ interfaces:
     description: "OCT6-1"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/2:
     description: "OCT6-2"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/3:
     description: "OCT6-3"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/4:
     description: "OCT6-4"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/5:
     description: "OCT6-5"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/6:
     description: "OCT6-6"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/7:
     description: "OCT6-7"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/8:
     description: "OCT6-8"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/9:
     description: "OCT6-9"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/10:
     description: "OCT6-10"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/11:
     description: "OCT6-11"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/12:
     description: "OCT6-12"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/13:
     description: "OCT6-13"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/14:
     description: "OCT6-14"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/15:
     description: "OCT6-15"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/16:
     description: "OCT6-16"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/17:
     description: "OCT6-17"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/18:
     description: "OCT6-18"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/19:
     description: "OCT6-19"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/20:
     description: "OCT6-20"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/21:
     description: "OCT6-21"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/22:
     description: "OCT6-22"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/23:
     description: "OCT6-23"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/24:
     description: "OCT6-24"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/25:
     description: "OCT6-25"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/26:
     description: "OCT6-26"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/27:
     description: "OCT6-27"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/28:
     description: "OCT6-28"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/29:
     description: "OCT6-29"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/30:
     description: "OCT6-30"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/31:
     description: "OCT6-31"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/32:
     description: "OCT6-32"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/33:
     description: "OCT6-33"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/34:
     description: "OCT6-34"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/35:
     description: "OCT6-35"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/36:
     description: "OCT6-36"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/37:
     description: "OCT6-37"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/38:
     description: "OCT6-38"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed-l2: true
   1/39:
     description: "unallocated"
     admin: "down"
