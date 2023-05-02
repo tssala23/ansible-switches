@@ -1,3 +1,11 @@
+import warnings
+
+# Warning helper method
+def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
+    return '%s: %s\n' % (category.__name__, message)
+
+warnings.formatwarning = warning_on_one_line
+
 #
 # Helper methods
 #
@@ -390,6 +398,10 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
         reset_cmd = ""
 
         if type == "intf":
+            if intf_label not in label_map:
+                warnings.warn("Skipping interface " + intf_label + " because it does not exist.")
+                continue
+
             sw_label = label_map[intf_label]
         elif type == "vlan":
             sw_label = "Vlan " + str(intf_label)
@@ -420,18 +432,26 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
             raise ValueError("Type not set to a valid value")
 
         # gather current interface configuration
-        cur_intf_config = sw_config["interface " + sw_label]
+        if "interface" + sw_label in sw_config:
+            cur_intf_config = sw_config["interface " + sw_label]
+        else:
+            cur_intf_config = {
+                "no ip address": {},
+                "no shutdown": {}
+            }
+
+        # ! TODO - we need a 3rd option for managed l2 which doesn't enforce l2 mode (ESI)
 
         # determine if interface is it L2 or L3 mode
         managed_l2 = "managed-l2" in intf and intf["managed-l2"]
-        vlans_included = "untagged_vlan" in intf \
-                                    or "tagged_vlan" in intf \
+        vlans_included = "untagged" in intf \
+                                    or "tagged" in intf \
                                     or managed_l2
-        hybrid_port = ("untagged_vlan" in intf \
-                                    and "tagged_vlan" in intf) \
+        hybrid_port = ("untagged" in intf \
+                                    and "tagged" in intf) \
                                     or managed_l2
-        l2_exclusive_settings = "untagged_vlan" in intf \
-                                    or "tagged_vlan" in intf \
+        l2_exclusive_settings = "untagged" in intf \
+                                    or "tagged" in intf \
                                     or "stp-edge" in intf \
                                     or "managed-l2" in intf
         l3_exclusive_settings = "ip4" in intf \
@@ -635,6 +655,10 @@ def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
             # skip fanout interfaces here
             continue
 
+        if intf_label not in label_map:
+            warnings.warn("Skipping assigning VLANs to " + intf_label + " because the interface doesn't exist")
+            continue
+
         sw_label = label_map[intf_label]
 
         if sw_label in vlan_map:
@@ -779,8 +803,6 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     out += merged_vlan_conf
 
     return out
-
-    # ! TODO add check items, ie. make sure this doesn't fail with a fanout change running in --check mode
 
 # This class is required for ansible to find the filter plugins
 class FilterModule(object):
