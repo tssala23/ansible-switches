@@ -16,12 +16,7 @@
   dellemc.os9.os9_config:
     lines:
       - hostname {{ inventory_hostname }}
-
-# Disable the telnet server on the switch
-- name: Disable telnet server
-  dellemc.os9.os9_config:
-    lines:
-      - no ip telnet server enable
+  notify: "save os9 configuration"
 
 # Fanout is done separately since it changes the interface config
 - name: Apply Fanout Configuration
@@ -29,6 +24,7 @@
     lines: "{{ item.1 }}"
     parents: "{{ item.0 }}"
   loop: "{{ cur_config | os9_getFanoutConfiguration(interfaces) }}"
+  notify: "save os9 configuration"
 
 # Update config after fanout change (can't ever be skipped, even if above changed nothing, because than variable will register as error)
 - name: Update current configuration after fanout changes
@@ -43,3 +39,4 @@
     lines: "{{ item.1 }}"
     parents: "{{ item.0 }}"
   loop: "{{ cur_config | os9_getConfiguration(interfaces, vlan_interfaces, port_channels, vlan_dict) }}"
+  notify: "save os9 configuration"

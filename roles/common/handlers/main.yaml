@@ -1,0 +1,4 @@
+# This will apply the running configuration to the startup configuration on os9 switches
+- name: save os9 configuration
+  dellemc.os9.os9_config:
+    save: true
