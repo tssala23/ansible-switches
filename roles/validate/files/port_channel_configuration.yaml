@@ -1,10 +1,12 @@
-$id: https://massopen.cloud/schemas/interface_configuration.yaml
+$id: https://massopen.cloud/schemas/port_channel_configuration.yaml
 title: Port Channel Configuration
-type: object
-patternProperties:
-  "^[0-9]+$":
-    $ref: "#/$defs/port_channel"
-additionalProperties: false
+anyOf:
+  - type: object
+    patternProperties:
+      "^[0-9]+$":
+        $ref: "#/$defs/port_channel"
+    additionalProperties: false
+  - type: "null"
 $defs:
   port_channel:
     type: object
@@ -22,11 +24,17 @@ $defs:
         minimum: 1
         maximum: 4095
       tagged:
-        type: array
-        items:
-          type: integer
-          minimum: 1
-          maximum: 4095
+        anyOf:
+          - type: array
+            items:
+              type: integer
+              minimum: 2
+              maximum: 4095
+          - type: string
+            enum:
+              - all
+      managed-l2:
+        type: boolean
       stp-edge:
         type: string
       mtu:
@@ -46,5 +54,10 @@ $defs:
         type: array
         items:
           type: string
+      custom:
+        type: array
+        items:
+          type: string
   required:
     - description
+    - admin

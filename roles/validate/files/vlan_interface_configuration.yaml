@@ -1,17 +1,17 @@
-$id: https://massopen.cloud/schemas/interface_configuration.yaml
+$id: https://massopen.cloud/schemas/vlan_interface_configuration.yaml
 title: VLAN Interface Configuration
-type: object
-patternProperties:
-  "^[0-9]+$":
-    $ref: "#/$defs/vlan_interface"
-additionalProperties: false
+anyOf:
+  - type: object
+    patternProperties:
+      "^[0-9]+$":
+        $ref: "#/$defs/vlan_interface"
+    additionalProperties: false
+  - type: "null"
 $defs:
   vlan_interface:
     type: object
     additionalProperties: false
     properties:
-      description:
-        type: string
       admin:
         type: string
         enum:
@@ -26,5 +26,9 @@ $defs:
         type: string
       keepalive:
         type: string
+      custom:
+        type: array
+        items:
+          type: string
   required:
-    - description
+    - admin

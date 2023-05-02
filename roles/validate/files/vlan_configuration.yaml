@@ -14,9 +14,11 @@ $defs:
       description:
         type: string
       switches:
-        type: array
-        items:
-          type: string
+        anyOf:
+          - type: array
+            items:
+              type: string
+          - type: "null"
     required:
       - name
       - description

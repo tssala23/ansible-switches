@@ -22,11 +22,17 @@ $defs:
         minimum: 1
         maximum: 4095
       tagged:
-        type: array
-        items:
-          type: integer
-          minimum: 1
-          maximum: 4095
+        anyOf:
+          - type: array
+            items:
+              type: integer
+              minimum: 2
+              maximum: 4095
+          - type: string
+            enum:
+              - all
+      managed-l2:
+        type: boolean
       stp-edge:
         type: string
       mtu:
@@ -51,5 +57,10 @@ $defs:
         type: string
       keepalive:
         type: string
+      custom:
+        type: array
+        items:
+          type: string
   required:
     - description
+    - admin
