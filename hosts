@@ -17,8 +17,10 @@ OCT4-SW-TORS    ansible_host=10.80.2.41
 OCT5-SW-TORS-A  ansible_host=10.80.2.51
 OCT5-SW-TORS-B  ansible_host=10.80.2.52
 OCT6-SW-TORS    ansible_host=10.80.2.61
-OCT7-SW-TORS    ansible_host=10.80.2.71
-OCT8-SW-TORS    ansible_host=10.80.2.81
+#OCT7-SW-TORS    ansible_host=10.80.2.71
+#OCT8-SW-TORS    ansible_host=10.80.2.81
+OCT9-SW-TORS-A  ansible_host=10.80.2.91
+OCT9-SW-TORS-B  ansible_host=10.80.2.92
 
 [oct_tors_mgmt]
 OCT5-SW-MGMT    ansible_host=10.80.2.53
