@@ -2,10 +2,10 @@
 - name: Include validation playbook
   ansible.builtin.import_playbook: validate.yaml
 
-- hosts: all
+- name: Main site playbook
+  hosts: all
   connection: network_cli
   tasks:
-    - include_role:
+    - name: Include common role
+      ansible.builtin.include_role:
         name: common
-    - include_role:
-        name: snmp

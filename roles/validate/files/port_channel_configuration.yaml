@@ -1,3 +1,4 @@
+---
 $id: https://massopen.cloud/schemas/port_channel_configuration.yaml
 title: Port Channel Configuration
 anyOf:
@@ -39,7 +40,8 @@ $defs:
         type: string
       mtu:
         type: integer
-        minimum: 0
+        minimum: 594
+        maximum: 9416
       ip4:
         type: string
       ip6:

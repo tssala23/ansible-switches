@@ -1,3 +1,4 @@
+---
 # Gather the current output of "show running configuration" on the switch
 - name: Gather current configuration
   dellemc.os9.os9_facts:

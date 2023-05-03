@@ -623,6 +623,7 @@ def os9_getLACPConfig(pc_dict, sw_config, label_map):
 
     out_all = []
     for cur_intf in out:
+        # ! TODO - this seems to report as "changed" regardless
         out_all.append((["interface " + cur_intf, "port-channel-protocol lacp"], out[cur_intf]))
 
     return out_all

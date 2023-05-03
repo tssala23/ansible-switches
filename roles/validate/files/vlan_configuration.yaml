@@ -1,3 +1,4 @@
+---
 $id: https://massopen.cloud/schemas/vlan_configuration.yaml
 title: VLAN Configuration
 type: object
