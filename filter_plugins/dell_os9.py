@@ -397,10 +397,10 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
 
             if intf["mode"] == "normal":
                 # remove any channel interfaces that need to be removed
-                existing_conf = [ k for k in sw_config[sw_label].keys() if k.startswith("channel-member") ]
+                existing_conf = [ k for k in sw_config["interface " + sw_label].keys() if k.startswith("channel-member") ]
                 for channel_line in existing_conf:
                     range_part = channel_line.split(" ")[2]
-                    range_list = os9_parseRange(range_part)
+                    range_list = os9_parseRange(range_part, sw_config)
                     diff_list = list(set(range_list) - set(intf["interfaces"]))
 
                     for removed_intf in diff_list:
@@ -419,7 +419,7 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
             raise ValueError("Type not set to a valid value")
 
         # gather current interface configuration
-        if "interface" + sw_label in sw_config:
+        if "interface " + sw_label in sw_config:
             cur_intf_config = sw_config["interface " + sw_label]
         else:
             cur_intf_config = {
