@@ -1,7 +1,4 @@
 ---
-- name: Include validation playbook
-  ansible.builtin.import_playbook: validate.yaml
-
 - name: Main site playbook
   hosts: all
   connection: network_cli

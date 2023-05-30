@@ -34,8 +34,12 @@ $defs:
           - type: string
             enum:
               - all
-      managed-l2:
-        type: boolean
+      managed:
+        type: string
+        enum:
+          - "yes"
+          - "no"
+          - vlans
       stp-edge:
         type: string
       mtu:
@@ -50,6 +54,9 @@ $defs:
         type: string
       mode:
         type: string
+        enum:
+          - normal
+          - lacp
       lacp-rate:
         type: string
       interfaces:
@@ -63,3 +70,5 @@ $defs:
   required:
     - description
     - admin
+    - mode
+    - interfaces

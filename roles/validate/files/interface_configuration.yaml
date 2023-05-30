@@ -32,8 +32,12 @@ $defs:
           - type: string
             enum:
               - all
-      managed-l2:
-        type: boolean
+      managed:
+        type: string
+        enum:
+          - "yes"
+          - "no"
+          - vlans
       stp-edge:
         type: string
       mtu:
