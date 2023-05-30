@@ -1,6 +1,5 @@
+# Setup warnings
 import warnings
-
-# Warning helper method
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
     return '%s: %s\n' % (category.__name__, message)
 
@@ -10,6 +9,15 @@ warnings.formatwarning = warning_on_one_line
 # Helper methods
 #
 def os9_parseRange(s, sw_config):
+    """
+    Method which parses a range of interfaces into a list of interfaces
+    param s: String to parse
+    type s: str
+    param sw_config: Switch configuration
+    type sw_config: dict
+    return: List of interfaces
+    rtype: list
+    """
     def remove_trailing_zeros(value):
         parts = value.split("/")
         while parts and parts[-1] == "0":
@@ -177,14 +185,7 @@ def os9_getFactDict(sw_facts):
 
 def os9_getLabelMap(sw_config, reverse=False):
     """
-    Creates a dictionary with a label map which looks something like this:
-
-    {
-        "1/1": "tengigabitethernet 1/1",
-        "1/54": "hundredgigabitethernet 1/54"
-        ...
-    }
-
+    Creates a dictionary with a label map
     :param sw_config: dictionary of switch configuration
     :type sw_config: dict
     :param reverse: return the reverse lookup dict
@@ -223,25 +224,11 @@ def os9_getLabelMap(sw_config, reverse=False):
 
 def os9_getVLANAssignmentMap(vlan_dict, sw_config):
     """
-    Creates a dictionary where the keys are interfaces, such as:
-
-    {
-        "TenGigabitEthernet 1/1": {
-            "untagged": 100
-            "tagged": [101,102]
-        },
-        "TenGigabitEthernet 1/2": {
-            "untagged": None
-            "tagged": [101,102]
-        }
-    }
-
+    Creates a dictionary where the keys are interfaces
     :param vlan_dict: VLAN dictionary set by the user
     :type vlan_dict: dict
     :param sw_config: dict of switch configuration
     :type sw_config: dict
-    :param revLabelMap: Reverse label map of interfaces
-    :type revLabelMap: dict
     :returns: dict of VLANs assigned to each interface
     :rtype: dict
     """
@@ -370,7 +357,7 @@ def os9_getFanoutConfig(intf_dict, sw_config, label_map):
     out_tuple = [([], s) for s in out]
     return out_tuple
 
-def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
+def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
     """
     Generates os9 commands for interface configuration
 
@@ -437,13 +424,12 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
         else:
             cur_intf_config = {
                 "no ip address": {},
-                "no shutdown": {}
+                "shutdown": {}
             }
 
-        # ! TODO - we need a 3rd option for managed l2 which doesn't enforce l2 mode (ESI)
-
         # determine if interface is it L2 or L3 mode
-        managed_l2 = "managed-l2" in intf and intf["managed-l2"]
+        managed_l2 = "managed" in intf and intf["managed"] == "vlans"
+        managed_port = "managed" in intf and intf["managed"] == "yes"
         vlans_included = "untagged" in intf \
                                     or "tagged" in intf \
                                     or managed_l2
@@ -453,71 +439,96 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
         l2_exclusive_settings = "untagged" in intf \
                                     or "tagged" in intf \
                                     or "stp-edge" in intf \
-                                    or "managed-l2" in intf
+                                    or managed_l2
         l3_exclusive_settings = "ip4" in intf \
                                     or "ip6" in intf \
                                     or "keepalive" in intf
 
         switching_modes = False
 
-        if l2_exclusive_settings:
-            # L2 mode
-            if type == "vlan":
-                raise ValueError("VLAN interfaces cannot operate in L2 mode")
+        if not managed_port:
+            if l2_exclusive_settings:
+                # L2 mode
+                if type == "vlan":
+                    raise ValueError("VLAN interfaces cannot operate in L2 mode")
 
-            if any(item.startswith("ip address") for item in cur_intf_config):
-                out.append("no ip address")
-
-            if any(item.startswith("ipv6 address") for item in cur_intf_config):
-                out.append("no ipv6 address")
-
-            if vlans_included:
-                if hybrid_port:
-                    # portmode hybrid cannot apply if port is already in L2 mode
-                    if "switchport" in cur_intf_config and "portmode hybrid" not in cur_intf_config:
-                        switching_modes = True
-                        out.append("no switchport")
-
-                    out.append("portmode hybrid")
-
-                out.append("switchport")
-
-        elif l3_exclusive_settings:
-            # L3 mode
-            if "type" != "vlan":
-                if "portmode hybrid" in cur_intf_config:
-                    switching_modes = True
-                    out.append("no portmode hybrid")
-
-                if "switchport" in cur_intf_config:
-                    switching_modes = True
-                    out.append("no switchport")
-
-            if "ip4" in intf:
-                out.append("ip address " + intf["ip4"])
-            else:
                 if any(item.startswith("ip address") for item in cur_intf_config):
                     out.append("no ip address")
 
-            if "ip6" in intf:
-                out.append("ipv6 address " + intf["ip6"])
-            else:
                 if any(item.startswith("ipv6 address") for item in cur_intf_config):
                     out.append("no ipv6 address")
 
-            if "keepalive" in intf:
-                # keepalive being ON is the default
-                if intf["keepalive"]:
-                    if "no keepalive" in cur_intf_config:
-                        out.append("keepalive")
-                else:
-                    out.append("no keepalive")
+                if vlans_included:
+                    if hybrid_port:
+                        # portmode hybrid cannot apply if port is already in L2 mode
+                        if "switchport" in cur_intf_config and "portmode hybrid" not in cur_intf_config:
+                            switching_modes = True
+                            out.append("no switchport")
 
-        if switching_modes:
-            # we need to remove this interface from any non-default vlan before continuing
-            # the interface will be readded in the VLAN section. This will result in a few
-            # seconds of interface downtime
-            reset_cmd = "default interface " + sw_label
+                        out.append("portmode hybrid")
+
+                    out.append("switchport")
+
+            elif l3_exclusive_settings:
+                # L3 mode
+                if "type" != "vlan":
+                    if "portmode hybrid" in cur_intf_config:
+                        switching_modes = True
+                        out.append("no portmode hybrid")
+
+                    if "switchport" in cur_intf_config:
+                        switching_modes = True
+                        out.append("no switchport")
+
+                if "ip4" in intf:
+                    out.append("ip address " + intf["ip4"])
+                else:
+                    if any(item.startswith("ip address") for item in cur_intf_config):
+                        out.append("no ip address")
+
+                if "ip6" in intf:
+                    out.append("ipv6 address " + intf["ip6"])
+                else:
+                    if any(item.startswith("ipv6 address") for item in cur_intf_config):
+                        out.append("no ipv6 address")
+
+                if "keepalive" in intf:
+                    # keepalive being ON is the default
+                    if intf["keepalive"]:
+                        if "no keepalive" in cur_intf_config:
+                            out.append("keepalive")
+                    else:
+                        out.append("no keepalive")
+
+            if switching_modes:
+                # we need to remove this interface from any non-default vlan before continuing
+                # the interface will be readded in the VLAN section. This will result in a few
+                # seconds of interface downtime
+                reset_cmd = "default interface " + sw_label
+
+            # set admin state
+            if "admin" in intf:
+                if intf["admin"] == "up":
+                    out.append("no shutdown")
+                elif intf["admin"] == "down":
+                    out.append("shutdown")
+
+            if "mtu" in intf:
+                out.append("mtu " + str(intf["mtu"]))
+            else:
+                if any(item.startswith("mtu") for item in cur_intf_config):
+                    out.append("no mtu")
+
+            # STP edge port
+            if "stp-edge" in intf and intf["stp-edge"]:
+                out.append("spanning-tree mstp edge-port")
+                out.append("spanning-tree rstp edge-port")
+                out.append("spanning-tree pvst edge-port")
+
+            # additional confs
+            if "custom" in intf:
+                for add_conf in intf["custom"]:
+                    out.append(add_conf)
 
         # set description
         if "description" in intf:
@@ -525,30 +536,6 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type):
         else:
             if any(item.startswith("description") for item in cur_intf_config):
                 out.append("no description")
-
-        # set admin state
-        if "admin" in intf:
-            if intf["admin"] == "up":
-                out.append("no shutdown")
-            elif intf["admin"] == "down":
-                out.append("shutdown")
-
-        if "mtu" in intf:
-            out.append("mtu " + str(intf["mtu"]))
-        else:
-            if any(item.startswith("mtu") for item in cur_intf_config):
-                out.append("no mtu")
-
-        # STP edge port
-        if "stp-edge" in intf and intf["stp-edge"]:
-            out.append("spanning-tree mstp edge-port")
-            out.append("spanning-tree rstp edge-port")
-            out.append("spanning-tree pvst edge-port")
-
-        # additional confs
-        if "custom" in intf:
-            for add_conf in intf["custom"]:
-                out.append(add_conf)
 
         if out:
             # output list is not empty
@@ -640,8 +627,6 @@ def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
     :type vlan_map: dict
     :param vlan_names: VLAN global configuration with names
     :type vlan_names: dict
-    :param sw_config: Switch configuration dict
-    :type sw_config: dict
     :return: List of tuples for vlan config
     :rtype: list
     """
@@ -778,12 +763,12 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     # set interface configuration
     if intf_dict is not None:
         # Update interface configuration
-        intf_cfg = os9_getIntfConfig(intf_dict, sw_config, label_map, vlan_map, type = "intf")
+        intf_cfg = os9_getIntfConfig(intf_dict, sw_config, label_map, type = "intf")
         out += intf_cfg
 
     # Update port channel interface configuration
     if po_dict is not None:
-        po_cfg = os9_getIntfConfig(po_dict, sw_config, label_map, vlan_map, type = "port-channel")
+        po_cfg = os9_getIntfConfig(po_dict, sw_config, label_map, type = "port-channel")
         out += po_cfg
 
         lacp_cfg = os9_getLACPConfig(po_dict, sw_config, label_map)
@@ -796,7 +781,7 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
         vlan_cfg = []
 
     if vlan_dict is not None:
-        vlan_intf_cfg = os9_getIntfConfig(vlan_dict, sw_config, label_map, vlan_map, type = "vlan")
+        vlan_intf_cfg = os9_getIntfConfig(vlan_dict, sw_config, label_map, type = "vlan")
     else:
         vlan_intf_cfg = []
 
