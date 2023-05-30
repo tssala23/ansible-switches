@@ -1,3 +1,0 @@
----
-- include_tasks: dell_os9.yaml
-  when: ansible_network_os == "dellemc.os9.os9"
