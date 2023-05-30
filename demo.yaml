@@ -1,8 +1,0 @@
----
-- name: Demo playbook
-  hosts: OCT6-SW-TORS
-  connection: network_cli
-  tasks:
-    - name: Load common role
-      ansible.builtin.include_role:
-        name: common
