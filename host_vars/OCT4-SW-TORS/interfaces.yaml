@@ -3,62 +3,62 @@ interfaces:
     description: "OCT4-17"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/2:
     description: "OCT4-16"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/3:
     description: "OCT4-15"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/4:
     description: "OCT4-14"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/5:
     description: "OCT4-13"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/6:
     description: "OCT4-12"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/7:
     description: "OCT4-11"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/8:
     description: "OCT4-10"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/9:
     description: "OCT4-9"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/10:
     description: "OCT4-8"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/11:
     description: "OCT4-7"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/12:
     description: "OCT4-6"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/13:
     description: "OCT4-5"
     admin: "up"
@@ -81,12 +81,12 @@ interfaces:
     description: "OCT4-2"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/17:
     description: "OCT4-1"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/18:
     description: "OCT4-0"
     admin: "up"
@@ -106,12 +106,12 @@ interfaces:
     description: "OCT4-1 2nd"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/22:
     description: "OCT4-2 2nd"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/23:
     description: "unallocated"
     admin: "down"
@@ -152,82 +152,82 @@ interfaces:
     description: "OCT4-CHA3-1A"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/34:
     description: "OCT4-CHA3-1B"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/35:
     description: "OCT4-CHA3-1C"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/36:
     description: "OCT4-CHA3-1D"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/37:
     description: "OCT4-CHA3-3A"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/38:
     description: "OCT4-CHA3-3B"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/39:
     description: "OCT4-CHA3-3C"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/40:
     description: "OCT4-CHA3-3D"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/41:
     description: "OCT4-CHA4-1A"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/42:
     description: "OCT4-CHA4-1B"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/43:
     description: "OCT4-CHA4-1C"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/44:
     description: "OCT4-CHA4-1D"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/45:
     description: "OCT4-CHA4-3A"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/46:
     description: "OCT4-CHA4-3B"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/47:
     description: "OCT4-CHA4-3C"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/48:
     description: "OCT4-CHA4-3D"
     admin: "up"
     mtu: 9216
-    managed-l2: true
+    managed: "yes"
   1/49:
     fanout: "quad"
     fanout_speed: "10G"

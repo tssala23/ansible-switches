@@ -128,7 +128,7 @@ interfaces:
     description: "VLT link"
     admin: "up"
   1/29:
-    description: "****"
+    description: "FABRIC-CISCO"
     admin: "up"
     mtu: 9216
     custom:
@@ -163,7 +163,7 @@ interfaces:
     admin: "up"
     mtu: 9216
   1/33:
-    description: "Member of port channel 300, uplink to ****"
+    description: "Member of port channel 300, uplink to OCT-MCORE-2"
     admin: "up"
     mtu: 9216
   1/34:

@@ -98,7 +98,7 @@ interfaces:
     description: "unallocated"
     admin: "down"
   1/33:
-    description: "Member of port channel 300, uplink to ****"
+    description: "Member of port channel 300, uplink to OCT-MCORE-2"
     admin: "up"
     mtu: 9216
   1/34:
