@@ -128,16 +128,12 @@ interfaces:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
   1/17:
-    description: "unallocated"
     admin: "down"
   1/18:
-    description: "unallocated"
     admin: "down"
   1/19:
-    description: "unallocated"
     admin: "down"
   1/20:
-    description: "unallocated"
     admin: "down"
   1/21:
     fanout: "single"
@@ -204,13 +200,10 @@ interfaces:
     mtu: 9216
     untagged: 1
   1/29:
-    description: "unallocated"
     admin: "down"
   1/30:
-    description: "unallocated"
     admin: "down"
   1/31:
-    description: "unallocated"
     admin: "down"
   1/32:
     description: "Uplink LAG member"

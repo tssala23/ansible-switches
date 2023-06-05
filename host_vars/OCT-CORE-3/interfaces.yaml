@@ -86,40 +86,28 @@ interfaces:
     admin: "up"
     mtu: 9216
   1/15:
-    description: "unallocated"
     admin: "down"
   1/16:
-    description: "unallocated"
     admin: "down"
   1/17:
-    description: "unallocated"
     admin: "down"
   1/18:
-    description: "unallocated"
     admin: "down"
   1/19:
-    description: "unallocated"
     admin: "down"
   1/20:
-    description: "unallocated"
     admin: "down"
   1/21:
-    description: "unallocated"
     admin: "down"
   1/22:
-    description: "unallocated"
     admin: "down"
   1/23:
-    description: "unallocated"
     admin: "down"
   1/24:
-    description: "unallocated"
     admin: "down"
   1/25:
-    description: "unallocated"
     admin: "down"
   1/26:
-    description: "unallocated"
     admin: "down"
   1/27:
     description: "VLT link"

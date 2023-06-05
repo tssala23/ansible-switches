@@ -152,23 +152,18 @@ interfaces:
     admin: "up"
     untagged: 912
   1/39:
-    description: "unallocated"
     admin: "down"
   1/40:
-    description: "unallocated"
     admin: "down"
   1/41:
-    description: "unallocated"
     admin: "down"
   1/42:
-    description: "unallocated"
     admin: "down"
   1/43:
     description: "Switch OCT5-SW-TORS-B"
     admin: "up"
     untagged: 930
   1/44:
-    description: "unallocated"
     admin: "down"
   1/45:
     description: "Switch OCT5-SW-TORS-A"
@@ -179,21 +174,16 @@ interfaces:
     admin: "up"
     untagged: 930
   1/47:
-    description: "unallocated"
     admin: "down"
   1/48:
     description: "Uplink to OCT-MCORE-1"
     admin: "up"
     tagged: "all"
   1/49:
-    description: "unallocated"
     admin: "down"
   1/50:
-    description: "unallocated"
     admin: "down"
   1/51:
-    description: "unallocated"
     admin: "down"
   1/52:
-    description: "unallocated"
     admin: "down"

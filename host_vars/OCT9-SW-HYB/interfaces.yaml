@@ -68,25 +68,18 @@ interfaces:
     admin: "up"
     untagged: 910
   1/18:
-    description: "unallocated"
     admin: "down"
   1/19:
-    description: "unallocated"
     admin: "down"
   1/20:
-    description: "unallocated"
     admin: "down"
   1/21:
-    description: "unallocated"
     admin: "down"
   1/22:
-    description: "unallocated"
     admin: "down"
   1/23:
-    description: "unallocated"
     admin: "down"
   1/24:
-    description: "unallocated"
     admin: "down"
   1/25:
     description: "pc154-ctrl"
@@ -157,34 +150,24 @@ interfaces:
     admin: "up"
     untagged: 84
   1/42:
-    description: "unallocated"
     admin: "down"
   1/43:
-    description: "unallocated"
     admin: "down"
   1/44:
-    description: "unallocated"
     admin: "down"
   1/45:
-    description: "unallocated"
     admin: "down"
   1/46:
-    description: "unallocated"
     admin: "down"
   1/47:
-    description: "unallocated"
     admin: "down"
   1/48:
-    description: "unallocated"
     admin: "down"
   1/49:
-    description: "unallocated"
     admin: "down"
   1/50:
-    description: "unallocated"
     admin: "down"
   1/51:
-    description: "unallocated"
     admin: "down"
   1/52:
     description: "Uplink to OCT9-SW-TORS-A"

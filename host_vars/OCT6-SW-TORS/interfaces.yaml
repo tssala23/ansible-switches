@@ -190,46 +190,32 @@ interfaces:
     mtu: 9216
     managed: "vlans"
   1/39:
-    description: "unallocated"
     admin: "down"
   1/40:
-    description: "unallocated"
     admin: "down"
   1/41:
-    description: "unallocated"
     admin: "down"
   1/42:
-    description: "unallocated"
     admin: "down"
   1/43:
-    description: "unallocated"
     admin: "down"
   1/44:
-    description: "unallocated"
     admin: "down"
   1/45:
-    description: "unallocated"
     admin: "down"
   1/46:
-    description: "unallocated"
     admin: "down"
   1/47:
-    description: "unallocated"
     admin: "down"
   1/48:
-    description: "unallocated"
     admin: "down"
   1/49:
-    description: "unallocated"
     admin: "down"
   1/50:
-    description: "unallocated"
     admin: "down"
   1/51:
-    description: "unallocated"
     admin: "down"
   1/52:
-    description: "unallocated"
     admin: "down"
   1/53:
     description: "PC 1 Member 1"

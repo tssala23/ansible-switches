@@ -25,31 +25,22 @@ interfaces:
     mtu: 9216
     untagged: 1
   1/6:
-    description: "unallocated"
     admin: "down"
   1/7:
-    description: "unallocated"
     admin: "down"
   1/8:
-    description: "unallocated"
     admin: "down"
   1/9:
-    description: "unallocated"
     admin: "down"
   1/10:
-    description: "unallocated"
     admin: "down"
   1/11:
-    description: "unallocated"
     admin: "down"
   1/12:
-    description: "unallocated"
     admin: "down"
   1/13:
-    description: "unallocated"
     admin: "down"
   1/14:
-    description: "unallocated"
     admin: "down"
   1/15:
     description: "PC 10 Member 1"
@@ -80,34 +71,24 @@ interfaces:
     admin: "up"
     untagged: 910
   1/22:
-    description: "unallocated"
     admin: "down"
   1/23:
-    description: "unallocated"
     admin: "down"
   1/24:
-    description: "unallocated"
     admin: "down"
   1/25:
-    description: "unallocated"
     admin: "down"
   1/26:
-    description: "unallocated"
     admin: "down"
   1/27:
-    description: "unallocated"
     admin: "down"
   1/28:
-    description: "unallocated"
     admin: "down"
   1/29:
-    description: "unallocated"
     admin: "down"
   1/30:
-    description: "unallocated"
     admin: "down"
   1/31:
-    description: "unallocated"
     admin: "down"
   1/32:
     description: "MGMT uplink"
@@ -134,49 +115,34 @@ interfaces:
     admin: "up"
     untagged: 84
   1/38:
-    description: "unallocated"
     admin: "down"
   1/39:
-    description: "unallocated"
     admin: "down"
   1/40:
-    description: "unallocated"
     admin: "down"
   1/41:
-    description: "unallocated"
     admin: "down"
   1/42:
-    description: "unallocated"
     admin: "down"
   1/43:
-    description: "unallocated"
     admin: "down"
   1/44:
-    description: "unallocated"
     admin: "down"
   1/45:
-    description: "unallocated"
     admin: "down"
   1/46:
-    description: "unallocated"
     admin: "down"
   1/47:
-    description: "unallocated"
     admin: "down"
   1/48:
-    description: "unallocated"
     admin: "down"
   1/49:
-    description: "unallocated"
     admin: "down"
   1/50:
-    description: "unallocated"
     admin: "down"
   1/51:
-    description: "unallocated"
     admin: "down"
   1/52:
-    description: "unallocated"
     admin: "down"
   1/53:
     description: "PC 1 Member 1"

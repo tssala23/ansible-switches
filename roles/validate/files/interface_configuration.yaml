@@ -68,5 +68,4 @@ $defs:
         items:
           type: string
   required:
-    - description
     - admin

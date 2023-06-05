@@ -94,7 +94,6 @@ interfaces:
     untagged: 127
     tagged: [207, 213, 911]
   1/19:
-    description: "unallocated"
     admin: "down"
   1/20:
     description: "OCT4-0 2nd"
@@ -113,7 +112,6 @@ interfaces:
     mtu: 9216
     managed: "yes"
   1/23:
-    description: "unallocated"
     admin: "down"
   1/24:
     description: "OCT4-4 2nd"
@@ -128,25 +126,18 @@ interfaces:
     untagged: 127
     tagged: [207]
   1/26:
-    description: "unallocated"
     admin: "down"
   1/27:
-    description: "unallocated"
     admin: "down"
   1/28:
-    description: "unallocated"
     admin: "down"
   1/29:
-    description: "unallocated"
     admin: "down"
   1/30:
-    description: "unallocated"
     admin: "down"
   1/31:
-    description: "unallocated"
     admin: "down"
   1/32:
-    description: "unallocated"
     admin: "down"
   1/33:
     description: "OCT4-CHA3-1A"
