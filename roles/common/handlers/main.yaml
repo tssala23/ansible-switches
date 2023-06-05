@@ -3,3 +3,4 @@
 - name: save os9 configuration
   dellemc.os9.os9_config:
     save: true
+  when: save_config is defined

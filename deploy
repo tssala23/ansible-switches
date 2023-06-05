@@ -8,6 +8,7 @@ def parseArgs():
     parser.add_argument("host", type=str, help="Host/group to deploy to, or 'all' to deploy to all hosts")
     parser.add_argument("--dry", action="store_true", default=False, help="Dry run, don't actually deploy")
     parser.add_argument("--skip-verification", action="store_true", default=False, help="Skip verification of deployment")
+    parser.add_argument("--no-save", action="store_true", default=False, help="Don't write changes to startup config on the switch")
     args = parser.parse_args()
 
     return args
@@ -16,15 +17,19 @@ def main():
     args = parseArgs()
 
     if not args.skip_verification:
-        print("Running Validation Playbook")
-        subprocess.run(["ansible-playbook", "validate.yaml", "--limit", args.host])
+        validate_cmd = ["ansible-playbook", "validate.yaml", "--limit", args.host]
+        print("Running CMD: {}".format(" ".join(validate_cmd)))
+        subprocess.run(validate_cmd)
     
     run_cmd = ["ansible-playbook", "site.yaml", "--limit", args.host]
 
     if args.dry:
         run_cmd += ["--check", "--diff"]
 
-    print(run_cmd)
+    if not args.no_save:
+        run_cmd += ["--extra-vars", "\"save_config=true\""]
+
+    print("Running CMD: {}".format(" ".join(run_cmd)))
     subprocess.run(run_cmd)
 
 if __name__ == "__main__":
