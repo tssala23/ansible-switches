@@ -18,5 +18,8 @@ port_channels:
     description: "OCT-MHUB-2 uplink"
     admin: "up"
     mode: "lacp"
-    untagged: 1
-    tagged: [910, 911, 912, 930]
+    tagged:
+      - 910
+      - 911
+      - 912
+      - 930

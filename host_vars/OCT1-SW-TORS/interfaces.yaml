@@ -3,192 +3,192 @@ interfaces:
     description: "OCT1-1"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/2:
     description: "OCT1-2"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/3:
     description: "OCT1-3"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/4:
     description: "OCT1-4"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/5:
     description: "OCT1-5"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/6:
     description: "OCT1-6"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/7:
     description: "OCT1-7"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/8:
     description: "OCT1-8"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/9:
     description: "OCT1-9"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/10:
     description: "OCT1-10"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/11:
     description: "OCT1-11"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/12:
     description: "OCT1-12"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/13:
     description: "OCT1-13"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/14:
     description: "OCT1-14"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/15:
     description: "OCT1-15"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/16:
     description: "OCT1-16"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/17:
     description: "OCT1-17"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/18:
     description: "OCT1-18"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/19:
     description: "OCT1-19"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/20:
     description: "OCT1-20"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/21:
     description: "OCT1-21"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/22:
     description: "OCT1-22"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/23:
     description: "OCT1-23"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/24:
     description: "OCT1-24"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/25:
     description: "OCT1-25"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/26:
     description: "OCT1-26"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/27:
     description: "OCT1-27"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/28:
     description: "OCT1-28"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/29:
     description: "OCT1-29"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/30:
     description: "OCT1-30"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/31:
     description: "OCT1-31"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/32:
     description: "OCT1-32"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/33:
     description: "OCT1-33"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/34:
     description: "OCT1-34"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/35:
     description: "OCT1-35"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/36:
     description: "OCT1-36"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/37:
     description: "OCT1-37"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/38:
     description: "OCT1-38"
     admin: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/39:
     admin: "down"
   1/40:
@@ -208,7 +208,9 @@ interfaces:
   1/47:
     admin: "down"
   1/48:
-    admin: "down"
+    description: "OCT1-SW-CTRL"
+    admin: "up"
+    tagged: [84]
   1/49:
     admin: "down"
   1/50:

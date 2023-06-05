@@ -1,6 +1,6 @@
 port_channels:
   1:
-    description: "Uplink port channel"
+    description: "OCT-CORE-3 Uplink"
     admin: "up"
     tagged: "all"
     mtu: 9216
@@ -10,7 +10,9 @@ port_channels:
   10:
     description: "Link to CL head node"
     admin: "up"
-    tagged: [84, 910]
+    tagged:
+      - 84
+      - 910
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"

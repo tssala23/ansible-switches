@@ -73,13 +73,18 @@ port_channels:
   200:
     description: "Unity uplink"
     admin: "up"
-    tagged: [300, 301]
+    tagged:
+      - 300
+      - 301
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
     interfaces: ["1/31/1", "1/32/2"]
   300:
-    description: "OCT-MHUB-2 uplink"
+    description: "OCT-MCORE-2 uplink"
     admin: "up"
-    untagged: 1
-    tagged: [910, 911, 912, 930]
+    tagged:
+      - 910
+      - 911
+      - 912
+      - 930

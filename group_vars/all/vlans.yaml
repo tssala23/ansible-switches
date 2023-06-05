@@ -235,6 +235,11 @@ vlans:
     name: "UMA-NESE"
     description: "NESE BGP VLAN for UMass"
     switches:
+  980:
+    name: "Unknown-980"
+    description: "Unknown VLAN 980"
+    switches:
+      - oct_data
   1000:
     name: "CHAMELEON-INTERNAL"
     description: "Chameleon Internal Network"
