@@ -1,17 +1,20 @@
 port_channels:
   10:
-    description: "Uplink port channel"
-    admin: "up"
+    description: "OCT-CORE-2 LAG"
+    state: "up"
     tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/54"]
+    interfaces:
+      - "1/54"
     custom:
       - "vlt-peer-link port-channel 10"
   100:
-    description: "VLT link"
-    admin: "up"
+    description: "OCT5-SW-TORS-A VLT LAG"
+    state: "up"
     mtu: 9216
     mode: "normal"
-    interfaces: ["1/51", "1/52"]
+    interfaces:
+      - "1/51"
+      - "1/52"

@@ -1,19 +1,23 @@
 port_channels:
   1:
     description: "OCT-CORE-3 Uplink"
-    admin: "up"
+    state: "up"
     tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/53", "1/54"]
+    interfaces:
+      - "1/53"
+      - "1/54"
   10:
-    description: "Link to CL head node"
-    admin: "up"
+    description: "CL-Head"
+    state: "up"
     tagged:
       - 84
       - 910
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/15", "1/16"]
+    interfaces:
+      - "1/15"
+      - "1/16"

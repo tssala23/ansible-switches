@@ -13,7 +13,7 @@ $defs:
     properties:
       description:
         type: string
-      admin:
+      state:
         type: string
         enum:
           - up
@@ -68,4 +68,3 @@ $defs:
         items:
           type: string
   required:
-    - admin

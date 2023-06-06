@@ -1,105 +1,105 @@
 interfaces:
   1/1:
-    admin: "down"
+    state: "down"
   1/2:
-    admin: "down"
+    state: "down"
   1/3:
-    admin: "down"
+    state: "down"
   1/4:
-    admin: "down"
+    state: "down"
   1/5:
-    admin: "down"
+    state: "down"
   1/6:
-    admin: "down"
+    state: "down"
   1/7:
-    admin: "down"
+    state: "down"
   1/8:
-    admin: "down"
+    state: "down"
   1/9:
-    admin: "down"
+    state: "down"
   1/10:
-    admin: "down"
+    state: "down"
   1/11:
-    admin: "down"
+    state: "down"
   1/12:
-    admin: "down"
+    state: "down"
   1/13:
-    admin: "down"
+    state: "down"
   1/14:
-    admin: "down"
+    state: "down"
   1/15:
-    admin: "down"
+    state: "down"
   1/16:
-    admin: "down"
+    state: "down"
   1/17:
-    admin: "down"
+    state: "down"
   1/18:
-    admin: "down"
+    state: "down"
   1/19:
-    admin: "down"
+    state: "down"
   1/20:
-    admin: "down"
+    state: "down"
   1/21:
-    admin: "down"
+    state: "down"
   1/22:
-    admin: "down"
+    state: "down"
   1/23:
-    admin: "down"
+    state: "down"
   1/24:
-    admin: "down"
+    state: "down"
   1/25:
-    admin: "down"
+    state: "down"
   1/26:
-    admin: "down"
+    state: "down"
   1/27:
-    admin: "down"
+    state: "down"
   1/28:
-    admin: "down"
+    state: "down"
   1/29:
-    admin: "down"
+    state: "down"
   1/30:
-    admin: "down"
+    state: "down"
   1/31:
-    admin: "down"
+    state: "down"
   1/32:
-    admin: "down"
+    state: "down"
   1/33:
-    admin: "down"
+    state: "down"
   1/34:
-    admin: "down"
+    state: "down"
   1/35:
-    admin: "down"
+    state: "down"
   1/36:
-    admin: "down"
+    state: "down"
   1/37:
-    admin: "down"
+    state: "down"
   1/38:
-    admin: "down"
+    state: "down"
   1/39:
-    admin: "down"
+    state: "down"
   1/40:
-    admin: "down"
+    state: "down"
   1/41:
-    admin: "down"
+    state: "down"
   1/42:
-    admin: "down"
+    state: "down"
   1/43:
-    admin: "down"
+    state: "down"
   1/44:
-    admin: "down"
+    state: "down"
   1/45:
-    admin: "down"
+    state: "down"
   1/46:
-    admin: "down"
+    state: "down"
   1/47:
-    admin: "down"
+    state: "down"
   1/48:
-    admin: "down"
+    state: "down"
   1/49:
-    admin: "down"
+    state: "down"
   1/50:
-    admin: "down"
+    state: "down"
   1/51:
-    admin: "down"
+    state: "down"
   1/52:
-    admin: "down"
+    state: "down"

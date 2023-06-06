@@ -1,9 +1,11 @@
 port_channels:
   1:
-    description: "Uplink port channel"
-    admin: "up"
+    description: "OCT-CORE-1 and OCT-CORE-2 LAG"
+    state: "up"
     tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/53", "1/54"]
+    interfaces:
+      - "1/53"
+      - "1/54"

@@ -15,7 +15,7 @@ $defs:
     properties:
       description:
         type: string
-      admin:
+      state:
         type: string
         enum:
           - up

@@ -1,175 +1,175 @@
 interfaces:
   1/1:
     description: "pc154-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/2:
     description: "pc155-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/3:
     description: "pc156-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/4:
     description: "pc157-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/5:
     description: "pc158-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/6:
     description: "pc159-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/7:
     description: "pc151-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/8:
     description: "pc153-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/9:
     description: "pc160-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/10:
     description: "pc161-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/11:
     description: "pc162-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/12:
     description: "pc163-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/13:
     description: "pc164-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/14:
     description: "pc165-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/15:
     description: "pc166-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/16:
     description: "pc167-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/17:
     description: "pc168-ipmi"
-    admin: "up"
+    state: "up"
     untagged: 910
   1/18:
-    admin: "down"
+    state: "down"
   1/19:
-    admin: "down"
+    state: "down"
   1/20:
-    admin: "down"
+    state: "down"
   1/21:
-    admin: "down"
+    state: "down"
   1/22:
-    admin: "down"
+    state: "down"
   1/23:
-    admin: "down"
+    state: "down"
   1/24:
-    admin: "down"
+    state: "down"
   1/25:
     description: "pc154-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/26:
     description: "pc155-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/27:
     description: "pc156-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/28:
     description: "pc157-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/29:
     description: "pc158-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/30:
     description: "pc159-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/31:
     description: "pc151-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/32:
     description: "pc153-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/33:
     description: "pc160-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/34:
     description: "pc161-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/35:
     description: "pc162-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/36:
     description: "pc163-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/37:
     description: "pc164-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/38:
     description: "pc165-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/39:
     description: "pc166-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/40:
     description: "pc167-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/41:
     description: "pc168-ctrl"
-    admin: "up"
+    state: "up"
     untagged: 84
   1/42:
-    admin: "down"
+    state: "down"
   1/43:
-    admin: "down"
+    state: "down"
   1/44:
-    admin: "down"
+    state: "down"
   1/45:
-    admin: "down"
+    state: "down"
   1/46:
-    admin: "down"
+    state: "down"
   1/47:
-    admin: "down"
+    state: "down"
   1/48:
-    admin: "down"
+    state: "down"
   1/49:
-    admin: "down"
+    state: "down"
   1/50:
-    admin: "down"
+    state: "down"
   1/51:
-    admin: "down"
+    state: "down"
   1/52:
-    description: "Uplink to OCT9-SW-TORS-A"
-    admin: "up"
+    description: "OCT9-SW-TORS-A"
+    state: "up"
     tagged: "all"
