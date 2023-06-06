@@ -29,7 +29,7 @@ An example of this file is below:
 interfaces:
   1/1:
     description: "example interface"
-    admin: "up"
+    state: "up"
     mtu: 9216
 ```
 
@@ -42,7 +42,7 @@ The following tables list all available fields for interface configuration. L2 c
 | Field Label | Description                         | Possible Values           |
 | ----------- | ----------------------------------- | ------------------------- |
 | description | Description of the interface        | Any string                |
-| admin       | Admin state of interface            | "up" or "down"            |
+| state       | Admin state of interface            | "up" or "down"            |
 | mtu         | MTU of interface                    | Integer with range 1-9216 |
 | managed     | Interface managed mode              | "vlans", "yes", "no"    |
 | custom      | Custom fields in switch conf format | List of strings           |
