@@ -104,7 +104,8 @@ def combineTuples(list1, list2):
 
     for r in removeList:
         # remove duplicates here
-        list2.remove(r)
+        if r in list2:
+            list2.remove(r)
 
     out += list2
 
@@ -466,6 +467,10 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
                             out.append("no switchport")
 
                         out.append("portmode hybrid")
+                    else:
+                        if "portmode hybrid" in cur_intf_config:
+                            switching_modes = True
+                            out.append("no portmode hybrid")
 
                     out.append("switchport")
 
@@ -500,17 +505,35 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
                     else:
                         out.append("no keepalive")
 
+            else:
+                # Remove L3 settings
+                if any(item.startswith("ip address") for item in cur_intf_config):
+                    out.append("no ip address")
+                if any(item.startswith("ipv6 address") for item in cur_intf_config):
+                    out.append("no ipv6 address")
+
+                # Remove L2 Settings
+                if "portmode hybrid" in cur_intf_config:
+                    switching_modes = True
+                    out.append("no portmode hybrid")
+                if "switchport" in cur_intf_config:
+                    switching_modes = True
+                    out.append("no switchport")
+
             if switching_modes:
                 # we need to remove this interface from any non-default vlan before continuing
                 # the interface will be readded in the VLAN section. This will result in a few
                 # seconds of interface downtime
-                reset_cmd = "default interface " + sw_label
+                if type == "intf":
+                    reset_cmd = "default interface " + sw_label
+                else:
+                    reset_cmd = "no interface " + sw_label
 
             # set admin state
-            if "admin" in intf:
-                if intf["admin"] == "up":
+            if "state" in intf:
+                if intf["state"] == "up":
                     out.append("no shutdown")
-                elif intf["admin"] == "down":
+                elif intf["state"] == "down":
                     out.append("shutdown")
 
             if "mtu" in intf:
@@ -524,6 +547,10 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
                 out.append("spanning-tree mstp edge-port")
                 out.append("spanning-tree rstp edge-port")
                 out.append("spanning-tree pvst edge-port")
+            elif any(item.startswith("spanning-tree") for item in cur_intf_config):
+                out.append("no spanning-tree mstp edge-port")
+                out.append("no spanning-tree rstp edge-port")
+                out.append("no spanning-tree pvst edge-port")
 
             # additional confs
             if "custom" in intf:
@@ -536,6 +563,8 @@ def os9_getIntfConfig(intf_dict, sw_config, label_map, type):
         else:
             if any(item.startswith("description") for item in cur_intf_config):
                 out.append("no description")
+
+        # ! TODO - we should revert any existing config on the switch here
 
         if out:
             # output list is not empty
@@ -615,7 +644,7 @@ def os9_getLACPConfig(pc_dict, sw_config, label_map):
 
     return out_all
 
-def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
+def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names, type="intf"):
     """
     Generates the VLAN configuration commands
 
@@ -637,15 +666,18 @@ def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
 
     for intf_label,intf in intf_dict.items():
 
-        if "fanout" in intf:
-            # skip fanout interfaces here
-            continue
+        if type == "intf":
+            # handle interface type
+            if "fanout" in intf:
+                continue
 
-        if intf_label not in label_map:
-            warnings.warn("Skipping assigning VLANs to " + intf_label + " because the interface doesn't exist")
-            continue
+            if intf_label not in label_map:
+                warnings.warn("Skipping assigning VLANs to " + intf_label + " because the interface doesn't exist")
+                continue
 
-        sw_label = label_map[intf_label]
+            sw_label = label_map[intf_label]
+        elif type == "port-channel":
+            sw_label = "Port-channel " + str(intf_label)
 
         if sw_label in vlan_map:
             existing_vlans = vlan_map[sw_label]
@@ -687,7 +719,7 @@ def os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names):
                         if vlan not in assignments:
                             assignments[vlan] = []
 
-                        assignments[vlan].append("no " + field + str(sw_label))
+                        assignments[vlan].append("no " + field + " " +  str(sw_label))
 
     out_tuple = []
 
@@ -775,10 +807,17 @@ def os9_getConfiguration(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
         out += lacp_cfg
 
     # Create/update vlan interfaces
-    if intf_dict is not None:
-        vlan_cfg = os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names)
+    if intf_dict is None:
+        vlan_intf_cfg = []
     else:
-        vlan_cfg = []
+        vlan_intf_cfg = os9_getVlanConfig(intf_dict, label_map, vlan_map, vlan_names, type="intf")
+
+    if po_dict is None:
+        vlan_po_cfg = []
+    else:
+        vlan_po_cfg = os9_getVlanConfig(po_dict, label_map, vlan_map, vlan_names, type="port-channel")
+
+    vlan_cfg = combineTuples(vlan_intf_cfg, vlan_po_cfg)
 
     if vlan_dict is not None:
         vlan_intf_cfg = os9_getIntfConfig(vlan_dict, sw_config, label_map, type = "vlan")
