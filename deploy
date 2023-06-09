@@ -20,7 +20,7 @@ def main():
         validate_cmd = ["ansible-playbook", "validate.yaml", "--limit", args.host]
         print("Running CMD: {}".format(" ".join(validate_cmd)))
         subprocess.run(validate_cmd)
-    
+
     run_cmd = ["ansible-playbook", "site.yaml", "--limit", args.host]
 
     if args.dry:
