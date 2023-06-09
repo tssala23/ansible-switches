@@ -68,7 +68,6 @@ interfaces:
       - 213
       - 250
       - 623
-      - 626
       - 911
       - 3801
   1/14:
@@ -80,7 +79,6 @@ interfaces:
       - 213
       - 250
       - 623
-      - 626
       - 911
       - 3801
   1/15:
@@ -108,7 +106,6 @@ interfaces:
       - 623
       - 911
       - 3801
-    managed: "vlans"
   1/18:
     description: "OCT4-0"
     state: "up"
@@ -131,7 +128,9 @@ interfaces:
     description: "OCT4-1 2nd"
     state: "up"
     mtu: 9216
-    managed: "yes"
+    untagged: 127
+    tagged:
+      - 207
   1/22:
     description: "OCT4-2 2nd"
     state: "up"
