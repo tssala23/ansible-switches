@@ -1,192 +1,175 @@
 interfaces:
   1/1:
-    description: "****"
-    admin: "up"
+    description: "pc154-ipmi"
+    state: "up"
     untagged: 910
   1/2:
-    description: "****"
-    admin: "up"
+    description: "pc155-ipmi"
+    state: "up"
     untagged: 910
   1/3:
-    description: "****"
-    admin: "up"
+    description: "pc156-ipmi"
+    state: "up"
     untagged: 910
   1/4:
-    description: "****"
-    admin: "up"
+    description: "pc157-ipmi"
+    state: "up"
     untagged: 910
   1/5:
-    description: "****"
-    admin: "up"
+    description: "pc158-ipmi"
+    state: "up"
     untagged: 910
   1/6:
-    description: "****"
-    admin: "up"
+    description: "pc159-ipmi"
+    state: "up"
     untagged: 910
   1/7:
-    description: "****"
-    admin: "up"
+    description: "pc151-ipmi"
+    state: "up"
     untagged: 910
   1/8:
-    description: "****"
-    admin: "up"
+    description: "pc153-ipmi"
+    state: "up"
     untagged: 910
   1/9:
-    description: "****"
-    admin: "up"
+    description: "pc160-ipmi"
+    state: "up"
     untagged: 910
   1/10:
-    description: "****"
-    admin: "up"
+    description: "pc161-ipmi"
+    state: "up"
     untagged: 910
   1/11:
-    description: "****"
-    admin: "up"
+    description: "pc162-ipmi"
+    state: "up"
     untagged: 910
   1/12:
-    description: "****"
-    admin: "up"
+    description: "pc163-ipmi"
+    state: "up"
     untagged: 910
   1/13:
-    description: "****"
-    admin: "up"
+    description: "pc164-ipmi"
+    state: "up"
     untagged: 910
   1/14:
-    description: "****"
-    admin: "up"
+    description: "pc165-ipmi"
+    state: "up"
     untagged: 910
   1/15:
-    description: "****"
-    admin: "up"
+    description: "pc166-ipmi"
+    state: "up"
     untagged: 910
   1/16:
-    description: "****"
-    admin: "up"
+    description: "pc167-ipmi"
+    state: "up"
     untagged: 910
   1/17:
-    description: "****"
-    admin: "up"
+    description: "pc168-ipmi"
+    state: "up"
     untagged: 910
   1/18:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/19:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/20:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/21:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/22:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/23:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/24:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/25:
-    description: "****"
-    admin: "up"
+    description: "pc154-ctrl"
+    state: "up"
     untagged: 84
   1/26:
-    description: "****"
-    admin: "up"
+    description: "pc155-ctrl"
+    state: "up"
     untagged: 84
   1/27:
-    description: "****"
-    admin: "up"
+    description: "pc156-ctrl"
+    state: "up"
     untagged: 84
   1/28:
-    description: "****"
-    admin: "up"
+    description: "pc157-ctrl"
+    state: "up"
     untagged: 84
   1/29:
-    description: "****"
-    admin: "up"
+    description: "pc158-ctrl"
+    state: "up"
     untagged: 84
   1/30:
-    description: "****"
-    admin: "up"
+    description: "pc159-ctrl"
+    state: "up"
     untagged: 84
   1/31:
-    description: "****"
-    admin: "up"
+    description: "pc151-ctrl"
+    state: "up"
     untagged: 84
   1/32:
-    description: "****"
-    admin: "up"
+    description: "pc153-ctrl"
+    state: "up"
     untagged: 84
   1/33:
-    description: "****"
-    admin: "up"
+    description: "pc160-ctrl"
+    state: "up"
     untagged: 84
   1/34:
-    description: "****"
-    admin: "up"
+    description: "pc161-ctrl"
+    state: "up"
     untagged: 84
   1/35:
-    description: "****"
-    admin: "up"
+    description: "pc162-ctrl"
+    state: "up"
     untagged: 84
   1/36:
-    description: "****"
-    admin: "up"
+    description: "pc163-ctrl"
+    state: "up"
     untagged: 84
   1/37:
-    description: "****"
-    admin: "up"
+    description: "pc164-ctrl"
+    state: "up"
     untagged: 84
   1/38:
-    description: "****"
-    admin: "up"
+    description: "pc165-ctrl"
+    state: "up"
     untagged: 84
   1/39:
-    description: "****"
-    admin: "up"
+    description: "pc166-ctrl"
+    state: "up"
     untagged: 84
   1/40:
-    description: "****"
-    admin: "up"
+    description: "pc167-ctrl"
+    state: "up"
     untagged: 84
   1/41:
-    description: "****"
-    admin: "up"
+    description: "pc168-ctrl"
+    state: "up"
     untagged: 84
   1/42:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/43:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/44:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/45:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/46:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/47:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/48:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/49:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/50:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/51:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/52:
-    description: "Uplink to OCT9-SW-TORS-A"
-    admin: "up"
+    description: "OCT9-SW-TORS-A"
+    state: "up"
     tagged: "all"

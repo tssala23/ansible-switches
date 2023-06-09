@@ -29,7 +29,7 @@ An example of this file is below:
 interfaces:
   1/1:
     description: "example interface"
-    admin: "up"
+    state: "up"
     mtu: 9216
 ```
 
@@ -42,8 +42,9 @@ The following tables list all available fields for interface configuration. L2 c
 | Field Label | Description                         | Possible Values           |
 | ----------- | ----------------------------------- | ------------------------- |
 | description | Description of the interface        | Any string                |
-| admin       | Admin state of interface            | "up" or "down"            |
+| state       | Admin state of interface            | "up" or "down"            |
 | mtu         | MTU of interface                    | Integer with range 1-9216 |
+| managed     | Interface managed mode              | "vlans", "yes", "no"    |
 | custom      | Custom fields in switch conf format | List of strings           |
 
 #### Fanout Fields
@@ -60,8 +61,7 @@ If you enable fanout on a port, **none** of the other fields can be used. Instea
 | Field Label | Description                                                            | Possible Values                                                          |
 | ----------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | untagged    | VLAN to untag on this interface                                        | Integer with range 1-4095                                                |
-| tagged      | List of VLANs to tag on this interface                                 | List of integers with range 1-4095, or "all" for all VLANs on the switch |
-| managed-l2  | Port management from external source (disables untagged/tagged fields) | true, false                                                              |
+| tagged      | List of VLANs to tag on this interface                                 | List of integers with range 1-4095, or "all" for all VLANs on the switch |                                                     |
 | stp-edge    | Sets this port to be an STP edge-port in all available STP modes       | true, false                                                              |
 
 #### L3 Fields

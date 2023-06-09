@@ -1,103 +1,122 @@
 port_channels:
   10:
-    description: "Core OCT port-channel, connects to OCT-HUB-3 and OCT-HUB-4"
-    admin: "up"
-    untagged: 1
+    description: "OCT-CORE-3 and OCT-CORE-4 Core LAG"
+    state: "up"
     tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/28", "1/29"]
+    interfaces:
+      - "1/28"
+      - "1/29"
     custom:
       - "vlt-peer-lag port-channel 10"
   11:
-    description: "Port channel to MOC brocade fabric"
-    admin: "up"
-    untagged: 1
-    tagged: []
+    description: "MOC Brocade Fabric LAG"
+    state: "up"
+    tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/27/1"]
+    interfaces:
+      - "1/27/1"
     custom:
       - "vlt-peer-lag port-channel 11"
   20:
-    description: "Port channel to oct-mhub-1"
-    admin: "up"
-    untagged: 1
-    tagged: []
+    description: "OCT-MCORE-1 LAG"
+    state: "up"
+    tagged:
+      - 84
+      - 207
+      - 301
+      - 910
+      - 911
+      - 912
+      - 930
+      - 980
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/5/1"]
+    interfaces:
+      - "1/5/1"
     custom:
       - "vlt-peer-lag port-channel 20"
   30:
-    description: "Port channel to UMA NESE switch"
-    admin: "up"
-    untagged: 1
-    tagged: []
+    description: "UMA-NESE-Core LAG"
+    state: "up"
+    tagged:
+      - 211
+      - 300
+      - 910
+      - 950
+      - 2500
+      - 3100
+      - 3101
+      - 3102
+      - 3103
+      - 3104
+      - 3105
+      - 3106
+      - 3107
+      - 3108
+      - 3109
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/30"]
+    interfaces:
+      - "1/30"
     custom:
       - "vlt-peer-lag port-channel 30"
   50:
-    description: "Port channel to OCT5 TORS"
-    admin: "up"
-    untagged: 1
-    tagged: []
+    description: "OCT5-SW-TORS-A and OCT5-SW-TORS-B LAG"
+    state: "up"
+    tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/13"]
+    interfaces:
+      - "1/13"
     custom:
       - "vlt-peer-lag port-channel 50"
   60:
-    description: "Port channel to OCT6 TORS"
-    admin: "up"
-    untagged: 1
-    tagged: []
+    description: "OCT6-SW-TORS LAG"
+    state: "up"
+    tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/14"]
+    interfaces:
+      - "1/14"
     custom:
       - "vlt-peer-lag port-channel 60"
-  70:
-    description: "Port channel to OCT7 TORS"
-    admin: "up"
-    untagged: 1
-    tagged: []
-    mtu: 9216
-    mode: "lacp"
-    lacp-rate: "fast"
-    interfaces: ["1/15"]
-    custom:
-      - "vlt-peer-lag port-channel 70"
   80:
-    description: "Port channel to OCT8 TORS"
-    admin: "up"
-    untagged: 1
-    tagged: []
+    description: "OCT8-SW-TORS LAG"
+    state: "up"
+    tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/16"]
+    interfaces:
+      - "1/16"
     custom:
       - "vlt-peer-lag port-channel 80"
   100:
-    description: "VLT port channel to OCT-HUB-2"
-    admin: "up"
+    description: "OCT-CORE-1 VLT LAG"
+    state: "up"
     mode: "normal"
-    interfaces: ["1/31", "1/32"]
+    interfaces:
+      - "1/31"
+      - "1/32"
   1000:
-    description: "CSAIL uplink"
-    admin: "up"
+    description: "CSAIL LAG"
+    state: "up"
     untagged: 10
-    tagged: [3801, 3802, 3803]
+    tagged:
+      - 3801
+      - 3802
+      - 3803
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/33"]
+    interfaces:
+      - "1/33"
     custom:
       - "vlt-peer-lag port-channel 1000"

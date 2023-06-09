@@ -1,4 +1,4 @@
 vlan_interfaces:
   207:
-    admin: "up"
+    state: "up"
     ip4: "10.1.0.16/24"

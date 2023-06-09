@@ -1,9 +1,11 @@
 port_channels:
   1:
     description: "Uplink port channel"
-    admin: "up"
+    state: "up"
     tagged: "all"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
-    interfaces: ["1/53", "1/54"]
+    interfaces:
+      - "1/53"
+      - "1/54"

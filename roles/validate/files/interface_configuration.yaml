@@ -13,7 +13,7 @@ $defs:
     properties:
       description:
         type: string
-      admin:
+      state:
         type: string
         enum:
           - up
@@ -32,8 +32,12 @@ $defs:
           - type: string
             enum:
               - all
-      managed-l2:
-        type: boolean
+      managed:
+        type: string
+        enum:
+          - "yes"
+          - "no"
+          - vlans
       stp-edge:
         type: string
       mtu:
@@ -64,5 +68,3 @@ $defs:
         items:
           type: string
   required:
-    - description
-    - admin

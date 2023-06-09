@@ -13,7 +13,7 @@ $defs:
     type: object
     additionalProperties: false
     properties:
-      admin:
+      state:
         type: string
         enum:
           - up

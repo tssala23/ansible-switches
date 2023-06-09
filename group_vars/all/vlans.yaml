@@ -14,6 +14,7 @@ vlans:
     description: "UMass VLAN 84 Public IPs for CloudLab"
     switches:
       - oct_data
+      - oct_tors_ctrl
   86:
     name: "UMA-86"
     description: "UMass VLAN 86 Public IPs for Fabric"
@@ -143,7 +144,7 @@ vlans:
     name: "OKD-INTERNAL"
     description: "OKD Internal Network"
     switches:
-      - OCT4-SW-TORS
+      - oct_data
   300:
     name: "UNITY-INTERNAL"
     description: "Unity Cluster at UMass Internal Net"
@@ -192,19 +193,20 @@ vlans:
     name: "CLOUDLAB-OBM"
     description: "CloudLab IPMI Network"
     switches:
-      - CL-SW-TORS
-      - oct_hub
+      - oct_data
       - oct_mgmt
   911:
     name: "OCT-MOC-OBM"
     description: "For OCT/UMass nodes IPMI"
     switches:
+      - oct_data
       - oct_mgmt
   912:
     name: "OCT-MOC"
     description: "For OCT/UMass nodes IPMI for operate first"
     switches:
-      - oct_mgmthub
+      - oct_data
+      - oct_mgmt
   913:
     name: "OKD-OBM"
     description: "OKD management net"
@@ -225,26 +227,32 @@ vlans:
     name: "OCT-SWMGMT"
     description: "Switch management network for OCT"
     switches:
+      - oct_core
       - oct_mgmt
   931:
     name: "CHAMELEON-OBM"
     description: "Chameleon management network"
     switches:
-      - OCT8-SW-MGMT
+      - oct_mgmt
   950:
     name: "UMA-NESE"
     description: "NESE BGP VLAN for UMass"
     switches:
+  980:
+    name: "Unknown-980"
+    description: "Unknown VLAN 980"
+    switches:
+      - oct_data
   1000:
     name: "CHAMELEON-INTERNAL"
     description: "Chameleon Internal Network"
     switches:
-      - OCT8-SW-TORS
+      - oct_data
   1001:
     name: "CHAMELEON-NEUTRON"
     description: "Chameleon neutron provisioning"
     switches:
-      - OCT8-SW-TORS
+      - oct_data
   1004:
     name: "KUMO-INTRANET"
     description: "Intranet (routable to internet). SNMP for client nodes."
@@ -282,102 +290,52 @@ vlans:
     name: "AL2S-3100"
     description: "AL2S VLAN 3100 for Fabric"
     switches:
-      - oct_hub
+      - oct_core
   3101:
     name: "AL2S-3101"
     description: "AL2S VLAN 3101 for Fabric"
     switches:
-      - oct_hub
+      - oct_core
   3102:
     name: "AL2S-3102"
     description: "AL2S VLAN 3102 for Fabric"
     switches:
-      - oct_hub
+      - oct_core
   3103:
     name: "AL2S-3103"
     description: "AL2S VLAN 3103 for Fabric"
     switches:
-      - oct_hub
+      - oct_core
   3104:
     name: "AL2S-3104"
     description: "AL2S VLAN 3104 for Fabric"
     switches:
-      - oct_hub
+      - oct_core
   3105:
     name: "AL2S-3105"
     description: "AL2S VLAN 3105 for Fabric"
     switches:
-      - oct_hub
+      - oct_core
   3106:
     name: "AL2S-3106"
     description: "AL2S VLAN 3106 for Fabric"
     switches:
-      - oct_hub
+      - oct_core
   3107:
     name: "AL2S-3107"
     description: "AL2S VLAN 3107 for Fabric"
     switches:
-      - oct_hub
+      - oct_core
   3108:
     name: "AL2S-3108"
     description: "AL2S VLAN 3108 for Fabric"
     switches:
-      - oct_hub
+      - oct_core
   3109:
     name: "AL2S-3109"
     description: "AL2S VLAN 3109 for Fabric"
     switches:
-      - oct_hub
-  3110:
-    name: "FABRIC-OCT-3110"
-    description: "FABRIC facility port VLAN 3110 for OCT"
-    switches:
-      - oct_data
-  3111:
-    name: "FABRIC-OCT-3111"
-    description: "FABRIC facility port VLAN 3111 for OCT"
-    switches:
-      - oct_data
-  3112:
-    name: "FABRIC-OCT-3112"
-    description: "FABRIC facility port VLAN 3112 for OCT"
-    switches:
-      - oct_data
-  3113:
-    name: "FABRIC-OCT-3113"
-    description: "FABRIC facility port VLAN 3113 for OCT"
-    switches:
-      - oct_data
-  3114:
-    name: "FABRIC-OCT-3114"
-    description: "FABRIC facility port VLAN 3114 for OCT"
-    switches:
-      - oct_data
-  3115:
-    name: "FABRIC-OCT-3115"
-    description: "FABRIC facility port VLAN 3115 for OCT"
-    switches:
-      - oct_data
-  3116:
-    name: "FABRIC-OCT-3116"
-    description: "FABRIC facility port VLAN 3116 for OCT"
-    switches:
-      - oct_data
-  3117:
-    name: "FABRIC-OCT-3117"
-    description: "FABRIC facility port VLAN 3117 for OCT"
-    switches:
-      - oct_data
-  3118:
-    name: "FABRIC-OCT-3118"
-    description: "FABRIC facility port VLAN 3118 for OCT"
-    switches:
-      - oct_data
-  3119:
-    name: "FABRIC-OCT-3119"
-    description: "FABRIC facility port VLAN 3119 for OCT"
-    switches:
-      - oct_data
+      - oct_core
   3800:
     name: "CSAIL-3800"
     description: "CSAIL 3800"

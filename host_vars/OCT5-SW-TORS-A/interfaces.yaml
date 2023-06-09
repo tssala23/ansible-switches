@@ -1,246 +1,233 @@
 interfaces:
   1/1:
-    description: "OCT5-1"
-    admin: "up"
+    description: "OCT5-U1"
+    state: "up"
     mtu: 9216
     untagged: 3803
   1/2:
-    description: "OCT5-2"
-    admin: "up"
+    description: "OCT5-U2"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/3:
-    description: "OCT5-3"
-    admin: "up"
+    description: "OCT5-U3"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/4:
-    description: "OCT5-4"
-    admin: "up"
+    description: "OCT5-U4"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/5:
-    description: "OCT5-5"
-    admin: "up"
+    description: "OCT5-U5"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/6:
-    description: "OCT5-6"
-    admin: "up"
+    description: "OCT5-U6"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/7:
-    description: "OCT5-7"
-    admin: "up"
+    description: "OCT5-U7"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/8:
-    description: "OCT5-8"
-    admin: "up"
+    description: "OCT5-U8"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/9:
-    description: "OCT5-9"
-    admin: "up"
+    description: "OCT5-U9"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/10:
-    description: "OCT5-10"
-    admin: "up"
+    description: "OCT5-U10"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/11:
-    description: "OCT5-11"
-    admin: "up"
+    description: "OCT5-U11"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/12:
-    description: "OCT5-12"
-    admin: "up"
+    description: "OCT5-U12"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/13:
-    description: "OCT5-13"
-    admin: "up"
+    description: "OCT5-U13"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/14:
-    description: "OCT5-14"
-    admin: "up"
+    description: "OCT5-U14"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/15:
-    description: "OCT5-15"
-    admin: "up"
+    description: "OCT5-U15"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/16:
-    description: "OCT5-16"
-    admin: "up"
+    description: "OCT5-U16"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/17:
-    description: "OCT5-17"
-    admin: "up"
+    description: "OCT5-U17"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/18:
-    description: "OCT5-18"
-    admin: "up"
+    description: "OCT5-U18"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/19:
-    description: "OCT5-19"
-    admin: "up"
+    description: "OCT5-U19"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/20:
-    description: "OCT5-20"
-    admin: "up"
+    description: "OCT5-U20"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/21:
-    description: "OCT5-21"
-    admin: "up"
+    description: "OCT5-U21"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/22:
-    description: "OCT5-22"
-    admin: "up"
+    description: "OCT5-U22"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/23:
-    description: "OCT5-23"
-    admin: "up"
+    description: "OCT5-U23"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/24:
-    description: "OCT5-24"
-    admin: "up"
+    description: "OCT5-U24"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/25:
-    description: "OCT5-25"
-    admin: "up"
+    description: "OCT5-U25"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/26:
-    description: "OCT5-26"
-    admin: "up"
+    description: "OCT5-U26"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/27:
-    description: "OCT5-27"
-    admin: "up"
+    description: "OCT5-U27"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/28:
-    description: "OCT5-28"
-    admin: "up"
+    description: "OCT5-U28"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/29:
-    description: "OCT5-29"
-    admin: "up"
+    description: "OCT5-U29"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/30:
-    description: "OCT5-30"
-    admin: "up"
+    description: "OCT5-U30"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/31:
-    description: "OCT5-31"
-    admin: "up"
+    description: "OCT5-U31"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/32:
-    description: "OCT5-32"
-    admin: "up"
+    description: "OCT5-U32"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/33:
-    description: "OCT5-33"
-    admin: "up"
+    description: "OCT5-U33"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/34:
-    description: "OCT5-34"
-    admin: "up"
+    description: "OCT5-U34"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/35:
-    description: "OCT5-35"
-    admin: "up"
+    description: "OCT5-U35"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/36:
-    description: "OCT5-36"
-    admin: "up"
+    description: "OCT5-U36"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/37:
-    description: "OCT5-37"
-    admin: "up"
+    description: "OCT5-U37"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/38:
-    description: "OCT5-38"
-    admin: "up"
+    description: "OCT5-U38"
+    state: "up"
     mtu: 9216
     untagged: 10
   1/39:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/40:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/41:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/42:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/43:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/44:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/45:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/46:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/47:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/48:
-    description: "VLT heartbeat"
-    admin: "up"
+    description: "OCT5-SW-TORS-B Port 48 VLT Heartbeat"
+    state: "up"
     ip4: "10.255.255.1/30"
   1/49:
     fanout: "single"
     fanout_speed: "40G"
   1/49/1:
     description: "Alan Liu DPDK"
-    admin: "up"
+    state: "up"
   1/50:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/51:
-    description: "VLT link 1"
-    admin: "up"
-    mtu: 9216
+    description: "OCT5-SW-TORS-B Port 51 VLT"
+    state: "up"
   1/52:
-    description: "VLT link 2"
-    admin: "up"
-    mtu: 9216
+    description: "OCT5-SW-TORS-B Port 52 VLT"
+    state: "up"
   1/53:
-    description: "unallocated"
-    admin: "down"
+    state: "down"
   1/54:
-    description: "PC 1 Member 1"
-    admin: "up"
+    description: "OCT-CORE-1 Port 54"
+    state: "up"
     mtu: 9216
