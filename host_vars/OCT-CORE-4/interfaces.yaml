@@ -1,10 +1,10 @@
 interfaces:
   1/1:
-    description: "OCT-CORE-## Port #### Po10"
+    description: "OCT-CORE-1 Port 28 Po10"
     state: "up"
     mtu: 9216
   1/2:
-    description: "OCT-CORE-## Port #### Po10"
+    description: "OCT-CORE-2 Port 28 Po10"
     state: "up"
     mtu: 9216
   1/3:
@@ -56,24 +56,29 @@ interfaces:
   1/26:
     state: "down"
   1/27:
-    description: "OCT-CORE-3 Port #### VLT"
+    description: "OCT-CORE-3 Port 27 VLT"
     state: "up"
   1/28:
-    description: "OCT-CORE-3 Port #### VLT"
+    description: "OCT-CORE-3 Port 28 VLT"
     state: "up"
   1/29:
     state: "down"
   1/30:
     state: "down"
   1/31:
-    state: "down"
+    fanout: "single"
+    fanout_speed: "40G"
+  1/31/1:
+    description: "UNITY-CORE-1 Port #### Po200"
+    state: "up"
+    mtu: 9216
   1/32:
     state: "down"
   1/33:
-    description: "OCT-MCORE-2 Port #### Po300"
+    description: "OCT-MCORE-2 Port 52 Po300"
     state: "up"
     mtu: 9216
   1/34:
-    description: "OCT-CORE-4 Port #### VLT Heartbeat"
+    description: "OCT-CORE-4 Port 34 VLT Heartbeat"
     state: "up"
     ip4: "10.255.255.2/30"

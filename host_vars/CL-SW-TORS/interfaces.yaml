@@ -3,27 +3,27 @@ interfaces:
     description: "CL-MASS-1"
     state: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/2:
     description: "CL-MASS-2"
     state: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/3:
     description: "CL-MASS-3"
     state: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/4:
     description: "CL-MASS-4"
     state: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/5:
     description: "CL-MASS-5"
     state: "up"
     mtu: 9216
-    untagged: 1
+    managed: "vlans"
   1/6:
     state: "down"
   1/7:
@@ -43,11 +43,11 @@ interfaces:
   1/14:
     state: "down"
   1/15:
-    description: "PC 10 Member 1"
+    description: "CL-Head Po10"
     state: "up"
     mtu: 9216
   1/16:
-    description: "PC 10 Member 2"
+    description: "CL-Head Po10"
     state: "up"
     mtu: 9216
   1/17:
@@ -94,7 +94,6 @@ interfaces:
     description: "MGMT uplink"
     state: "up"
     tagged:
-      - 910
       - 930
   1/33:
     description: "CL-MASS-1-CTRL"
@@ -147,10 +146,10 @@ interfaces:
   1/52:
     state: "down"
   1/53:
-    description: "PC 1 Member 1"
+    description: "OCT-CORE-3 Port #### Po1"
     state: "up"
     mtu: 9216
   1/54:
-    description: "PC 1 Member 2"
+    description: "OCT-CORE-3 Port #### Po1"
     state: "up"
     mtu: 9216

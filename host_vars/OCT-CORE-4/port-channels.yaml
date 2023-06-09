@@ -18,12 +18,30 @@ port_channels:
     interfaces:
       - "1/27"
       - "1/28"
+  200:
+    description: "UNITY-CORE-1 LAG"
+    state: "up"
+    tagged:
+      - 300
+      - 301
+    mtu: 9216
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces:
+      - "1/31/1"
+    custom:
+      - "vlt-peer-lag port-channel 200"
   300:
     description: "OCT-MCORE-2 LAG"
     state: "up"
     mode: "lacp"
+    lacp-rate: "fast"
+    interfaces:
+      - "1/33"
     tagged:
       - 910
       - 911
       - 912
       - 930
+    custom:
+      - "vlt-peer-lag port-channel 300"

@@ -9,7 +9,7 @@ port_channels:
     interfaces:
       - "1/54"
     custom:
-      - "vlt-peer-link port-channel 10"
+      - "vlt-peer-lag port-channel 10"
   100:
     description: "OCT5-SW-TORS-A VLT LAG"
     state: "up"

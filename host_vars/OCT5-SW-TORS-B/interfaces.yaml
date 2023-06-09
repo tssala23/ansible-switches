@@ -284,7 +284,7 @@ interfaces:
   1/47:
     state: "down"
   1/48:
-    description: "OCT5-SW-TORS-A VLT Heartbeat"
+    description: "OCT5-SW-TORS-A Port 48 VLT Heartbeat"
     state: "up"
     ip4: "10.255.255.2/30"
   1/49:
@@ -296,16 +296,14 @@ interfaces:
   1/50:
     state: "down"
   1/51:
-    description: "OCT5-SW-TORS-A Port #### VLT"
+    description: "OCT5-SW-TORS-A Port 51 VLT"
     state: "up"
-    mtu: 9216
   1/52:
-    description: "OCT5-SW-TORS-A Port #### VLT"
+    description: "OCT5-SW-TORS-A Port 52 VLT"
     state: "up"
-    mtu: 9216
   1/53:
     state: "down"
   1/54:
-    description: "OCT-CORE-2 Port ####"
+    description: "OCT-CORE-2 Port 54"
     state: "up"
     mtu: 9216

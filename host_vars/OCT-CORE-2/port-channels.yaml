@@ -32,6 +32,7 @@ port_channels:
       - 910
       - 911
       - 912
+      - 930
       - 980
     mode: "lacp"
     lacp-rate: "fast"
@@ -87,17 +88,6 @@ port_channels:
       - "1/14"
     custom:
       - "vlt-peer-lag port-channel 60"
-  70:
-    description: "OCT7-SW-TORS LAG"
-    state: "up"
-    tagged: "all"
-    mtu: 9216
-    mode: "lacp"
-    lacp-rate: "fast"
-    interfaces:
-      - "1/15"
-    custom:
-      - "vlt-peer-lag port-channel 70"
   80:
     description: "OCT8-SW-TORS LAG"
     state: "up"
