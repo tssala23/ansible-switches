@@ -1,5 +1,4 @@
 from pprint import pprint
-from deepdiff import DeepDiff
 
 def os9_getFactDict(sw_facts):
     """
@@ -384,21 +383,22 @@ def os9_generateConfig(manifest):
 
     return out
 
-def os9_manifestToAnsible(manifest, negate = False):
-    def traverseLeaves(d, prefix = "", path = [], out = []):
+def os9_manifestToAnsible(manifest):
+    def traverseLeaves(d, path = [], out = []):
         if not isinstance(d, dict) or not d:
-            out.append((path[:-1], f"{prefix}{path[-1]}"))
+            out.append((path[:-1], path[-1]))
         else:
             for k, v in d.items():
-                traverseLeaves(v, prefix, path + [k])
+                traverseLeaves(v, path + [k])
 
         return out
-    
-    prefix = ""
-    if negate:
-        prefix = "no "
 
-    return traverseLeaves(manifest, prefix)
+    if len(manifest) > 0:
+        out_list = traverseLeaves(manifest)
+    else:
+        out_list = []
+
+    return out_list
 
 def os9_getSwConfigDict(sw_facts):
     sw_config = os9_getFactDict(sw_facts)
@@ -416,7 +416,7 @@ def os9_getConfigDict(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
 
     return os9_manifest
 
-def os9_getFanoutConfigDict(sw_facts, intf_dict):
+def os9_getFanoutConfigDict(intf_dict):
     # Get dict of fanout interfaces
     fanout_intf = { k: v for k, v in intf_dict.items() if "fanout" in v }
     out = {}
@@ -440,7 +440,7 @@ def os9_getConfig(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
     return ansible_cfg
 
 def os9_getFanoutConfig(sw_facts, intf_dict):
-    os9_config = os9_getFanoutConfigDict(sw_facts, intf_dict)
+    os9_config = os9_getFanoutConfigDict(intf_dict)
     ansible_cfg = os9_manifestToAnsible(os9_config)
 
     return ansible_cfg
