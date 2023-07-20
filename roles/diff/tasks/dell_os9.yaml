@@ -1,0 +1,21 @@
+---
+# This task creates a dictionary of VLANs created from
+# the global configuration
+- name: Generate VLAN dictionary
+  set_fact:
+    vlan_dict: "{{ vlans | get_vlan_dict(inventory_hostname, group_names) }}"
+
+# Gather the current output of "show running configuration" on the switch
+- name: Gather Current Configuration
+  dellemc.os9.os9_facts:
+    gather_subset:
+      - config
+  register: cur_config
+
+- name: Configuration that exists on the switch but not in the manifest
+  debug:
+    msg: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlan_dict, type='on_switch') }}"
+
+- name: Configuration that exists in the manifest but not on the switch
+  debug:
+    msg: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlan_dict, type='on_manifest') }}"
