@@ -31,7 +31,6 @@
     lines: "{{ item.1 }}"
     parents: "{{ item.0 }}"
   loop: "{{ cur_config | os9_getFanoutConfig(interfaces) }}"
-  notify: "save os9 configuration"
 
 # Update config after fanout change (can't ever be skipped, even if above changed nothing, because than variable will register as error)
 - name: Gather Current Configuration after Fanout Change
@@ -46,4 +45,8 @@
     lines: "{{ item.1 }}"
     parents: "{{ item.0 }}"
   loop: "{{ cur_config | os9_getConfig(interfaces, vlan_interfaces, port_channels, vlan_dict) }}"
-  notify: "save os9 configuration"
+
+# Save config
+- name: Save Switch Configuration
+  dellemc.os9.os9_config:
+    save: true
