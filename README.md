@@ -44,7 +44,7 @@ The following tables list all available fields for interface configuration. L2 c
 | description | Description of the interface        | Any string                |
 | state       | Admin state of interface            | "up" or "down"            |
 | mtu         | MTU of interface                    | Integer with range 1-9216 |
-| managed     | Interface managed mode              | "vlans", "yes", "no"    |
+| managed     | Interface managed mode              | "vlans", "yes", "no"      |
 | custom      | Custom fields in switch conf format | List of strings           |
 
 #### Fanout Fields
@@ -58,11 +58,11 @@ If you enable fanout on a port, **none** of the other fields can be used. Instea
 
 #### L2 Fields
 
-| Field Label | Description                                                            | Possible Values                                                          |
-| ----------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| untagged    | VLAN to untag on this interface                                        | Integer with range 1-4095                                                |
-| tagged      | List of VLANs to tag on this interface                                 | List of integers with range 1-4095, or "all" for all VLANs on the switch |                                                     |
-| stp-edge    | Sets this port to be an STP edge-port in all available STP modes       | true, false                                                              |
+| Field Label | Description                            | Possible Values                                                          |
+| ----------- | -------------------------------------- | ------------------------------------------------------------------------ |
+| untagged    | VLAN to untag on this interface        | Integer with range 1-4095                                                |
+| tagged      | List of VLANs to tag on this interface | List of integers with range 1-4095, or "all" for all VLANs on the switch |  |
+| portmode    | L2 mode of the port                    | "access", "trunk", or "hybrid"                                           |
 
 #### L3 Fields
 
@@ -70,7 +70,6 @@ If you enable fanout on a port, **none** of the other fields can be used. Instea
 | ----------- | ------------------------------- | ----------------------------------- |
 | ip4         | IPv4 address for this interface | [IP]/[Prefix] IPv4 formatted string |
 | ip6         | IPv6 address for this interface | [IP]/[Prefix] IPv6 formatted string |
-| keepalive   | Keepalive status                | "true", "false"                     |
 
 ### VLAN Interfaces
 
