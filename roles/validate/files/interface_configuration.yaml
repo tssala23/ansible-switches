@@ -32,14 +32,12 @@ $defs:
           - type: string
             enum:
               - all
-      managed:
+      portmode:
         type: string
         enum:
-          - "yes"
-          - "no"
-          - vlans
-      stp-edge:
-        type: string
+          - access
+          - trunk
+          - hybrid
       mtu:
         type: integer
         minimum: 594
@@ -60,8 +58,6 @@ $defs:
       ip4:
         type: string
       ip6:
-        type: string
-      keepalive:
         type: string
       custom:
         type: array

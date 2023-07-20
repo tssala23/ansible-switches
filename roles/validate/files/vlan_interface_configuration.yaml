@@ -26,8 +26,6 @@ $defs:
         type: string
       ip6:
         type: string
-      keepalive:
-        type: string
       custom:
         type: array
         items:
