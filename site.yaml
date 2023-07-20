@@ -1,8 +1,0 @@
----
-- name: Main site playbook
-  hosts: all
-  connection: network_cli
-  tasks:
-    - name: Include common role
-      ansible.builtin.include_role:
-        name: common
