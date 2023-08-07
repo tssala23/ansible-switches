@@ -3,7 +3,7 @@ interfaces:
     description: "OCT9-FPGA3 FPGA 1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -11,7 +11,7 @@ interfaces:
     description: "OCT9-FPGA3 FPGA 2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -19,7 +19,7 @@ interfaces:
     description: "OCT9-FPGA4 FPGA 1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -27,7 +27,7 @@ interfaces:
     description: "OCT9-FPGA4 FPGA 2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -35,7 +35,7 @@ interfaces:
     description: "OCT9-FPGA5 FPGA 1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -43,7 +43,7 @@ interfaces:
     description: "OCT9-FPGA5 FPGA 2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -51,7 +51,7 @@ interfaces:
     description: "OCT9-FPGA6 FPGA 1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -59,7 +59,7 @@ interfaces:
     description: "OCT9-FPGA6 FPGA 2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -67,7 +67,7 @@ interfaces:
     description: "OCT9-FPGA7 FPGA 1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -75,7 +75,7 @@ interfaces:
     description: "OCT9-FPGA7 FPGA 2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -83,7 +83,7 @@ interfaces:
     description: "OCT9-FPGA8 FPGA 1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -91,7 +91,7 @@ interfaces:
     description: "OCT9-FPGA8 FPGA 2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -99,7 +99,7 @@ interfaces:
     description: "OCT9-FPGA1 FPGA 1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -107,7 +107,7 @@ interfaces:
     description: "OCT9-FPGA1 FPGA 2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -115,7 +115,7 @@ interfaces:
     description: "OCT9-FPGA2 FPGA 1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -123,7 +123,7 @@ interfaces:
     description: "OCT9-FPGA2 FPGA 2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
     custom:
       - "no fec enable"
       - "no intf-type cr4 autoneg"
@@ -142,7 +142,7 @@ interfaces:
     description: "OCT9-FPGA2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/22:
     fanout: "single"
     fanout_speed: "40G"
@@ -150,7 +150,7 @@ interfaces:
     description: "OCT9-FPGA1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/23:
     fanout: "single"
     fanout_speed: "40G"
@@ -158,7 +158,7 @@ interfaces:
     description: "OCT9-FPGA8"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/24:
     fanout: "single"
     fanout_speed: "40G"
@@ -166,7 +166,7 @@ interfaces:
     description: "OCT9-FPGA7"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/25:
     fanout: "single"
     fanout_speed: "40G"
@@ -174,7 +174,7 @@ interfaces:
     description: "OCT9-FPGA6"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/26:
     fanout: "single"
     fanout_speed: "40G"
@@ -182,7 +182,7 @@ interfaces:
     description: "OCT9-FPGA5"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/27:
     fanout: "single"
     fanout_speed: "40G"
@@ -190,7 +190,7 @@ interfaces:
     description: "OCT9-FPGA4"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/28:
     fanout: "single"
     fanout_speed: "40G"
@@ -198,7 +198,7 @@ interfaces:
     description: "OCT9-FPGA3"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/29:
     state: "down"
   1/30:
@@ -213,7 +213,7 @@ interfaces:
     description: "FPGA-BUILD1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/34:
     description: "OCT9-SW-HYB"
     state: "up"

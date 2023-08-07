@@ -44,7 +44,6 @@ The following tables list all available fields for interface configuration. L2 c
 | description | Description of the interface        | Any string                |
 | state       | Admin state of interface            | "up" or "down"            |
 | mtu         | MTU of interface                    | Integer with range 1-9216 |
-| managed     | Interface managed mode              | "vlans", "yes", "no"      |
 | custom      | Custom fields in switch conf format | List of strings           |
 
 #### Fanout Fields

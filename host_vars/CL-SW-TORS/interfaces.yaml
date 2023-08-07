@@ -3,27 +3,27 @@ interfaces:
     description: "CL-MASS-1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/2:
     description: "CL-MASS-2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/3:
     description: "CL-MASS-3"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/4:
     description: "CL-MASS-4"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/5:
     description: "CL-MASS-5"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/6:
     state: "down"
   1/7:

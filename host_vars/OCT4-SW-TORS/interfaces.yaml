@@ -1,64 +1,34 @@
 interfaces:
   1/1:
     description: "OCT4-17"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/2:
     description: "OCT4-16"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/3:
     description: "OCT4-15"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/4:
     description: "OCT4-14"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/5:
     description: "OCT4-13"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/6:
     description: "OCT4-12"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/7:
     description: "OCT4-11"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/8:
     description: "OCT4-10"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/9:
     description: "OCT4-9"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/10:
     description: "OCT4-8"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/11:
     description: "OCT4-7"
     state: "up"
     mtu: 9216
-    managed: "yes"
+    untagged: 3803
+    tagged:
+      - 920
+      - 921
   1/12:
     description: "OCT4-6"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/13:
     description: "OCT4-5"
     state: "up"
@@ -94,9 +64,6 @@ interfaces:
       - 911
   1/16:
     description: "OCT4-2"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/17:
     description: "OCT4-1"
     state: "up"
@@ -108,7 +75,7 @@ interfaces:
       - 623
       - 911
       - 3801
-    managed: "vlans"
+    portmode: "hybrid"
   1/18:
     description: "OCT4-0"
     state: "up"
@@ -129,14 +96,8 @@ interfaces:
       - 623
   1/21:
     description: "OCT4-1 2nd"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/22:
     description: "OCT4-2 2nd"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/23:
     state: "down"
   1/24:
@@ -169,84 +130,36 @@ interfaces:
     state: "down"
   1/33:
     description: "OCT4-CHA3-1A"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/34:
     description: "OCT4-CHA3-1B"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/35:
     description: "OCT4-CHA3-1C"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/36:
     description: "OCT4-CHA3-1D"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/37:
     description: "OCT4-CHA3-3A"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/38:
     description: "OCT4-CHA3-3B"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/39:
     description: "OCT4-CHA3-3C"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/40:
     description: "OCT4-CHA3-3D"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/41:
     description: "OCT4-CHA4-1A"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/42:
     description: "OCT4-CHA4-1B"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/43:
     description: "OCT4-CHA4-1C"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/44:
     description: "OCT4-CHA4-1D"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/45:
     description: "OCT4-CHA4-3A"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/46:
     description: "OCT4-CHA4-3B"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/47:
     description: "OCT4-CHA4-3C"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/48:
     description: "OCT4-CHA4-3D"
-    state: "up"
-    mtu: 9216
-    managed: "yes"
   1/49:
     fanout: "quad"
     fanout_speed: "10G"
