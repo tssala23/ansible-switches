@@ -227,8 +227,12 @@ vlans:
     name: "OCT-SWMGMT"
     description: "Switch management network for OCT"
     switches:
-      - oct_core
       - oct_mgmt
+      - OCT-CORE-3
+      - OCT-CORE-4
+      - OCT9-SW-TORS-A
+      - OCT9-SW-TORS-B
+      - OCT9-SW-HYB
   931:
     name: "CHAMELEON-OBM"
     description: "Chameleon management network"

@@ -3,6 +3,7 @@ port_channels:
     description: "OCT-CORE-2 LAG"
     state: "up"
     tagged: "all"
+    switchport: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"

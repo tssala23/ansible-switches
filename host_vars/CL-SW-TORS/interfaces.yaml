@@ -3,27 +3,27 @@ interfaces:
     description: "CL-MASS-1"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/2:
     description: "CL-MASS-2"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/3:
     description: "CL-MASS-3"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/4:
     description: "CL-MASS-4"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/5:
     description: "CL-MASS-5"
     state: "up"
     mtu: 9216
-    managed: "vlans"
+    portmode: "hybrid"
   1/6:
     state: "down"
   1/7:
@@ -54,22 +54,27 @@ interfaces:
     description: "CL-MASS-1-MGMT"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/18:
     description: "CL-MASS-2-MGMT"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/19:
     description: "CL-MASS-3-MGMT"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/20:
     description: "CL-MASS-4-MGMT"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/21:
     description: "CL-MASS-5-MGMT"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/22:
     state: "down"
   1/23:
@@ -99,22 +104,27 @@ interfaces:
     description: "CL-MASS-1-CTRL"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/34:
     description: "CL-MASS-2-CTRL"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/35:
     description: "CL-MASS-3-CTRL"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/36:
     description: "CL-MASS-4-CTRL"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/37:
     description: "CL-MASS-5-CTRL"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/38:
     state: "down"
   1/39:

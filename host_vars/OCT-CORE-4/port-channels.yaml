@@ -3,6 +3,7 @@ port_channels:
     description: "OCT-CORE-1 and OCT-CORE-2 Core LAG"
     state: "up"
     tagged: "all"
+    switchport: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -24,6 +25,7 @@ port_channels:
     tagged:
       - 300
       - 301
+    switchport: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -43,5 +45,6 @@ port_channels:
       - 911
       - 912
       - 930
+    switchport: "trunk"
     custom:
       - "vlt-peer-lag port-channel 300"
