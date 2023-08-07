@@ -260,7 +260,7 @@ def os9_generateConfig(manifest):
             out[name][line] = {}
 
         return out
-    
+
     def ProcessPortmode(name, fields, out = {}):
         if "portmode" not in fields: return out
 
@@ -309,7 +309,7 @@ def os9_generateConfig(manifest):
             os9_line = f"ip address {fields['ip4']}"
         else:
             os9_line = "no ip address"
-        
+
         out[name][os9_line] = {}
 
         return out
@@ -331,7 +331,7 @@ def os9_generateConfig(manifest):
 
         os9_line = f"{prefix}lacp fast-switchover"
         out[name][os9_line] = {}
-        
+
         return out
 
     def ProcessLAGInterfaces(name, fields, out = {}):
