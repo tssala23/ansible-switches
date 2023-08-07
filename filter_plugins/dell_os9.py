@@ -209,7 +209,7 @@ def os9_convertNames(sw_config, intf_dict, vlan_dict, po_dict, vlan_names):
             if os9_name not in vlan_dict:
                 print(f"Warning: VLAN interface {vlan_intf} does not have a corresponding VLAN description")
                 continue
-            
+
             out[os9_name] = vlan_dict[vlan_intf]
 
     # Process Port Channel Interface Manifest
@@ -219,7 +219,7 @@ def os9_convertNames(sw_config, intf_dict, vlan_dict, po_dict, vlan_names):
             os9_member_names = [ GetIntfClass(i) for i in po_dict[po_intf]["interfaces"] ]
             out[os9_name] = po_dict[po_intf]
             out[os9_name]["interfaces"] = os9_member_names
-        
+
     return out
 
 def os9_generateConfig(manifest):
@@ -235,7 +235,7 @@ def os9_generateConfig(manifest):
         out[name][os9_line] = {}
 
         return out
-    
+
     def ProcessState(name, fields, out = {}):
         prefix = ""
         if "state" in fields and fields["state"] == "up": prefix = "no "
@@ -244,7 +244,7 @@ def os9_generateConfig(manifest):
         out[name][os9_line] = {}
 
         return out
-    
+
     def ProcessMTU(name, fields, out = {}):
         if "mtu" not in fields: return out
 
@@ -252,7 +252,7 @@ def os9_generateConfig(manifest):
         out[name][os9_line] = {}
 
         return out
-    
+
     def ProcessCustom(name, fields, out = {}):
         if "custom" not in fields: return out
 
@@ -313,7 +313,7 @@ def os9_generateConfig(manifest):
         out[name][os9_line] = {}
 
         return out
-    
+
     def ProcessIP6(name, fields, out = {}):
         if "ip6" not in fields: return out
 
@@ -321,7 +321,7 @@ def os9_generateConfig(manifest):
         out[name][os9_line] = {}
 
         return out
-    
+
     # Port Channel Handlers
     def ProcessLACPRate(name, fields, out = {}):
         if "lacp-rate" not in fields: return out
@@ -350,7 +350,7 @@ def os9_generateConfig(manifest):
                 out[intf]["port-channel-protocol LACP"][os9_line] = {}
 
         return out
-    
+
     # VLAN name handlers
     def ProcessName(name, fields, out = {}):
         if "name" not in fields: return out
