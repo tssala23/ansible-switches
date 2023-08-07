@@ -1,8 +1,7 @@
 ---
-- name: Validate configuration
+- name: Validate Configuration
   hosts: all
   gather_facts: false
-  tags: [validate]
 
   # Abort the playbook if any host fails validation
   any_errors_fatal: true

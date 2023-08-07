@@ -1,8 +1,8 @@
 ---
-- name: Main site playbook
+- name: Diff checker for switch config
   hosts: all
   connection: network_cli
   tasks:
-    - name: Include common role
+    - name: Include Diff Role
       ansible.builtin.include_role:
-        name: common
+        name: diff

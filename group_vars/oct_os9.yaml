@@ -1,6 +1,3 @@
 # yamllint disable
 ---
-oct_dell_secret: "{{ lookup('amazon.aws.aws_secret', 'net/oct/dell') }}"
-ansible_ssh_user: "{{ oct_dell_secret['user'] }}"
-ansible_ssh_pass: "{{ oct_dell_secret['pass'] }}"
-ansible_become_pass: "{{ ansible_ssh_pass }}"
+sw_secret: "{{ lookup('amazon.aws.aws_secret', 'net/oct/dell') }}"

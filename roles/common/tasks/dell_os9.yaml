@@ -1,10 +1,9 @@
 ---
-# Gather the current output of "show running configuration" on the switch
-- name: Gather current configuration
-  dellemc.os9.os9_facts:
-    gather_subset:
-      - config
-  register: cur_config
+- name: Define OS9 credentials from AWS securet
+  set_fact:
+    ansible_ssh_user: "{{ sw_secret['user'] }}"
+    ansible_ssh_pass: "{{ sw_secret['pass'] }}"
+    ansible_become_pass: "{{ sw_secret['pass'] }}"
 
 # This task creates a dictionary of VLANs created from
 # the global configuration
@@ -13,31 +12,41 @@
     vlan_dict: "{{ vlans | get_vlan_dict(inventory_hostname, group_names) }}"
 
 # Set the hostname of the switch to the value in the hosts file
-- name: Set hostname
+- name: Set Hostname
   dellemc.os9.os9_config:
     lines:
       - hostname {{ inventory_hostname }}
   notify: "save os9 configuration"
+
+# Gather the current output of "show running configuration" on the switch
+- name: Gather Current Configuration
+  dellemc.os9.os9_facts:
+    gather_subset:
+      - config
+  register: cur_config
 
 # Fanout is done separately since it changes the interface config
 - name: Apply Fanout Configuration
   dellemc.os9.os9_config:
     lines: "{{ item.1 }}"
     parents: "{{ item.0 }}"
-  loop: "{{ cur_config | os9_getFanoutConfiguration(interfaces) }}"
-  notify: "save os9 configuration"
+  loop: "{{ cur_config | os9_getFanoutConfig(interfaces) }}"
 
 # Update config after fanout change (can't ever be skipped, even if above changed nothing, because than variable will register as error)
-- name: Update current configuration after fanout changes
+- name: Gather Current Configuration after Fanout Change
   dellemc.os9.os9_facts:
     gather_subset:
       - config
   register: cur_config
 
 # This task reads the host vars and updates configuration
-- name: Apply Host Configuration
+- name: Apply Configuration
   dellemc.os9.os9_config:
     lines: "{{ item.1 }}"
     parents: "{{ item.0 }}"
-  loop: "{{ cur_config | os9_getConfiguration(interfaces, vlan_interfaces, port_channels, vlan_dict) }}"
-  notify: "save os9 configuration"
+  loop: "{{ cur_config | os9_getConfig(interfaces, vlan_interfaces, port_channels, vlan_dict) }}"
+
+# Save config
+- name: Save Switch Configuration
+  dellemc.os9.os9_config:
+    save: true
