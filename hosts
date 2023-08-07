@@ -12,7 +12,6 @@ OCT-MCORE-2      ansible_host=10.80.1.12
 CL-SW-TORS      ansible-host=10.80.2.1
 OCT1-SW-TORS    ansible_host=10.80.2.11
 OCT2-SW-TORS    ansible_host=10.80.2.21
-OCT3-SW-TORS    ansible_host=10.80.2.31
 OCT4-SW-TORS    ansible_host=10.80.2.41
 OCT5-SW-TORS-A  ansible_host=10.80.2.51
 OCT5-SW-TORS-B  ansible_host=10.80.2.52

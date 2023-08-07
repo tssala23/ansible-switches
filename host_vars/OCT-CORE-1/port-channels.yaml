@@ -3,6 +3,7 @@ port_channels:
     description: "OCT-CORE-3 and OCT-CORE-4 Core LAG"
     state: "up"
     tagged: "all"
+    switchport: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -15,6 +16,7 @@ port_channels:
     description: "MOC Brocade Fabric LAG"
     state: "up"
     tagged: "all"
+    switchport: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -34,6 +36,7 @@ port_channels:
       - 912
       - 930
       - 980
+    switchport: "trunk"
     mode: "lacp"
     lacp-rate: "fast"
     interfaces:
@@ -59,6 +62,7 @@ port_channels:
       - 3107
       - 3108
       - 3109
+    switchport: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -70,6 +74,7 @@ port_channels:
     description: "OCT5-SW-TORS-A and OCT5-SW-TORS-B LAG"
     state: "up"
     tagged: "all"
+    switchport: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -81,6 +86,7 @@ port_channels:
     description: "OCT6-SW-TORS LAG"
     state: "up"
     tagged: "all"
+    switchport: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -92,6 +98,7 @@ port_channels:
     description: "OCT8-SW-TORS LAG"
     state: "up"
     tagged: "all"
+    switchport: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -114,6 +121,7 @@ port_channels:
       - 3801
       - 3802
       - 3803
+    switchport: "hybrid"
     mode: "lacp"
     lacp-rate: "fast"
     interfaces:

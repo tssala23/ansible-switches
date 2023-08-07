@@ -3,70 +3,87 @@ interfaces:
     description: "pc154-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/2:
     description: "pc155-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/3:
     description: "pc156-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/4:
     description: "pc157-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/5:
     description: "pc158-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/6:
     description: "pc159-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/7:
     description: "pc151-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/8:
     description: "pc153-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/9:
     description: "pc160-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/10:
     description: "pc161-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/11:
     description: "pc162-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/12:
     description: "pc163-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/13:
     description: "pc164-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/14:
     description: "pc165-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/15:
     description: "pc166-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/16:
     description: "pc167-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/17:
     description: "pc168-ipmi"
     state: "up"
     untagged: 910
+    switchport: "access"
   1/18:
     state: "down"
   1/19:
@@ -85,70 +102,87 @@ interfaces:
     description: "pc154-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/26:
     description: "pc155-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/27:
     description: "pc156-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/28:
     description: "pc157-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/29:
     description: "pc158-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/30:
     description: "pc159-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/31:
     description: "pc151-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/32:
     description: "pc153-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/33:
     description: "pc160-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/34:
     description: "pc161-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/35:
     description: "pc162-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/36:
     description: "pc163-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/37:
     description: "pc164-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/38:
     description: "pc165-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/39:
     description: "pc166-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/40:
     description: "pc167-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/41:
     description: "pc168-ctrl"
     state: "up"
     untagged: 84
+    switchport: "access"
   1/42:
     state: "down"
   1/43:

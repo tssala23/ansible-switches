@@ -4,191 +4,229 @@ interfaces:
     state: "up"
     mtu: 9216
     untagged: 3803
+    switchport: "access"
   1/2:
     description: "OCT5-U2"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/3:
     description: "OCT5-U3"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/4:
     description: "OCT5-U4"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/5:
     description: "OCT5-U5"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/6:
     description: "OCT5-U6"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/7:
     description: "OCT5-U7"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/8:
     description: "OCT5-U8"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/9:
     description: "OCT5-U9"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/10:
     description: "OCT5-U10"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/11:
     description: "OCT5-U11"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/12:
     description: "OCT5-U12"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/13:
     description: "OCT5-U13"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/14:
     description: "OCT5-U14"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/15:
     description: "OCT5-U15"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/16:
     description: "OCT5-U16"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/17:
     description: "OCT5-U17"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/18:
     description: "OCT5-U18"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/19:
     description: "OCT5-U19"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/20:
     description: "OCT5-U20"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/21:
     description: "OCT5-U21"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/22:
     description: "OCT5-U22"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/23:
     description: "OCT5-U23"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/24:
     description: "OCT5-U24"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/25:
     description: "OCT5-U25"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/26:
     description: "OCT5-U26"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/27:
     description: "OCT5-U27"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/28:
     description: "OCT5-U28"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/29:
     description: "OCT5-U29"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/30:
     description: "OCT5-U30"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/31:
     description: "OCT5-U31"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/32:
     description: "OCT5-U32"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/33:
     description: "OCT5-U33"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/34:
     description: "OCT5-U34"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/35:
     description: "OCT5-U35"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/36:
     description: "OCT5-U36"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/37:
     description: "OCT5-U37"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/38:
     description: "OCT5-U38"
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/39:
     state: "down"
   1/40:

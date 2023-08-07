@@ -8,6 +8,7 @@ interfaces:
     untagged: 209
     tagged:
       - 250
+    switchport: "hybrid"
     mtu: 9216
   1/1/2:
     description: "OCP-CTRL-U35-R"
@@ -15,6 +16,7 @@ interfaces:
     untagged: 209
     tagged:
       - 250
+    switchport: "hybrid"
     mtu: 9216
   1/1/3:
     description: "OCP-CTRL-U34-R"
@@ -22,6 +24,7 @@ interfaces:
     untagged: 209
     tagged:
       - 250
+    switchport: "hybrid"
     mtu: 9216
   1/1/4:
     description: "OCP-CTRL-U33-R"
@@ -40,6 +43,7 @@ interfaces:
     state: "up"
     mtu: 9216
     untagged: 10
+    switchport: "access"
   1/2/4:
     state: "down"
   1/3:
