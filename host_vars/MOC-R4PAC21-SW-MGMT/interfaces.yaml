@@ -1,0 +1,170 @@
+interfaces:
+  1/1:
+    description: "U1-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/2:
+    description: "U3-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/3:
+    description: "U5-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/4:
+    description: "U7-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/5:
+    description: "U9-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/6:
+    description: "U11-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/7:
+    description: "U13-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/8:
+    description: "U15-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/9:
+    description: "U17-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/10:
+    description: "U19-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/11:
+    description: "U21-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/12:
+    description: "U23-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/13:
+    description: "U25-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/14:
+    description: "U27-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/15:
+    description: "U29-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/16:
+    description: "U31-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/17:
+    description: "U33-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/18:
+    description: "U35-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/19:
+    description: "U37-CMC"
+    state: "up"
+    portmode: "access"
+    untagged: 911
+  1/20:
+    state: "down"
+  1/21:
+    state: "down"
+  1/22:
+    state: "down"
+  1/23:
+    state: "down"
+  1/24:
+    state: "down"
+  1/25:
+    state: "down"
+  1/26:
+    state: "down"
+  1/27:
+    state: "down"
+  1/28:
+    state: "down"
+  1/29:
+    state: "down"
+  1/30:
+    state: "down"
+  1/31:
+    state: "down"
+  1/32:
+    state: "down"
+  1/33:
+    state: "down"
+  1/34:
+    state: "down"
+  1/35:
+    state: "down"
+  1/36:
+    state: "down"
+  1/37:
+    state: "down"
+  1/38:
+    state: "down"
+  1/39:
+    state: "down"
+  1/40:
+    state: "down"
+  1/41:
+    state: "down"
+  1/42:
+    state: "down"
+  1/43:
+    state: "down"
+  1/44:
+    state: "down"
+  1/45:
+    state: "down"
+  1/46:
+    state: "down"
+  1/47:
+    description: "MOC-R4PAC21-SW-TORS-A mgmt"
+    state: "up"
+    portmode: "access"
+    untagged: 930
+  1/48:
+    description: "MOC-R4PAC21-SW-TORS-B mgmt"
+    state: "up"
+    portmode: "access"
+    untagged: 930
+  1/49:
+    state: "down"
+  1/50:
+    state: "down"
+  1/51:
+    description: "Po1 Member MOC-R4PAC21-SW-TORS-A"
+    state: "up"
+  1/52:
+    description: "Po1 Member MOC-R4PAC21-SW-TORS-B"
+    state: "up"

@@ -1,0 +1,268 @@
+interfaces:
+  1/1:
+    fanout: "quad"
+    fanout_speed: "25G"
+  1/1/1:
+    description: "U1-S1-P1"
+    state: "down"
+  1/1/2:
+    description: "U1-S3-P1"
+    state: "down"
+  1/1/3:
+    description: "U3-S1-P1"
+    state: "up"
+  1/1/4:
+    description: "U3-S3-P1"
+    state: "up"
+  1/2:
+    fanout: "quad"
+    fanout_speed: "25G"
+  1/2/1:
+    description: "U5-S1-P1"
+    state: "up"
+  1/2/2:
+    description: "U5-S3-P1"
+    state: "up"
+  1/2/3:
+    description: "U7-S1-P1"
+    state: "up"
+  1/2/4:
+    description: "U7-S3-P1"
+    state: "up"
+  1/3:
+    fanout: "quad"
+    fanout_speed: "25G"
+  1/3/1:
+    description: "U9-S1-P1"
+    state: "up"
+  1/3/2:
+    description: "U9-S3-P1"
+    state: "up"
+  1/3/3:
+    description: "U11-S1-P1"
+    state: "up"
+  1/3/4:
+    description: "U11-S3-P1"
+    state: "up"
+  1/4:
+    fanout: "quad"
+    fanout_speed: "25G"
+  1/4/1:
+    description: "U13-S1-P1"
+    state: "up"
+  1/4/2:
+    description: "U13-S3-P1"
+    state: "up"
+  1/4/3:
+    description: "U15-S1-P1"
+    state: "up"
+  1/4/4:
+    description: "U15-S3-P1"
+    state: "up"
+  1/5:
+    fanout: "quad"
+    fanout_speed: "25G"
+  1/5/1:
+    description: "U17-S1-P1"
+    state: "up"
+  1/5/2:
+    description: "U17-S3-P1"
+    state: "up"
+  1/5/3:
+    description: "U19-S1-P1"
+    state: "up"
+  1/5/4:
+    description: "U19-S3-P1"
+    state: "up"
+  1/6:
+    fanout: "quad"
+    fanout_speed: "25G"
+  1/6/1:
+    description: "U21-S1-P1"
+    state: "up"
+  1/6/2:
+    description: "U21-S3-P1"
+    state: "up"
+  1/6/3:
+    description: "U23-S1-P1"
+    state: "up"
+  1/6/4:
+    description: "U23-S3-P1"
+    state: "up"
+  1/7:
+    fanout: "quad"
+    fanout_speed: "25G"
+  1/7/1:
+    description: "U25-S1-P1"
+    state: "up"
+  1/7/2:
+    description: "U25-S3-P1"
+    state: "up"
+  1/7/3:
+    description: "U27-S1-P1"
+    state: "up"
+  1/7/4:
+    description: "U27-S3-P1"
+    state: "up"
+  1/8:
+    fanout: "quad"
+    fanout_speed: "25G"
+  1/8/1:
+    description: "U29-S1-P1"
+    state: "up"
+  1/8/2:
+    description: "U29-S3-P1"
+    state: "up"
+  1/8/3:
+    state: "down"
+  1/8/4:
+    state: "down"
+  1/9:
+    fanout: "quad"
+    fanout_speed: "10G"
+  1/9/1:
+    description: "U31-S1A-P1"
+    state: "up"
+  1/9/2:
+    description: "U31-S1B-P1"
+    state: "up"
+  1/9/3:
+    description: "U31-S1C-P1"
+    state: "up"
+  1/9/4:
+    description: "U31-S1D-P1"
+    state: "up"
+  1/10:
+    fanout: "quad"
+    fanout_speed: "10G"
+  1/10/1:
+    description: "U31-S3A-P1"
+    state: "up"
+  1/10/2:
+    description: "U31-S3B-P1"
+    state: "up"
+  1/10/3:
+    description: "U31-S3C-P1"
+    state: "up"
+  1/10/4:
+    description: "U31-S3D-P1"
+    state: "up"
+  1/11:
+    fanout: "quad"
+    fanout_speed: "10G"
+  1/11/1:
+    description: "U33-S1A-P1"
+    state: "up"
+  1/11/2:
+    description: "U33-S1B-P1"
+    state: "up"
+  1/11/3:
+    description: "U33-S1C-P1"
+    state: "up"
+  1/11/4:
+    description: "U33-S1D-P1"
+    state: "up"
+  1/12:
+    fanout: "quad"
+    fanout_speed: "10G"
+  1/12/1:
+    description: "U33-S3A-P1"
+    state: "up"
+  1/12/2:
+    description: "U33-S3B-P1"
+    state: "up"
+  1/12/3:
+    description: "U33-S3C-P1"
+    state: "up"
+  1/12/4:
+    description: "U33-S3D-P1"
+    state: "up"
+  1/13:
+    fanout: "quad"
+    fanout_speed: "10G"
+  1/13/1:
+    description: "U35-S1A-P1"
+  1/13/2:
+    description: "U35-S1B-P1"
+  1/13/3:
+    description: "U35-S1C-P1"
+  1/13/4:
+    description: "U35-S1D-P1"
+  1/14:
+    fanout: "quad"
+    fanout_speed: "10G"
+  1/14/1:
+    description: "U35-S3A-P1"
+  1/14/2:
+    description: "U35-S3B-P1"
+  1/14/3:
+    description: "U35-S3C-P1"
+  1/14/4:
+    description: "U35-S3D-P1"
+  1/15:
+    fanout: "quad"
+    fanout_speed: "10G"
+  1/15/1:
+    description: "U37-S1A-P1"
+  1/15/2:
+    description: "U37-S1B-P1"
+  1/15/3:
+    description: "U37-S1C-P1"
+  1/15/4:
+    description: "U37-S1D-P1"
+  1/16:
+    fanout: "quad"
+    fanout_speed: "10G"
+  1/16/1:
+    description: "U37-S3A-P1"
+  1/16/2:
+    description: "U37-S3B-P1"
+  1/16/3:
+    description: "U37-S3C-P1"
+  1/16/4:
+    description: "U37-S3D-P1"
+  1/17:
+    state: "down"
+  1/18:
+    state: "down"
+  1/19:
+    state: "down"
+  1/20:
+    state: "down"
+  1/21:
+    state: "down"
+  1/22:
+    state: "down"
+  1/23:
+    state: "down"
+  1/24:
+    state: "down"
+  1/25:
+    state: "down"
+  1/26:
+    state: "down"
+  1/27:
+    state: "down"
+  1/28:
+    state: "down"
+  1/29:
+    description: "Uplink to MOC-R4PAC02-SW-TORS"
+    state: "up"
+    portmode: "trunk"
+    tagged: "all"
+    mtu: 9216
+  1/30:
+    state: "down"
+  1/31:
+    description: "VLT Link 1"
+    state: "up"
+  1/32:
+    description: "VLT Link 2"
+    state: "up"
+  1/33:
+    description: "VLT Heartbeat Link"
+    state: "up"
+    ip4: "10.255.255.1/30"
+  1/34:
+    description: "Po1 Member - MOC-R4PAC21-SW-MGMT"
+    state: "up"
