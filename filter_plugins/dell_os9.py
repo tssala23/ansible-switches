@@ -167,13 +167,20 @@ def os9_extendConfigDict(sw_config):
             out[name] = handleLines(fields.keys(), ["channel-member"], sw_config)
         elif name.startswith("interface"):
             out[name] = fields
+        elif name.startswith("stack-unit 1 port"):
+            out[name] = fields
 
     return out
 
 def os9_convertNames(sw_config, intf_dict, vlan_dict, po_dict, vlan_names):
     def GetIntfClass(name):
-        intf_conf = [ i.split(" ") for i in sw_config if name in i.split(" ") ][0]
-        return f"{intf_conf[1]} {name}"
+        intf_conf = [ i.split(" ") for i in sw_config if name in i.split(" ") ]
+
+        if len(intf_conf) == 0:
+            # Interface not found - could be a fanout interface that doesn't exist yet
+            return f"<UNKNOWNTYPE> {name}"
+        
+        return f"{intf_conf[0][1]} {name}"
 
     out = {}
 
@@ -206,7 +213,7 @@ def os9_convertNames(sw_config, intf_dict, vlan_dict, po_dict, vlan_names):
         for vlan_intf in vlan_dict.keys():
             os9_name = f"Vlan {vlan_intf}"
 
-            if os9_name not in vlan_dict:
+            if os9_name not in out:
                 print(f"Warning: VLAN interface {vlan_intf} does not have a corresponding VLAN description")
                 continue
 
@@ -270,7 +277,6 @@ def os9_generateConfig(manifest):
             out[name]["switchport"] = {}
 
         if fields["portmode"] == "hybrid":
-            #! Should this get rid of portmode hybrid too?
             out[name]["portmode hybrid"] = {}
 
         return out
@@ -290,14 +296,11 @@ def os9_generateConfig(manifest):
     def ProcessTagged(name, fields, out = {}):
         if "tagged" not in fields: return out
 
-        if fields["tagged"] == "all":
-            vlan_list = range(1,4095)
-        else:
-            vlan_list = fields["tagged"]
+        vlan_list = fields["tagged"]
 
         for vlan in vlan_list:
             os9_vlan_name = f"Vlan {vlan}"
-            if os9_vlan_name not in out: continue
+            if os9_vlan_name not in out: out[os9_vlan_name] = {}
 
             os9_line = f"tagged {name}"
             out[os9_vlan_name][os9_line] = {}
@@ -340,7 +343,7 @@ def os9_generateConfig(manifest):
 
         for intf in fields["interfaces"]:
             if fields["mode"] == "normal":
-                os9_line = f"channel-member {name}"
+                os9_line = f"channel-member {intf}"
                 out[name][os9_line] = {}
             elif fields["mode"] == "lacp":
                 if intf not in out: out[intf] = {}
@@ -389,6 +392,8 @@ def os9_manifestToAnsible(manifest):
             out.append((path[:-1], path[-1]))
         else:
             for k, v in d.items():
+                if k.startswith("stack-unit"): k = k + " no-confirm"
+
                 traverseLeaves(v, path + [k])
 
         return out
@@ -397,6 +402,8 @@ def os9_manifestToAnsible(manifest):
         out_list = traverseLeaves(manifest)
     else:
         out_list = []
+
+    out_list.sort(key=lambda x: x[0][0].startswith("interface Vlan") if len(x[0]) > 0 else False)
 
     return out_list
 
@@ -459,7 +466,7 @@ def os9_getConfigDiff(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names, type 
         return diff
 
     os9_manifest = os9_getConfigDict(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names)
-    os9_fanout = os9_getFanoutConfigDict(sw_facts, intf_dict)
+    os9_fanout = os9_getFanoutConfigDict(intf_dict)
 
     os9_manifest.update(os9_fanout)
 
