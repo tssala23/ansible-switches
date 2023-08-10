@@ -246,10 +246,15 @@ interfaces:
   1/28:
     state: "down"
   1/29:
+    fanout: "single"
+    fanout_speed: "40G"
+  1/29/1:
     description: "Uplink to MOC-R4PAC02-SW-TORS"
     state: "up"
     portmode: "trunk"
-    tagged: "all"
+    tagged:
+      - 930
+      - 911
     mtu: 9216
   1/30:
     state: "down"

@@ -1,4 +1,4 @@
 vlan_interfaces:
   930:
     state: "up"
-    ip4: "10.30.3.15/20"
+    ip4: "10.80.3.15/20"

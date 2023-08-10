@@ -12,3 +12,11 @@ port_channels:
       - "1/34"
     custom:
       - "vlt-peer-lag port-channel 1"
+  100:
+    description: "VLT Link"
+    state: "up"
+    mode: "normal"
+    mtu: 9216
+    interfaces:
+      - "1/31"
+      - "1/32"

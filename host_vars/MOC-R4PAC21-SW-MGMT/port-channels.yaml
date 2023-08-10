@@ -9,5 +9,5 @@ port_channels:
     mode: "lacp"
     lacp-rate: "fast"
     interfaces:
-      - "1/53"
-      - "1/54"
+      - "1/51"
+      - "1/52"
