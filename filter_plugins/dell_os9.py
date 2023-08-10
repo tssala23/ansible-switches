@@ -179,7 +179,7 @@ def os9_convertNames(sw_config, intf_dict, vlan_dict, po_dict, vlan_names):
         if len(intf_conf) == 0:
             # Interface not found - could be a fanout interface that doesn't exist yet
             return f"<UNKNOWNTYPE> {name}"
-        
+
         return f"{intf_conf[0][1]} {name}"
 
     out = {}
