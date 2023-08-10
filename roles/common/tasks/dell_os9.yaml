@@ -5,18 +5,17 @@
     ansible_ssh_pass: "{{ sw_secret['pass'] }}"
     ansible_become_pass: "{{ sw_secret['pass'] }}"
 
-# This task creates a dictionary of VLANs created from
-# the global configuration
-- name: Generate VLAN dictionary
-  set_fact:
-    vlan_dict: "{{ vlans | get_vlan_dict(inventory_hostname, group_names) }}"
+# Set Connection Parameters
+- name: Set Conn Parameters
+  dellemc.os9.os9_config:
+    lines:
+      - ip ssh connection-rate-limit 60
 
 # Set the hostname of the switch to the value in the hosts file
 - name: Set Hostname
   dellemc.os9.os9_config:
     lines:
       - hostname {{ inventory_hostname }}
-  notify: "save os9 configuration"
 
 # Gather the current output of "show running configuration" on the switch
 - name: Gather Current Configuration
@@ -44,7 +43,7 @@
   dellemc.os9.os9_config:
     lines: "{{ item.1 }}"
     parents: "{{ item.0 }}"
-  loop: "{{ cur_config | os9_getConfig(interfaces, vlan_interfaces, port_channels, vlan_dict) }}"
+  loop: "{{ cur_config | os9_getConfig(interfaces, vlan_interfaces, port_channels, vlans) }}"
 
 # Save config
 - name: Save Switch Configuration

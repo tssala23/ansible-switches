@@ -1,0 +1,13 @@
+port_channels:
+  1:
+    description: "MOC-R4PAC21-SW-TORS LAG"
+    state: "up"
+    tagged:
+      - 911
+      - 930
+    portmode: "trunk"
+    mode: "lacp"
+    lacp-rate: "fast"
+    interfaces:
+      - "1/51"
+      - "1/52"

@@ -111,18 +111,12 @@ vlans:
   100:
     name: "VLAN 100"
     description: "This is the description of example vlan 100"
-    switches:
-      - oct_tors
   101:
     name: "VLAN 101"
     description: "This is the description of example vlan 101"
-    switches:
-      - oct_tors
   102:
     name: "VLAN 102"
     description: "hello world"
-    switches:
-      - oct_tors
 ```
 
 The following fields are available for each VLAN:
@@ -131,9 +125,6 @@ The following fields are available for each VLAN:
 | ----------- | ---------------------------------------------------- | ------------------------------------------ |
 | name        | Name of VLAN                                         | Short string                               |
 | description | Description of VLAN                                  | Any string                                 |
-| switches    | Switches and groups that the VLAN should be added to | List of ansible groups or switch hostnames |
-
-**NOTE** VLANs are created on each switch defined here, however, they are not assigned to anything. That must be done in the interface configuration.
 
 ## Switch Configuration
 
@@ -145,4 +136,3 @@ Switches will need some manual configuration before being able to be set up from
 1. Set the ssh user `username admin password <DEFAULT_OS9_PASSWD>`
 1. Enable ssh server `ip ssh server enable`
 1. Set the access IP (usually `managementethernet 1/1`)
-1. Set SSH rate limit `ip ssh connection-rate-limit 60`

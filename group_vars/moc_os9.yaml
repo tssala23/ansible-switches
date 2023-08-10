@@ -1,0 +1,3 @@
+# yamllint disable
+---
+sw_secret: "{{ lookup('amazon.aws.aws_secret', 'net/moc/dell') }}"
