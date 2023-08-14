@@ -184,47 +184,42 @@ def os9_convertNames(sw_config, intf_dict, vlan_dict, po_dict, vlan_names):
 
     out = {}
 
-    # Process Interface Manifest
+    #
+    # Convert Interface Manifest
+    #
     if intf_dict is not None:
-        for intf in intf_dict.keys():
-            if "fanout" in intf_dict[intf]:
+        for intf,fields in intf_dict.items():
+            if "fanout" in fields:
                 # Don't include fanout interfaces
                 continue
 
             os9_name = GetIntfClass(intf)
-            out[os9_name] = intf_dict[intf]
+            out[os9_name] = fields
 
-            # convert vlans
-            if "untagged" in intf_dict[intf]:
-                out[os9_name]["untagged"] = f"Vlan {intf_dict[intf]['untagged']}"
-
-            if "tagged" in intf_dict[intf]:
-                out[os9_name]["tagged"] = []
-                for tagged_vlan in intf_dict[intf]["tagged"]:
-                    out[os9_name]["tagged"].append(f"Vlan {tagged_vlan}")
-
-    # Process VLAN Interface Manifest
+    #
+    # Convert VLAN Names Manifest
+    #
     if vlan_names is not None:
         for vlan in vlan_names.keys():
             os9_name = f"Vlan {vlan}"
             out[os9_name] = vlan_names[vlan]
 
+    #
+    # Convert VLAN Interfaces Manifest
+    #
     if vlan_dict is not None:
         for vlan_intf in vlan_dict.keys():
             os9_name = f"Vlan {vlan_intf}"
-
-            if os9_name not in out:
-                print(f"Warning: VLAN interface {vlan_intf} does not have a corresponding VLAN description")
-                continue
-
             out[os9_name] = vlan_dict[vlan_intf]
 
-    # Process Port Channel Interface Manifest
+    #
+    # Convert Port-Channel Manifest
+    #
     if po_dict is not None:
-        for po_intf in po_dict.keys():
+        for po_intf,fields in po_dict.items():
             os9_name = f"Port-channel {po_intf}"
-            os9_member_names = [ GetIntfClass(i) for i in po_dict[po_intf]["interfaces"] ]
-            out[os9_name] = po_dict[po_intf]
+            os9_member_names = [ GetIntfClass(i) for i in fields["interfaces"] ]
+            out[os9_name] = fields
             out[os9_name]["interfaces"] = os9_member_names
 
     return out
