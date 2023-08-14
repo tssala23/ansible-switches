@@ -253,8 +253,8 @@ interfaces:
     state: "up"
     portmode: "trunk"
     tagged:
-      - 930
       - 911
+      - 930
     mtu: 9216
   1/30:
     state: "down"
