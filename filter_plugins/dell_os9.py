@@ -481,7 +481,7 @@ def os9_getConfigDiff(
         type = "on_switch",
         return_ansible = False
         ):
-    
+
     sw_config = os9_getSwConfigDict(sw_facts)
 
     if cfg_type == "config":

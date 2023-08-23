@@ -2,4 +2,3 @@ vlan_interfaces:
   207:
     state: "up"
     ip4: "10.1.0.101/24"
-
