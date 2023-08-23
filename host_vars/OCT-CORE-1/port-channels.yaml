@@ -2,8 +2,48 @@ port_channels:
   10:
     description: "OCT-CORE-3 and OCT-CORE-4 Core LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # CSAIL
+      - 10
+      # UMA Public IPs
+      - 57
+      - 84
+      - 86
+      # MOC Public IPs
+      - 105
+      - 127
+      # MOC
+      - 207
+      - 208
+      - 213
+      - 250
+      # Unity
+      - 300
+      # ESI
+      - 351:499
+      - 520:622
+      - 623
+      - 624:630
+      # MGMT
+      - 911
+      - 913
+      # UMA NESE
+      - 950
+      # AL2S VLANs
+      - 3100
+      - 3101
+      - 3102
+      - 3103
+      - 3104
+      - 3105
+      - 3106
+      - 3107
+      - 3108
+      - 3109
+      # CSAIL
+      - 3801
+      - 3803
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -15,8 +55,31 @@ port_channels:
   11:
     description: "MOC Brocade Fabric LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # CSAIL
+      - 10
+      # MOC Public IPs
+      - 105
+      - 127
+      # MOC
+      - 207
+      - 208
+      - 209
+      - 213
+      - 250
+      # ESI
+      - 351:499
+      - 520:622
+      - 623
+      - 624:630
+      # MGMT
+      - 911
+      - 913
+      # CSAIL
+      - 3801
+      - 3802
+      - 3803
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -28,15 +91,18 @@ port_channels:
     description: "OCT-MCORE-1 LAG"
     state: "up"
     tagged:
+      # UMA Public IPs
       - 84
+      # MOC
       - 207
+      # Unity
       - 301
+      # MGMT
       - 910
       - 911
       - 912
       - 930
-      - 980
-    switchport: "trunk"
+    portmode: "trunk"
     mode: "lacp"
     lacp-rate: "fast"
     interfaces:
@@ -47,11 +113,13 @@ port_channels:
     description: "UMA-NESE-Core LAG"
     state: "up"
     tagged:
+      # MOC
       - 211
+      # Unity
       - 300
-      - 910
+      # UMA NESE
       - 950
-      - 2500
+      # AL2S VLANs
       - 3100
       - 3101
       - 3102
@@ -62,7 +130,7 @@ port_channels:
       - 3107
       - 3108
       - 3109
-    switchport: "trunk"
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -73,8 +141,15 @@ port_channels:
   50:
     description: "OCT5-SW-TORS-A and OCT5-SW-TORS-B LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # CSAIL
+      - 10
+      # MOC
+      - 209
+      - 250
+      # CSAIL
+      - 3803
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -82,30 +157,6 @@ port_channels:
       - "1/13"
     custom:
       - "vlt-peer-lag port-channel 50"
-  60:
-    description: "OCT6-SW-TORS LAG"
-    state: "up"
-    tagged: "all"
-    switchport: "trunk"
-    mtu: 9216
-    mode: "lacp"
-    lacp-rate: "fast"
-    interfaces:
-      - "1/14"
-    custom:
-      - "vlt-peer-lag port-channel 60"
-  80:
-    description: "OCT8-SW-TORS LAG"
-    state: "up"
-    tagged: "all"
-    switchport: "trunk"
-    mtu: 9216
-    mode: "lacp"
-    lacp-rate: "fast"
-    interfaces:
-      - "1/16"
-    custom:
-      - "vlt-peer-lag port-channel 80"
   100:
     description: "OCT-CORE-2 VLT LAG"
     state: "up"
@@ -118,10 +169,11 @@ port_channels:
     state: "up"
     untagged: 10
     tagged:
+      # CSAIL
       - 3801
       - 3802
       - 3803
-    switchport: "hybrid"
+    portmode: "hybrid"
     mode: "lacp"
     lacp-rate: "fast"
     interfaces:

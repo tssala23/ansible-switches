@@ -27,7 +27,7 @@ interfaces:
     tagged:
       - 920
       - 921
-    switchport: "hybrid"
+    portmode: "hybrid"
   1/12:
     description: "OCT4-6"
   1/13:
@@ -41,7 +41,7 @@ interfaces:
       - 623
       - 911
       - 3801
-    switchport: "hybrid"
+    portmode: "hybrid"
   1/14:
     description: "OCT4-4"
     state: "up"
@@ -53,17 +53,13 @@ interfaces:
       - 623
       - 911
       - 3801
-    switchport: "hybrid"
+    portmode: "hybrid"
   1/15:
     description: "OCT4-3"
     state: "up"
     mtu: 9216
     untagged: 208
-    tagged:
-      - 213
-      - 250
-      - 911
-    switchport: "hybrid"
+    portmode: "access"
   1/16:
     description: "OCT4-2"
   1/17:
@@ -87,7 +83,7 @@ interfaces:
       - 207
       - 213
       - 911
-    switchport: "hybrid"
+    portmode: "hybrid"
   1/19:
     state: "down"
   1/20:
@@ -97,7 +93,7 @@ interfaces:
     untagged: 208
     tagged:
       - 623
-    switchport: "hybrid"
+    portmode: "hybrid"
   1/21:
     description: "OCT4-1 2nd"
     state: "up"
@@ -105,7 +101,7 @@ interfaces:
     untagged: 127
     tagged:
       - 207
-    switchport: "hybrid"
+    portmode: "hybrid"
   1/22:
     description: "OCT4-2 2nd"
   1/23:
@@ -117,7 +113,7 @@ interfaces:
     untagged: 127
     tagged:
       - 207
-    switchport: "hybrid"
+    portmode: "hybrid"
   1/25:
     description: "OCT4-5 2nd"
     state: "up"
@@ -125,7 +121,7 @@ interfaces:
     untagged: 127
     tagged:
       - 207
-    switchport: "hybrid"
+    portmode: "hybrid"
   1/26:
     state: "down"
   1/27:
@@ -183,25 +179,25 @@ interfaces:
     tagged:
       - 290
       - 913
-    switchport: "hybrid"
+    portmode: "hybrid"
   1/49/2:
     description: "OCT4-CHA1-01B"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/49/3:
     description: "OCT4-CHA1-01C"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/49/4:
     description: "OCT4-CHA1-01D"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/50:
     fanout: "quad"
     fanout_speed: "10G"
@@ -210,25 +206,25 @@ interfaces:
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/50/2:
     description: "OCT4-CHA1-03B"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/50/3:
     description: "OCT4-CHA1-03C"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/50/4:
     description: "OCT4-CHA1-03D"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/51:
     fanout: "quad"
     fanout_speed: "10G"
@@ -237,25 +233,25 @@ interfaces:
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/51/2:
     description: "OCT4-CHA2-01B"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/51/3:
     description: "OCT4-CHA2-01C"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/51/4:
     description: "OCT4-CHA2-01D"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/52:
     fanout: "quad"
     fanout_speed: "10G"
@@ -264,25 +260,25 @@ interfaces:
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/52/2:
     description: "OCT4-CHA2-03B"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/52/3:
     description: "OCT4-CHA2-03C"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/52/4:
     description: "OCT4-CHA2-03D"
     state: "up"
     mtu: 9216
     untagged: 290
-    switchport: "access"
+    portmode: "access"
   1/53:
     description: "OCT-CORE-3 Port #### Po1"
     state: "up"

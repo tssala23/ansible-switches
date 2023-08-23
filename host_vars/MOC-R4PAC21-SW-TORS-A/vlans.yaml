@@ -1,1 +1,4 @@
 vlan_interfaces:
+  911:
+    state: "up"
+    ip4: "10.2.10.1/19"
