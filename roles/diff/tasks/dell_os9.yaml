@@ -12,10 +12,18 @@
       - config
   register: cur_config
 
+- name: Fanout configuration that exists on the switch but not in the manifest
+  debug:
+    msg: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlans, 'fanout', 'on_switch') }}"
+
+- name: Fanout configuration that exists in the manifest but not on the switch
+  debug:
+    msg: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlans, 'fanout', 'on_manifest') }}"
+
 - name: Configuration that exists on the switch but not in the manifest
   debug:
-    msg: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlans, type='on_switch') }}"
+    msg: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlans, 'config', 'on_switch') }}"
 
 - name: Configuration that exists in the manifest but not on the switch
   debug:
-    msg: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlans, type='on_manifest') }}"
+    msg: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlans, 'config', 'on_manifest') }}"

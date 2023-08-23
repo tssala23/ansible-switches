@@ -240,7 +240,9 @@ def os9_generateConfig(manifest):
 
     def ProcessState(name, fields, out = {}):
         prefix = ""
-        if "state" in fields and fields["state"] == "up": prefix = "no "
+        if "state" not in fields: return out
+
+        if fields["state"] == "up": prefix = "no "
 
         os9_line = f"{prefix}shutdown"
         out[name][os9_line] = {}
@@ -281,10 +283,11 @@ def os9_generateConfig(manifest):
 
         vlan = fields["untagged"]
 
-        if vlan not in out: out[vlan] = {}
+        os9_vlan_name = f"Vlan {vlan}"
+        if os9_vlan_name not in out: out[os9_vlan_name] = {}
 
         os9_line = f"untagged {name}"
-        out[vlan][os9_line] = {}
+        out[os9_vlan_name][os9_line] = {}
 
         return out
 
@@ -294,11 +297,20 @@ def os9_generateConfig(manifest):
         vlan_list = fields["tagged"]
 
         for vlan in vlan_list:
-            os9_vlan_name = f"Vlan {vlan}"
-            if os9_vlan_name not in out: out[os9_vlan_name] = {}
+            vlan = str(vlan)
+            if ":" in vlan:
+                # process range
+                vlan_parts = vlan.split(":")
+                cur_vlan_list = range(int(vlan_parts[0]), int(vlan_parts[1]) + 1)
+            else:
+                cur_vlan_list = [vlan]
 
-            os9_line = f"tagged {name}"
-            out[os9_vlan_name][os9_line] = {}
+            for cur_vlan in cur_vlan_list:
+                os9_vlan_name = f"Vlan {cur_vlan}"
+                if os9_vlan_name not in out: out[os9_vlan_name] = {}
+
+                os9_line = f"tagged {name}"
+                out[os9_vlan_name][os9_line] = {}
 
         return out
 
@@ -447,30 +459,45 @@ def os9_getFanoutConfig(sw_facts, intf_dict):
 
     return ansible_cfg
 
-def os9_getConfigDiff(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names, type = "on_switch"):
-    def dict_diff(dict1, dict2):
-        diff = {}
-        for key, value in dict2.items():
-            if key not in dict1:
-                diff[key] = value
-            elif isinstance(value, dict) and isinstance(dict1[key], dict):
-                nested_diff = dict_diff(dict1[key], value)
-                if nested_diff:
-                    diff[key] = nested_diff
+def dict_diff(dict1, dict2):
+    diff = {}
+    for key, value in dict2.items():
+        if key not in dict1:
+            diff[key] = value
+        elif isinstance(value, dict) and isinstance(dict1[key], dict):
+            nested_diff = dict_diff(dict1[key], value)
+            if nested_diff:
+                diff[key] = nested_diff
 
-        return diff
+    return diff
 
-    os9_manifest = os9_getConfigDict(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names)
-    os9_fanout = os9_getFanoutConfigDict(intf_dict)
-
-    os9_manifest.update(os9_fanout)
-
+def os9_getConfigDiff(
+        sw_facts,
+        intf_dict,
+        vlan_dict,
+        po_dict,
+        vlan_names,
+        cfg_type = "config",
+        type = "on_switch",
+        return_ansible = False
+        ):
+    
     sw_config = os9_getSwConfigDict(sw_facts)
+
+    if cfg_type == "config":
+        os9_manifest = os9_getConfigDict(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names)
+        sw_config = {k: v for k, v in sw_config.items() if not k.startswith("stack-unit 1 port")}
+    elif cfg_type == "fanout":
+        os9_manifest = os9_getFanoutConfigDict(intf_dict)
+        sw_config = {k: v for k, v in sw_config.items() if k.startswith("stack-unit 1 port")}
 
     if type == "on_switch":
         diff = dict_diff(os9_manifest, sw_config)
     elif type == "on_manifest":
         diff = dict_diff(sw_config, os9_manifest)
+
+    if return_ansible:
+        diff = os9_manifestToAnsible(diff)
 
     return diff
 
