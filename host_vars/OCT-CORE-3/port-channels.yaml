@@ -2,8 +2,13 @@ port_channels:
   1:
     description: "CL-SW-TORS LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # UMA Public IPs
+      - 84
+      # MGMT
+      - 910
+      - 930
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -13,8 +18,10 @@ port_channels:
   2:
     description: "OCT1-SW-TORS LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # UMA Public IPs
+      - 84
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -24,30 +31,44 @@ port_channels:
   3:
     description: "OCT2-SW-TORS LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # UMA Public IPs
+      - 84
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
     interfaces:
       - "1/7/1"
       - "1/8/1"
-  4:
-    description: "OCT3-SW-TORS LAG"
-    state: "up"
-    tagged: "all"
-    switchport: "trunk"
-    mtu: 9216
-    mode: "lacp"
-    lacp-rate: "fast"
-    interfaces:
-      - "1/9/1"
-      - "1/10/1"
   5:
     description: "OCT4-SW-TORS LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # CSAIL
+      - 10
+      # MOC Public IPs
+      - 127
+      # MOC
+      - 207
+      - 208
+      - 213
+      - 250
+      # ESI
+      - 351:499
+      - 520:622
+      - 623
+      - 624:630
+      # MGMT
+      - 911
+      - 913
+      # CloudLab Testing
+      - 920
+      - 921
+      # CSAIL
+      - 3801
+      - 3803
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -57,8 +78,13 @@ port_channels:
   6:
     description: "OCT9-SW-TORS-A LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # UMA Public IPs
+      - 84
+      # MGMT
+      - 910
+      - 930
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -67,8 +93,13 @@ port_channels:
   7:
     description: "OCT9-SW-TORS-B LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # UMA Public IPs
+      - 84
+      # MGMT
+      - 910
+      - 930
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -77,8 +108,48 @@ port_channels:
   10:
     description: "OCT-CORE-1 and OCT-CORE-2 Core LAG"
     state: "up"
-    tagged: "all"
-    switchport: "trunk"
+    tagged:
+      # CSAIL
+      - 10
+      # UMA Public IPs
+      - 57
+      - 84
+      - 86
+      # MOC Public IPs
+      - 105
+      - 127
+      # MOC
+      - 207
+      - 208
+      - 213
+      - 250
+      # Unity
+      - 300
+      # ESI
+      - 351:499
+      - 520:622
+      - 623
+      - 624:630
+      # MGMT
+      - 911
+      - 913
+      # UMA NESE
+      - 950
+      # AL2S VLANs
+      - 3100
+      - 3101
+      - 3102
+      - 3103
+      - 3104
+      - 3105
+      - 3106
+      - 3107
+      - 3108
+      - 3109
+      # CSAIL
+      - 3801
+      - 3803
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -91,6 +162,7 @@ port_channels:
     description: "OCT-CORE-4 VLT LAG"
     state: "up"
     mode: "normal"
+    mtu: 9216
     interfaces:
       - "1/27"
       - "1/28"
@@ -98,9 +170,10 @@ port_channels:
     description: "UNITY-CORE-1 LAG"
     state: "up"
     tagged:
+      # UNITY
       - 300
       - 301
-    switchport: "trunk"
+    portmode: "trunk"
     mtu: 9216
     mode: "lacp"
     lacp-rate: "fast"
@@ -116,10 +189,12 @@ port_channels:
     interfaces:
       - "1/33"
     tagged:
+      # MGMT
       - 910
       - 911
       - 912
+      - 913
       - 930
-    switchport: "trunk"
+    portmode: "trunk"
     custom:
       - "vlt-peer-lag port-channel 300"
