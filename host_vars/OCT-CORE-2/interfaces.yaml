@@ -28,16 +28,31 @@ interfaces:
     mtu: 9216
   1/1/4:
     description: "OCP-CTRL-U33-R"
-    state: "down"
+    state: "up"
+    mtu: 9216
+    untagged: 214
+    tagged:
+      - 911
+      - 207
   1/2:
     fanout: "quad"
     fanout_speed: "10G"
   1/2/1:
-    description: "OCP-CTRL-U32-R"
-    state: "down"
+    description: "ESI-CTRL-U32-R"
+    mtu: 9216
+    state: "up"
+    untagged: 214
+    tagged:
+      - 911
+      - 207
   1/2/2:
-    description: "OCP-CTRL-U31-R"
-    state: "down"
+    description: "ESI-CTRL-U31-R"
+    state: "up"
+    mtu: 9216
+    untagged: 214
+    tagged:
+      - 911
+      - 207
   1/2/3:
     description: "ALANLIU-L"
     state: "up"
