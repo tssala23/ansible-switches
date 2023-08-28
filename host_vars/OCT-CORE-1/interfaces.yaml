@@ -21,7 +21,7 @@ interfaces:
     portmode: "access"
     mtu: 9216
   1/1/4:
-    description: "ESI-CTRL-U33L"
+    description: "ESI-CTRL-U33-L"
     state: "up"
     untagged: 127
     tagged:
@@ -33,7 +33,7 @@ interfaces:
     fanout: "quad"
     fanout_speed: "25G"
   1/2/1:
-    description: "ESI-CTRL-U32L"
+    description: "ESI-CTRL-U32-L"
     state: "up"
     untagged: 127
     tagged:
@@ -42,7 +42,7 @@ interfaces:
     portmode: "hybrid"
     mtu: 9216
   1/2/2:
-    description: "ESI-CTRL-U31L"
+    description: "ESI-CTRL-U31-L"
     state: "up"
     untagged: 127
     tagged:
