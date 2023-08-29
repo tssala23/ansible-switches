@@ -30,6 +30,7 @@ interfaces:
     description: "ESI-CTRL-U33-R"
     state: "up"
     mtu: 9216
+    portmode: "hybrid"
     untagged: 214
     tagged:
       - 911
@@ -41,6 +42,7 @@ interfaces:
     description: "ESI-CTRL-U32-R"
     mtu: 9216
     state: "up"
+    portmode: "hybrid"
     untagged: 214
     tagged:
       - 911
@@ -49,6 +51,7 @@ interfaces:
     description: "ESI-CTRL-U31-R"
     state: "up"
     mtu: 9216
+    portmode: "hybrid"
     untagged: 214
     tagged:
       - 911
