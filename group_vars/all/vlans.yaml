@@ -56,6 +56,9 @@ vlans:
   213:
     name: "MOC-PROD-CEPH-ISCSI"
     description: "Ceph Cluster iSCSI"
+  214:
+    name: "MOC-NEW-ESI"
+    description: "New ESI deployment"
   249:
     name: "CEPH-INTERNAL"
     description: "Ceph Cluster (internal)"
