@@ -938,27 +938,57 @@ vlans:
   1004:
     name: "KUMO-INTRANET"
     description: "Intranet (routable to internet). SNMP for client nodes."
-  2470:
-    name: "NERC-FLOATING-201"
-    description: "*eth4: floating ip (vlan 201) - tenant public IPs"
-  2471:
-    name: "NERC-EXTERNAL-200"
-    description: "*eth3: external network (vlan 200) - public API / endpoints"
-  2472:
-    name: "NERC-INTERNAL-101"
-    description: "eth0.101: internal api (vlan 101) - internal to node"
-  2473:
-    name: "NERC-PRIVATE-102"
-    description: "eth0.102: tenant private (vlan 102) - VMs sit here private network/VXLAN"
-  2476:
-    name: "NERC-ADMIN-100"
-    description: "NERC-Admin network 1->eth0:provisioning network(vlan 100)-deploying images/DHCP> PAT out"
-  2477:
-    name: "NERC-OBM"
-    description: "NERC - OBM/MGMT Network 1 -> eth1: management/ipmi - undercloud to DRAC/BMC 10.255"
-  2478:
-    name: "NERC-STORAGE-103"
-    description: "eth2: storage (vlan 103) - ceph/jumboframe 10.255"
+  2141:
+    name: "NERC-Openstack-FloatingIP"
+    description: "Floating IPs for NERC openstack 199.94.60.0/24"
+  2142:
+    name: "NERC-Openstack-Ext-Cntrl"
+    description: "NERC External Controller IPs 140.247.152.0/27"
+  2143:
+    name: "NERC-Openstack-L2-1"
+    description: "NERC Openstack L2 Internal 1 172.18.0.0/23"
+  2144:
+    name: "NERC-Openstack-L2-2"
+    description: "NERC Openstack L2 Internal 2 172.18.4.0/23"
+  2145:
+    name: "NERC-Openstack-Admin-1"
+    description: "NERC Openstack Admin Network 1 10.255.0.0/24"
+  2146:
+    name: "NERC-Openstack-OBM-1"
+    description: "NERC Openstack OBM Network 1 10.255.1.0/24"
+  2147:
+    name: "NERC-Openstack-CEPH-Backend"
+    description: "NERC Openstack CEPH Backend 10.255.2.0/24"
+  2148:
+    name: "NERC-Openstack-VR-Egress"
+    description: "NERC Openstack Virtual Router Egress 10.255.3.0/24"
+  2170:
+    name: "NERC-Openshift-OBM-2"
+    description: "NERC Openshift OBM Network 2 10.30.0.0/22"
+  2171:
+    name: "NERC-Openshift-Dev-Mgmt"
+    description: "NERC Openshift Device Management 10.30.4.0/24"
+  2172:
+    name: "NERC-Openshift-Prod-Frontend"
+    description: "NERC Openshift Prod Frontend 10.30.6.0/23"
+  2173:
+    name: "NERC-Openshift-Prod-Backend"
+    description: "NERC Openshift Prod Storage Backend 10.30.10.0/23"
+  2174:
+    name: "NERC-Openshift-Test-Frontend"
+    description: "NERC Openshift Test Frontend 10.30.8.0/24"
+  2175:
+    name: "NERC-Openshift-Test-Backend"
+    description: "NERC Openshift Test Storage Backend 10.30.12.0/24"
+  2176:
+    name: "NERC-Openshift-Infra-Frontend"
+    description: "NERC Openshift Infra Frontend 10.30.9.0/24"
+  2177:
+    name: "NERC-Openshift-Infra-Backend"
+    description: "NERC Openshift Infra Storage Backend 10.30.13.0/24"
+  2180:
+    name: "NERC-Openshift-PublicIP"
+    description: "NERC Openshift Public Access Network 199.94.63.0/28"
   3100:
     name: "AL2S-3100"
     description: "AL2S VLAN 3100 for Fabric"
