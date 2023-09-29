@@ -268,13 +268,13 @@ def os9_generateConfig(manifest):
     def ProcessPortmode(name, fields, out = {}):
         if "portmode" not in fields: return out
 
+        if fields["portmode"] == "hybrid":
+            out[name]["portmode hybrid"] = {}
+
         if fields["portmode"] == "access" \
             or fields["portmode"] == "trunk" \
             or fields["portmode"] == "hybrid":
             out[name]["switchport"] = {}
-
-        if fields["portmode"] == "hybrid":
-            out[name]["portmode hybrid"] = {}
 
         return out
 
