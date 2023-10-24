@@ -46,6 +46,12 @@ oct_tors_ctrl
 [oct_os9:children]
 oct
 
+[moc_core]
+MOC-CORE-1 ansible_host=10.80.1.21
+MOC-CORE-2 ansible_host=10.80.1.22
+MOC-CORE-3 ansible_host=10.80.1.23
+MOC-CORE-4 ansible_host=10.80.1.24
+
 [moc_tors]
 MOC-R4PAC21-SW-TORS-A ansible_host=10.80.3.11
 MOC-R4PAC21-SW-TORS-B ansible_host=10.80.3.12
@@ -54,10 +60,12 @@ MOC-R4PAC21-SW-TORS-B ansible_host=10.80.3.12
 MOC-R4PAC21-SW-MGMT ansible_host=10.80.3.15
 
 [moc_os9:children]
+moc_core
 moc_tors
 moc_tors_mgmt
 
 [moc:children]
+moc_core
 moc_tors
 moc_tors_mgmt
 
