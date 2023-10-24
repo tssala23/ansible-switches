@@ -1,9 +1,0 @@
----
-- name: Deployment Playbook
-  hosts: all
-  connection: network_cli
-  gather_facts: false
-  vars:
-    diff_only: true
-  roles:
-    - common
