@@ -49,14 +49,16 @@ The following tables list all available fields for interface configuration. L2 c
 
 #### Fanout Fields
 
-**Fanouts are disabled for now, use the switch CLI to make fanouts**
-
 If you enable fanout on a port, **none** of the other fields can be used. Instead, make subport configurations.
 
-| Field Label  | Description          | Possible Values                  |
-| ------------ | -------------------- | -------------------------------- |
-| fanout       | Fanout configuration | "single", "dual", or "quad"      |
-| fanout_speed | Fanout speed         | In the format ##G, such as "10G" |
+Example:
+
+```
+fanout: {
+  type: "quad",
+  speed: "10G"
+}
+```
 
 #### L2 Fields
 

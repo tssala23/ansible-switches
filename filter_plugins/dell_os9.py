@@ -1,17 +1,19 @@
+import re
+
 physical_interface_types = [
     "gigabitethernet",
     "tengigabitethernet",
-    "twentyFiveGigE",
-    "fortyGigE",
-    "hundredGigE"
+    "twentyfivegige",
+    "fortygige",
+    "hundredgige"
 ]
 
 vlan_interface_types = [
-    "Vlan"
+    "vlan"
 ]
 
 lag_interface_types = [
-    "Port-channel"
+    "port-channel"
 ]
 
 def OS9_PARSEINTFRANGE(s, sw_config):
@@ -124,7 +126,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
         cur_line = ""
         for line in sw_config:
             line_str = line.strip()
-            if line_str.startswith(tuple(search_keys)):
+            if line_str.lower().startswith(tuple(search_keys)):
                 cur_line = line
             elif line_str.startswith("interface") and cur_line != "":
                 cur_line = ""
@@ -717,10 +719,10 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
 
         if default_port:
             intf_type = intf_label.split(" ")[0]
-            if intf_type in physical_interface_types:
+            if intf_type.lower() in physical_interface_types:
                 # this is a physical interface
                 output.insert(0, f"default interface {intf_label}")
-            elif intf_type in lag_interface_types:
+            elif intf_type.lower() in lag_interface_types:
                 # this is a port channel, so it just needs to be delete
                 output.insert(0, f"no interface {intf_label}")
 
@@ -728,6 +730,67 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
 
 def OS9_GETFANOUT(sw_config, intf):
     out = []
+
+    return out
+
+def OS9_FANOUTCFG(sw_config, manifest):
+    """
+    This method will create OS9 commands for fanout interfaces
+
+    :param sw_config: Switch configuration
+    :type sw_config: str
+    :param manifest: YAML manifest
+    :type manifest: dict
+    :return: List of OS9 commands
+    :rtype: list
+    """
+
+    conf_lines = sw_config["ansible_facts"]["ansible_net_config"].splitlines()
+    conf_lines = OS9_GETEXTENDEDCFG(conf_lines)
+
+    out = []
+
+    manifest_stackunits = []  # hold existing stuff for 2nd for loop
+
+    # Add fanouts that need to be added
+    for intf,items in manifest.items():
+        if "fanout" in items:
+            # this is a fanout interface
+            fanout_speed = items["fanout"]["speed"]
+            fanout_type = items["fanout"]["type"]
+            port_num = intf.split("/")[-1]
+
+            conf_line = f"stack-unit 1 port {port_num} portmode {fanout_type} speed {fanout_speed}"
+            manifest_stackunits.append(f"{conf_line}")
+
+            if conf_line not in conf_lines:
+                parent_port_num = f"1/{port_num}"
+                search_pattern = rf'^interface .*{re.escape(parent_port_num)}$'
+                search_matches = [line for line in conf_lines if re.match(search_pattern, line)]
+                parent_port_label = " ".join(search_matches[0].split(" ")[1:])
+
+                out.append(f"default interface {parent_port_label}")
+                out.append(f"{conf_line} no-confirm")
+
+    # Remove fanouts that need to be removed
+    for line in [s for s in conf_lines if s.startswith("stack-unit 1 port")]:
+        # loop through existing stack-units
+        if line in manifest_stackunits:
+            # supposed to be there
+            continue
+
+        line_parts = line.split(" ")
+        port_num = line_parts[3]
+
+        search_pattern = rf'^interface .*1/{port_num}/\d$'
+        search_matches = [match_line for match_line in conf_lines if re.match(search_pattern, match_line)]
+
+        for child_intf in search_matches:
+            out.append(f"default {child_intf}")
+
+        conf_line_index = line.find("speed")
+        conf_line = line[:conf_line_index - 1]
+        out.append(f"no {conf_line} no-confirm")
 
     return out
 
@@ -758,7 +821,7 @@ def OS9_CLEANINTF(sw_config, manifest, vlans):
             # skip default vlan
             continue
 
-        if line.startswith(tuple(search_keys)):
+        if line.lower().startswith(tuple(search_keys)):
             line_parts = line.split(" ")
             intf_type = line_parts[1]
             intf_num = line_parts[-1]
@@ -837,5 +900,6 @@ class FilterModule(object):
     def filters(self):
         return {
             "OS9_GETCONFIG": OS9_GETCONFIG,
-            "OS9_CLEANINTF": OS9_CLEANINTF
+            "OS9_CLEANINTF": OS9_CLEANINTF,
+            "OS9_FANOUTCFG": OS9_FANOUTCFG
         }
