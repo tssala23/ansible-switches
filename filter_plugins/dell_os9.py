@@ -479,20 +479,21 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
 
         out = []
 
+        if "tagged" in man_fields:
+            tagged_vllist = getTaggedVlanList(man_fields["tagged"])
+
         if not default_port:
             # no need to clean vlans if interface is being defaulted
             existing_vlan_list = os9_searchconfig(sw_config, vlan_interface_types, ["tagged"], intf_label, (1,3))
 
             for existing_vlan in existing_vlan_list:
                 vlan_id = existing_vlan.split(" ")[-1]
-                if not ("tagged" in man_fields and man_fields["tagged"] == int(vlan_id)):
+                if not vlan_id in tagged_vllist:
                     out.append(f"interface {existing_vlan}")
                     conf_line = f"no tagged {intf_label}"
                     out.append(conf_line)
 
         if "tagged" in man_fields:
-            tagged_vllist = getTaggedVlanList(man_fields["tagged"])
-
             for cur_vlan in tagged_vllist:
                 vlan_intf_label = f"Vlan {str(cur_vlan)}"
 
@@ -644,7 +645,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
                 if conf_line not in running_fields or default_port:
                     out.append(conf_line)
             
-        if "lacp fast-switchover" in running_fields and not default_port:
+        elif "lacp fast-switchover" in running_fields and not default_port:
             out.append("no lacp fast-switchover")
 
         return out
@@ -666,7 +667,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
         out = []
 
         if "mlag" in man_fields:
-            conf_line = f"vlt-peer-lag {man_fields['mlag']}"
+            conf_line = f"vlt-peer-lag {man_fields['mlag'].lower()}"
             if conf_line not in running_fields or default_port:
                 out.append(conf_line)
   
@@ -763,10 +764,10 @@ def OS9_CLEANINTF(sw_config, manifest, vlans):
             intf_num = line_parts[-1]
             intf_label = " ".join(line_parts[1:])
 
-            delete_intf = (intf_type == "Vlan" and intf_num not in vlans) or \
-                          (intf_type == "Port-channel" and intf_label not in manifest)
-            
-            if delete_intf:
+            not_manifest_vlan = intf_type == "Vlan" and int(intf_num) not in vlans
+            not_manifest_lag = intf_type == "Port-channel" and intf_label not in manifest
+
+            if not_manifest_vlan or not_manifest_lag:
                 out.append(f"no {line}")
 
     return out
@@ -794,8 +795,8 @@ def OS9_GETCONFIG(sw_config, intf, vlans):
     out = []
 
     for key,fields in manifest.items():
-        if "managed" in fields and "managed" == "yes":
-            # Don't create managed vlans
+        if "managed" in fields and fields["managed"] == "yes":
+            # Don't edit managed interfaces
             continue
 
         if "fanout" in fields:
