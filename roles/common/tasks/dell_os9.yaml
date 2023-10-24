@@ -24,6 +24,20 @@
       - config
   register: cur_config
 
+- name: Apply Fanout Configuration
+  dellemc.os9.os9_config:
+    lines:
+      - "{{ item }}"
+    match: none
+  loop: "{{ cur_config | OS9_FANOUTCFG(interfaces) }}"
+
+# Gather the current output of "show running configuration" on the switch
+- name: Gather Current Configuration after Fanout Change
+  dellemc.os9.os9_facts:
+    gather_subset:
+      - config
+  register: cur_config
+
 - name: Apply Manifest Configuration
   dellemc.os9.os9_config:
     lines: "{{ item }}"
@@ -33,9 +47,10 @@
 
 - name: Clean Deleted Interfaces
   dellemc.os9.os9_config:
-    lines: "{{ cur_config | OS9_CLEANINTF(interfaces, vlans) }}"
-    replace: block
+    lines:
+      - "{{ item }}"
     match: none
+  loop: "{{ cur_config | OS9_CLEANINTF(interfaces, vlans) }}"
 
 - name: Save Configuration
   dellemc.os9.os9_config:
