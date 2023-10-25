@@ -95,6 +95,7 @@ port_channels:
       - 84
       # MOC
       - 207
+      - 214
       # Unity
       - 301
       # MGMT
