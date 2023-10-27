@@ -13,8 +13,6 @@ CL-SW-TORS      ansible-host=10.80.2.1
 OCT1-SW-TORS    ansible_host=10.80.2.11
 OCT2-SW-TORS    ansible_host=10.80.2.21
 OCT4-SW-TORS    ansible_host=10.80.2.41
-OCT5-SW-TORS-A  ansible_host=10.80.2.51
-OCT5-SW-TORS-B  ansible_host=10.80.2.52
 OCT6-SW-TORS    ansible_host=10.80.2.61
 OCT9-SW-TORS-A  ansible_host=10.80.2.91
 OCT9-SW-TORS-B  ansible_host=10.80.2.92
@@ -55,6 +53,12 @@ MOC-CORE-4 ansible_host=10.80.1.24
 [moc_tors]
 MOC-R4PAC21-SW-TORS-A ansible_host=10.80.3.11
 MOC-R4PAC21-SW-TORS-B ansible_host=10.80.3.12
+MOC-R4PAC24-SW-TORS-A ansible_host=10.80.3.21
+MOC-R4PAC24-SW-TORS-B ansible_host=10.80.3.22
+MOC-R4PAC24-SW-MGMT ansible_host=10.80.3.25
+MOC-R4PAC22-SW-TORS-A ansible_host=10.80.3.31
+MOC-R4PAC22-SW-TORS-B ansible_host=10.80.3.32
+MOC-R4PAC22-SW-MGMT ansible_host=10.80.3.35
 
 [moc_tors_mgmt]
 MOC-R4PAC21-SW-MGMT ansible_host=10.80.3.15
@@ -72,3 +76,7 @@ moc_tors_mgmt
 [os9:children]
 oct
 moc
+
+[dev_os9]
+OCT5-SW-TORS-A  ansible_host=10.80.2.51
+OCT5-SW-TORS-B  ansible_host=10.80.2.52
