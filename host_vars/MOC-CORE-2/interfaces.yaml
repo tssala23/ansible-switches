@@ -70,11 +70,9 @@ interfaces:
   hundredGigE 1/31:
     description: "MOC-CORE-1 Port 31 VLT"
     state: "up"
-    mtu: 9216
   hundredGigE 1/32:
     description: "MOC-CORE-1 Port 32 VLT"
     state: "up"
-    mtu: 9216
   tengigabitethernet 1/33:
     state: "down"
   tengigabitethernet 1/34:
