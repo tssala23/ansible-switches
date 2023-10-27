@@ -1,8 +1,9 @@
 interfaces:
-  1/1:
-    fanout: "quad"
-    fanout_speed: "25G"
-  1/1/1:
+  hundredGigE 1/1:
+    fanout:
+      type: "quad"
+      speed: "25G"
+  twentyFiveGigE 1/1/1:
     description: "OCP-CTRL-U36-R"
     state: "up"
     untagged: 209
@@ -10,7 +11,7 @@ interfaces:
       - 250
     portmode: "hybrid"
     mtu: 9216
-  1/1/2:
+  twentyFiveGigE 1/1/2:
     description: "OCP-CTRL-U35-R"
     state: "up"
     untagged: 209
@@ -18,7 +19,7 @@ interfaces:
       - 250
     portmode: "hybrid"
     mtu: 9216
-  1/1/3:
+  twentyFiveGigE 1/1/3:
     description: "OCP-CTRL-U34-R"
     state: "up"
     untagged: 209
@@ -26,7 +27,7 @@ interfaces:
       - 250
     portmode: "hybrid"
     mtu: 9216
-  1/1/4:
+  twentyFiveGigE 1/1/4:
     description: "ESI-CTRL-U33-R"
     state: "up"
     mtu: 9216
@@ -35,10 +36,11 @@ interfaces:
     tagged:
       - 911
       - 207
-  1/2:
-    fanout: "quad"
-    fanout_speed: "10G"
-  1/2/1:
+  hundredGigE 1/2:
+    fanout:
+      type: "quad"
+      speed: "10G"
+  TenGigabitEthernet 1/2/1:
     description: "ESI-CTRL-U32-R"
     mtu: 9216
     state: "up"
@@ -47,7 +49,7 @@ interfaces:
     tagged:
       - 911
       - 207
-  1/2/2:
+  TenGigabitEthernet 1/2/2:
     description: "ESI-CTRL-U31-R"
     state: "up"
     mtu: 9216
@@ -56,110 +58,260 @@ interfaces:
     tagged:
       - 911
       - 207
-  1/2/3:
+  TenGigabitEthernet 1/2/3:
     description: "ALANLIU-L"
     state: "up"
     mtu: 9216
     untagged: 10
     portmode: "access"
-  1/2/4:
+  TenGigabitEthernet 1/2/4:
     state: "down"
-  1/3:
+  hundredGigE 1/3:
     state: "down"
-  1/4:
+  hundredGigE 1/4:
     state: "down"
-  1/5:
-    fanout: "quad"
-    fanout_speed: "10G"
-  1/5/1:
+  hundredGigE 1/5:
+    fanout:
+      type: "quad"
+      speed: "10G"
+  TenGigabitEthernet 1/5/1:
     description: "OCT-MCORE-1 Port 52 Po20"
     state: "up"
-  1/5/2:
+  TenGigabitEthernet 1/5/2:
     description: "INTEL-U29-R"
     state: "down"
-  1/5/3:
+  TenGigabitEthernet 1/5/3:
     description: "INTEL-U27-R"
     state: "down"
-  1/5/4:
+  TenGigabitEthernet 1/5/4:
     description: "INTEL-U25-R"
     state: "down"
-  1/6:
+  hundredGigE 1/6:
     state: "down"
-  1/7:
+  hundredGigE 1/7:
     state: "down"
-  1/8:
+  hundredGigE 1/8:
     state: "down"
-  1/9:
+  hundredGigE 1/9:
     state: "down"
-  1/10:
+  hundredGigE 1/10:
     state: "down"
-  1/11:
+  hundredGigE 1/11:
     state: "down"
-  1/12:
+  hundredGigE 1/12:
     state: "down"
-  1/13:
-    description: "OCT5-SW-TORS Port 53 Po50"
-    state: "up"
-    mtu: 9216
-  1/14:
-    description: "OCT6-SW-TORS-B Port 54 Po60"
-    state: "up"
-    mtu: 9216
-  1/15:
+  hundredGigE 1/13:
     state: "down"
-  1/16:
-    description: "OCT8-SW-TORS Port 54 Po80"
-    state: "up"
-    mtu: 9216
-  1/17:
+  hundredGigE 1/14:
     state: "down"
-  1/18:
+  hundredGigE 1/15:
     state: "down"
-  1/19:
+  hundredGigE 1/16:
     state: "down"
-  1/20:
+  hundredGigE 1/17:
     state: "down"
-  1/21:
+  hundredGigE 1/18:
     state: "down"
-  1/22:
+  hundredGigE 1/19:
     state: "down"
-  1/23:
+  hundredGigE 1/20:
     state: "down"
-  1/24:
+  hundredGigE 1/21:
     state: "down"
-  1/25:
+  hundredGigE 1/22:
     state: "down"
-  1/26:
+  hundredGigE 1/23:
     state: "down"
-  1/27:
-    fanout: "single"
-    fanout_speed: "40G"
-  1/27/1:
+  hundredGigE 1/24:
+    state: "down"
+  hundredGigE 1/25:
+    state: "down"
+  hundredGigE 1/26:
+    state: "down"
+  hundredGigE 1/27:
+    fanout:
+      type: "single"
+      speed: "40G"
+  fortyGigE 1/27/1:
     description: "Brocade-15-## Port #### Po11"
     state: "up"
     mtu: 9216
-  1/28:
+  hundredGigE 1/28:
     description: "OCT-CORE-4 Port 2 Po10"
     state: "up"
     mtu: 9216
-  1/29:
+  hundredGigE 1/29:
     description: "OCT-CORE-3 Port 2 Po10"
     state: "up"
     mtu: 9216
-  1/30:
+  hundredGigE 1/30:
     description: "UMA-NESE-CORE Port #### Po30"
     state: "up"
     mtu: 9216
-  1/31:
+  hundredGigE 1/31:
     description: "OCT-CORE-1 Port 31 VLT"
     state: "up"
-  1/32:
+  hundredGigE 1/32:
     description: "OCT-CORE-1 Port 32 VLT"
     state: "up"
-  1/33:
+  tengigabitethernet 1/33:
     description: "CSAIL Po1000"
     state: "up"
-  1/34:
+  tengigabitethernet 1/34:
     description: "OCT-CORE-1 Port 34 VLT Heartbeat"
     state: "up"
     ip4: "10.255.255.2/30"
+  Port-channel 10:
+    description: "OCT-CORE-3 and OCT-CORE-4 Core LAG"
+    state: "up"
+    portmode: "trunk"
+    tagged:
+      # CSAIL
+      - 10
+      # UMA Public IPs
+      - 57
+      - 84
+      - 86
+      # MOC Public IPs
+      - 105
+      - 127
+      # MOC
+      - 207
+      - 208
+      - 213
+      - 250
+      # Unity
+      - 300
+      # ESI
+      - 351:499
+      - 520:622
+      - 623
+      - 624:630
+      # MGMT
+      - 911
+      - 913
+      # UMA NESE
+      - 950
+      # AL2S VLANs
+      - 3100
+      - 3101
+      - 3102
+      - 3103
+      - 3104
+      - 3105
+      - 3106
+      - 3107
+      - 3108
+      - 3109
+      # CSAIL
+      - 3801
+      - 3803
+    mtu: 9216
+    lacp-rate: "fast"
+    lacp-members-active:
+      - "hundredGigE 1/28"
+      - "hundredGigE 1/29"
+    mlag: "Port-channel 10"
+  Port-channel 11:
+    description: "MOC Brocade Fabric LAG"
+    state: "up"
+    portmode: "trunk"
+    tagged:
+      # CSAIL
+      - 10
+      # MOC Public IPs
+      - 105
+      - 127
+      # MOC
+      - 207
+      - 208
+      - 209
+      - 213
+      - 250
+      # ESI
+      - 351:499
+      - 520:622
+      - 623
+      - 624:630
+      # MGMT
+      - 911
+      - 913
+      # CSAIL
+      - 3801
+      - 3802
+      - 3803
+    mtu: 9216
+    lacp-rate: "fast"
+    lacp-members-active:
+      - "fortyGigE 1/27/1"
+    mlag: "Port-channel 11"
+  Port-channel 20:
+    description: "OCT-MCORE-1 LAG"
+    state: "up"
+    portmode: "trunk"
+    tagged:
+      # UMA Public IPs
+      - 84
+      # MOC
+      - 127
+      - 207
+      # Unity
+      - 301
+      # MGMT
+      - 910
+      - 911
+      - 912
+      - 930
+    lacp-rate: "fast"
+    lacp-members-active:
+      - "TenGigabitEthernet 1/5/1"
+    mlag: "Port-channel 20"
+  Port-channel 30:
+    description: "UMA-NESE-Core LAG"
+    state: "up"
+    portmode: "trunk"
+    tagged:
+      # MOC
+      - 211
+      # Unity
+      - 300
+      # UMA NESE
+      - 950
+      # AL2S VLANs
+      - 3100
+      - 3101
+      - 3102
+      - 3103
+      - 3104
+      - 3105
+      - 3106
+      - 3107
+      - 3108
+      - 3109
+    mtu: 9216
+    lacp-rate: "fast"
+    lacp-members-active:
+      - "hundredGigE 1/30"
+    mlag: "Port-channel 30"
+  Port-channel 100:
+    description: "OCT-CORE-1 VLT LAG"
+    state: "up"
+    mtu: 9216
+    lag-members:
+      - "hundredGigE 1/31"
+      - "hundredGigE 1/32"
+  Port-channel 1000:
+    description: "CSAIL LAG"
+    state: "up"
+    portmode: "hybrid"
+    untagged: 10
+    tagged:
+      # CSAIL
+      - 3801
+      - 3802
+      - 3803
+    mode: "lacp"
+    lacp-rate: "fast"
+    lacp-members-active:
+      - "tengigabitethernet 1/33"
+    mlag: "Port-channel 1000"
