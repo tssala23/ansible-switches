@@ -2250,6 +2250,46 @@ vlans:
   3109:
     name: "AL2S-3109"
     description: "AL2S VLAN 3109 for Fabric"
+  3110:
+    name: "FABRIC-FacilityVlan-3110"
+    description: "Facility VLAN 3110 for Fabric/CloudLab"
+    managed: true
+  3111:
+    name: "FABRIC-FacilityVlan-3111"
+    description: "Facility VLAN 3111 for Fabric/CloudLab"
+    managed: true
+  3112:
+    name: "FABRIC-FacilityVlan-3112"
+    description: "Facility VLAN 3112 for Fabric/CloudLab"
+    managed: true
+  3113:
+    name: "FABRIC-FacilityVlan-3113"
+    description: "Facility VLAN 3113 for Fabric/CloudLab"
+    managed: true
+  3114:
+    name: "FABRIC-FacilityVlan-3114"
+    description: "Facility VLAN 3114 for Fabric/CloudLab"
+    managed: true
+  3115:
+    name: "FABRIC-FacilityVlan-3115"
+    description: "Facility VLAN 3115 for Fabric/CloudLab"
+    managed: true
+  3116:
+    name: "FABRIC-FacilityVlan-3116"
+    description: "Facility VLAN 3116 for Fabric/CloudLab"
+    managed: true
+  3117:
+    name: "FABRIC-FacilityVlan-3117"
+    description: "Facility VLAN 3117 for Fabric/CloudLab"
+    managed: true
+  3118:
+    name: "FABRIC-FacilityVlan-3118"
+    description: "Facility VLAN 3118 for Fabric/CloudLab"
+    managed: true
+  3119:
+    name: "FABRIC-FacilityVlan-3119"
+    description: "Facility VLAN 3119 for Fabric/CloudLab"
+    managed: true
   3800:
     name: "CSAIL-3800"
     description: "CSAIL 3800"
