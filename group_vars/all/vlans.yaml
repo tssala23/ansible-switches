@@ -911,6 +911,9 @@ vlans:
   911:
     name: "OCT-MOC-OBM"
     description: "For OCT/UMass nodes IPMI"
+  912:
+    name: "ESI-Controller-IPMI"
+    description: "IPMI network for ESI controllers"
   913:
     name: "OKD-OBM"
     description: "OKD management net"
