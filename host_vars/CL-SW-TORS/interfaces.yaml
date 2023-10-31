@@ -1,165 +1,186 @@
 interfaces:
-  1/1:
+  TenGigabitEthernet 1/1:
     description: "CL-MASS-1"
     state: "up"
     mtu: 9216
     portmode: "hybrid"
-  1/2:
+  TenGigabitEthernet 1/2:
     description: "CL-MASS-2"
     state: "up"
     mtu: 9216
     portmode: "hybrid"
-  1/3:
+  TenGigabitEthernet 1/3:
     description: "CL-MASS-3"
     state: "up"
     mtu: 9216
     portmode: "hybrid"
-  1/4:
+  TenGigabitEthernet 1/4:
     description: "CL-MASS-4"
     state: "up"
     mtu: 9216
     portmode: "hybrid"
-  1/5:
+  TenGigabitEthernet 1/5:
     description: "CL-MASS-5"
     state: "up"
     mtu: 9216
     portmode: "hybrid"
-  1/6:
+  TenGigabitEthernet 1/6:
     state: "down"
-  1/7:
+  TenGigabitEthernet 1/7:
     state: "down"
-  1/8:
+  TenGigabitEthernet 1/8:
     state: "down"
-  1/9:
+  TenGigabitEthernet 1/9:
     state: "down"
-  1/10:
+  TenGigabitEthernet 1/10:
     state: "down"
-  1/11:
+  TenGigabitEthernet 1/11:
     state: "down"
-  1/12:
+  TenGigabitEthernet 1/12:
     state: "down"
-  1/13:
-    state: "down"
-  1/14:
-    state: "down"
-  1/15:
-    description: "CL-Head Po10"
+  TenGigabitEthernet 1/13:
+    description: "CL-head vl84"
     state: "up"
-    mtu: 9216
-  1/16:
-    description: "CL-Head Po10"
+    portmode: "access"
+    untagged: 84
+  TenGigabitEthernet 1/14:
+    description: "CL-head vl910"
     state: "up"
-    mtu: 9216
-  1/17:
+    portmode: "access"
+    untagged: 910
+  TenGigabitEthernet 1/15:
+    state: "down"
+  TenGigabitEthernet 1/16:
+    state: "down"
+  TenGigabitEthernet 1/17:
     description: "CL-MASS-1-MGMT"
     state: "up"
+    portmode: "access"
     untagged: 910
-    switchport: "access"
-  1/18:
+  TenGigabitEthernet 1/18:
     description: "CL-MASS-2-MGMT"
     state: "up"
+    portmode: "access"
     untagged: 910
-    switchport: "access"
-  1/19:
+  TenGigabitEthernet 1/19:
     description: "CL-MASS-3-MGMT"
     state: "up"
+    portmode: "access"
     untagged: 910
-    switchport: "access"
-  1/20:
+  TenGigabitEthernet 1/20:
     description: "CL-MASS-4-MGMT"
     state: "up"
+    portmode: "access"
     untagged: 910
-    switchport: "access"
-  1/21:
+  TenGigabitEthernet 1/21:
     description: "CL-MASS-5-MGMT"
     state: "up"
+    portmode: "access"
     untagged: 910
-    switchport: "access"
-  1/22:
+  TenGigabitEthernet 1/22:
     state: "down"
-  1/23:
+  TenGigabitEthernet 1/23:
     state: "down"
-  1/24:
+  TenGigabitEthernet 1/24:
     state: "down"
-  1/25:
+  TenGigabitEthernet 1/25:
     state: "down"
-  1/26:
+  TenGigabitEthernet 1/26:
     state: "down"
-  1/27:
+  TenGigabitEthernet 1/27:
     state: "down"
-  1/28:
+  TenGigabitEthernet 1/28:
     state: "down"
-  1/29:
+  TenGigabitEthernet 1/29:
     state: "down"
-  1/30:
+  TenGigabitEthernet 1/30:
     state: "down"
-  1/31:
+  TenGigabitEthernet 1/31:
     state: "down"
-  1/32:
+  TenGigabitEthernet 1/32:
     description: "MGMT uplink"
     state: "up"
+    portmode: "trunk"
     tagged:
       - 930
-  1/33:
+  TenGigabitEthernet 1/33:
     description: "CL-MASS-1-CTRL"
     state: "up"
+    portmode: "access"
     untagged: 84
-    switchport: "access"
-  1/34:
+  TenGigabitEthernet 1/34:
     description: "CL-MASS-2-CTRL"
     state: "up"
+    portmode: "access"
     untagged: 84
-    switchport: "access"
-  1/35:
+  TenGigabitEthernet 1/35:
     description: "CL-MASS-3-CTRL"
     state: "up"
+    portmode: "access"
     untagged: 84
-    switchport: "access"
-  1/36:
+  TenGigabitEthernet 1/36:
     description: "CL-MASS-4-CTRL"
     state: "up"
+    portmode: "access"
     untagged: 84
-    switchport: "access"
-  1/37:
+  TenGigabitEthernet 1/37:
     description: "CL-MASS-5-CTRL"
     state: "up"
+    portmode: "access"
     untagged: 84
-    switchport: "access"
-  1/38:
+  TenGigabitEthernet 1/38:
     state: "down"
-  1/39:
+  TenGigabitEthernet 1/39:
     state: "down"
-  1/40:
+  TenGigabitEthernet 1/40:
     state: "down"
-  1/41:
+  TenGigabitEthernet 1/41:
     state: "down"
-  1/42:
+  TenGigabitEthernet 1/42:
     state: "down"
-  1/43:
+  TenGigabitEthernet 1/43:
     state: "down"
-  1/44:
+  TenGigabitEthernet 1/44:
     state: "down"
-  1/45:
+  TenGigabitEthernet 1/45:
     state: "down"
-  1/46:
+  TenGigabitEthernet 1/46:
     state: "down"
-  1/47:
+  TenGigabitEthernet 1/47:
     state: "down"
-  1/48:
+  TenGigabitEthernet 1/48:
     state: "down"
-  1/49:
+  fortyGigE 1/49:
     state: "down"
-  1/50:
+  fortyGigE 1/50:
     state: "down"
-  1/51:
+  fortyGigE 1/51:
     state: "down"
-  1/52:
+  fortyGigE 1/52:
     state: "down"
-  1/53:
+  fortyGigE 1/53:
     description: "OCT-CORE-3 Port #### Po1"
     state: "up"
     mtu: 9216
-  1/54:
+  fortyGigE 1/54:
     description: "OCT-CORE-3 Port #### Po1"
     state: "up"
     mtu: 9216
+  Port-channel 1:
+    description: "OCT-CORE-3 Uplink"
+    state: "up"
+    portmode: "trunk"
+    tagged:
+      - 84
+      - 910
+    mtu: 9216
+    lacp-rate: "fast"
+    lacp-members-active:
+      - "fortyGigE 1/53"
+      - "fortyGigE 1/54"
+  Vlan 910:
+    state: "up"
+    ip4: "10.0.0.3/22"
+  Vlan 930:
+    state: "up"
+    ip4: "10.80.2.1/20"
