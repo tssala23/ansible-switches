@@ -787,10 +787,12 @@ def OS9_FANOUTCFG(sw_config, manifest):
             fanout_type = items["fanout"]["type"]
             port_num = intf.split("/")[-1]
 
-            conf_line = f"stack-unit 1 port {port_num} portmode {fanout_type} speed {fanout_speed}"
-            manifest_stackunits.append(f"{conf_line}")
+            conf_line_base = f"stack-unit 1 port {port_num} portmode {fanout_type}"
+            manifest_stackunits.append(conf_line_base)
+            conf_line = f"{conf_line_base} speed {fanout_speed}"
+            manifest_stackunits.append(conf_line)
 
-            if conf_line not in conf_lines:
+            if conf_line not in conf_lines and conf_line_base not in conf_lines:
                 parent_port_num = f"1/{port_num}"
                 search_pattern = rf'^interface .*{re.escape(parent_port_num)}$'
                 search_matches = [line for line in conf_lines if re.match(search_pattern, line)]
@@ -816,7 +818,11 @@ def OS9_FANOUTCFG(sw_config, manifest):
             out.append(f"default {child_intf}")
 
         conf_line_index = line.find("speed")
-        conf_line = line[:conf_line_index - 1]
+        if conf_line_index == -1:
+            conf_line = line
+        else:
+            conf_line = line[:conf_line_index - 1]
+
         out.append(f"no {conf_line} no-confirm")
 
     return out
