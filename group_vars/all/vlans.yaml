@@ -1016,6 +1016,1210 @@ vlans:
   2478:
     name: "NERC-STORAGE-103"
     description: "eth2: storage (vlan 103) - ceph/jumboframe 10.255"
+  2500:
+    name: oct-cloudlab-2500
+    description: OCT CloudLab Vlan 2500
+    managed: true
+  2501:
+    name: oct-cloudlab-2501
+    description: OCT CloudLab Vlan 2501
+    managed: true
+  2502:
+    name: oct-cloudlab-2502
+    description: OCT CloudLab Vlan 2502
+    managed: true
+  2503:
+    name: oct-cloudlab-2503
+    description: OCT CloudLab Vlan 2503
+    managed: true
+  2504:
+    name: oct-cloudlab-2504
+    description: OCT CloudLab Vlan 2504
+    managed: true
+  2505:
+    name: oct-cloudlab-2505
+    description: OCT CloudLab Vlan 2505
+    managed: true
+  2506:
+    name: oct-cloudlab-2506
+    description: OCT CloudLab Vlan 2506
+    managed: true
+  2507:
+    name: oct-cloudlab-2507
+    description: OCT CloudLab Vlan 2507
+    managed: true
+  2508:
+    name: oct-cloudlab-2508
+    description: OCT CloudLab Vlan 2508
+    managed: true
+  2509:
+    name: oct-cloudlab-2509
+    description: OCT CloudLab Vlan 2509
+    managed: true
+  2510:
+    name: oct-cloudlab-2510
+    description: OCT CloudLab Vlan 2510
+    managed: true
+  2511:
+    name: oct-cloudlab-2511
+    description: OCT CloudLab Vlan 2511
+    managed: true
+  2512:
+    name: oct-cloudlab-2512
+    description: OCT CloudLab Vlan 2512
+    managed: true
+  2513:
+    name: oct-cloudlab-2513
+    description: OCT CloudLab Vlan 2513
+    managed: true
+  2514:
+    name: oct-cloudlab-2514
+    description: OCT CloudLab Vlan 2514
+    managed: true
+  2515:
+    name: oct-cloudlab-2515
+    description: OCT CloudLab Vlan 2515
+    managed: true
+  2516:
+    name: oct-cloudlab-2516
+    description: OCT CloudLab Vlan 2516
+    managed: true
+  2517:
+    name: oct-cloudlab-2517
+    description: OCT CloudLab Vlan 2517
+    managed: true
+  2518:
+    name: oct-cloudlab-2518
+    description: OCT CloudLab Vlan 2518
+    managed: true
+  2519:
+    name: oct-cloudlab-2519
+    description: OCT CloudLab Vlan 2519
+    managed: true
+  2520:
+    name: oct-cloudlab-2520
+    description: OCT CloudLab Vlan 2520
+    managed: true
+  2521:
+    name: oct-cloudlab-2521
+    description: OCT CloudLab Vlan 2521
+    managed: true
+  2522:
+    name: oct-cloudlab-2522
+    description: OCT CloudLab Vlan 2522
+    managed: true
+  2523:
+    name: oct-cloudlab-2523
+    description: OCT CloudLab Vlan 2523
+    managed: true
+  2524:
+    name: oct-cloudlab-2524
+    description: OCT CloudLab Vlan 2524
+    managed: true
+  2525:
+    name: oct-cloudlab-2525
+    description: OCT CloudLab Vlan 2525
+    managed: true
+  2526:
+    name: oct-cloudlab-2526
+    description: OCT CloudLab Vlan 2526
+    managed: true
+  2527:
+    name: oct-cloudlab-2527
+    description: OCT CloudLab Vlan 2527
+    managed: true
+  2528:
+    name: oct-cloudlab-2528
+    description: OCT CloudLab Vlan 2528
+    managed: true
+  2529:
+    name: oct-cloudlab-2529
+    description: OCT CloudLab Vlan 2529
+    managed: true
+  2530:
+    name: oct-cloudlab-2530
+    description: OCT CloudLab Vlan 2530
+    managed: true
+  2531:
+    name: oct-cloudlab-2531
+    description: OCT CloudLab Vlan 2531
+    managed: true
+  2532:
+    name: oct-cloudlab-2532
+    description: OCT CloudLab Vlan 2532
+    managed: true
+  2533:
+    name: oct-cloudlab-2533
+    description: OCT CloudLab Vlan 2533
+    managed: true
+  2534:
+    name: oct-cloudlab-2534
+    description: OCT CloudLab Vlan 2534
+    managed: true
+  2535:
+    name: oct-cloudlab-2535
+    description: OCT CloudLab Vlan 2535
+    managed: true
+  2536:
+    name: oct-cloudlab-2536
+    description: OCT CloudLab Vlan 2536
+    managed: true
+  2537:
+    name: oct-cloudlab-2537
+    description: OCT CloudLab Vlan 2537
+    managed: true
+  2538:
+    name: oct-cloudlab-2538
+    description: OCT CloudLab Vlan 2538
+    managed: true
+  2539:
+    name: oct-cloudlab-2539
+    description: OCT CloudLab Vlan 2539
+    managed: true
+  2540:
+    name: oct-cloudlab-2540
+    description: OCT CloudLab Vlan 2540
+    managed: true
+  2541:
+    name: oct-cloudlab-2541
+    description: OCT CloudLab Vlan 2541
+    managed: true
+  2542:
+    name: oct-cloudlab-2542
+    description: OCT CloudLab Vlan 2542
+    managed: true
+  2543:
+    name: oct-cloudlab-2543
+    description: OCT CloudLab Vlan 2543
+    managed: true
+  2544:
+    name: oct-cloudlab-2544
+    description: OCT CloudLab Vlan 2544
+    managed: true
+  2545:
+    name: oct-cloudlab-2545
+    description: OCT CloudLab Vlan 2545
+    managed: true
+  2546:
+    name: oct-cloudlab-2546
+    description: OCT CloudLab Vlan 2546
+    managed: true
+  2547:
+    name: oct-cloudlab-2547
+    description: OCT CloudLab Vlan 2547
+    managed: true
+  2548:
+    name: oct-cloudlab-2548
+    description: OCT CloudLab Vlan 2548
+    managed: true
+  2549:
+    name: oct-cloudlab-2549
+    description: OCT CloudLab Vlan 2549
+    managed: true
+  2550:
+    name: oct-cloudlab-2550
+    description: OCT CloudLab Vlan 2550
+    managed: true
+  2551:
+    name: oct-cloudlab-2551
+    description: OCT CloudLab Vlan 2551
+    managed: true
+  2552:
+    name: oct-cloudlab-2552
+    description: OCT CloudLab Vlan 2552
+    managed: true
+  2553:
+    name: oct-cloudlab-2553
+    description: OCT CloudLab Vlan 2553
+    managed: true
+  2554:
+    name: oct-cloudlab-2554
+    description: OCT CloudLab Vlan 2554
+    managed: true
+  2555:
+    name: oct-cloudlab-2555
+    description: OCT CloudLab Vlan 2555
+    managed: true
+  2556:
+    name: oct-cloudlab-2556
+    description: OCT CloudLab Vlan 2556
+    managed: true
+  2557:
+    name: oct-cloudlab-2557
+    description: OCT CloudLab Vlan 2557
+    managed: true
+  2558:
+    name: oct-cloudlab-2558
+    description: OCT CloudLab Vlan 2558
+    managed: true
+  2559:
+    name: oct-cloudlab-2559
+    description: OCT CloudLab Vlan 2559
+    managed: true
+  2560:
+    name: oct-cloudlab-2560
+    description: OCT CloudLab Vlan 2560
+    managed: true
+  2561:
+    name: oct-cloudlab-2561
+    description: OCT CloudLab Vlan 2561
+    managed: true
+  2562:
+    name: oct-cloudlab-2562
+    description: OCT CloudLab Vlan 2562
+    managed: true
+  2563:
+    name: oct-cloudlab-2563
+    description: OCT CloudLab Vlan 2563
+    managed: true
+  2564:
+    name: oct-cloudlab-2564
+    description: OCT CloudLab Vlan 2564
+    managed: true
+  2565:
+    name: oct-cloudlab-2565
+    description: OCT CloudLab Vlan 2565
+    managed: true
+  2566:
+    name: oct-cloudlab-2566
+    description: OCT CloudLab Vlan 2566
+    managed: true
+  2567:
+    name: oct-cloudlab-2567
+    description: OCT CloudLab Vlan 2567
+    managed: true
+  2568:
+    name: oct-cloudlab-2568
+    description: OCT CloudLab Vlan 2568
+    managed: true
+  2569:
+    name: oct-cloudlab-2569
+    description: OCT CloudLab Vlan 2569
+    managed: true
+  2570:
+    name: oct-cloudlab-2570
+    description: OCT CloudLab Vlan 2570
+    managed: true
+  2571:
+    name: oct-cloudlab-2571
+    description: OCT CloudLab Vlan 2571
+    managed: true
+  2572:
+    name: oct-cloudlab-2572
+    description: OCT CloudLab Vlan 2572
+    managed: true
+  2573:
+    name: oct-cloudlab-2573
+    description: OCT CloudLab Vlan 2573
+    managed: true
+  2574:
+    name: oct-cloudlab-2574
+    description: OCT CloudLab Vlan 2574
+    managed: true
+  2575:
+    name: oct-cloudlab-2575
+    description: OCT CloudLab Vlan 2575
+    managed: true
+  2576:
+    name: oct-cloudlab-2576
+    description: OCT CloudLab Vlan 2576
+    managed: true
+  2577:
+    name: oct-cloudlab-2577
+    description: OCT CloudLab Vlan 2577
+    managed: true
+  2578:
+    name: oct-cloudlab-2578
+    description: OCT CloudLab Vlan 2578
+    managed: true
+  2579:
+    name: oct-cloudlab-2579
+    description: OCT CloudLab Vlan 2579
+    managed: true
+  2580:
+    name: oct-cloudlab-2580
+    description: OCT CloudLab Vlan 2580
+    managed: true
+  2581:
+    name: oct-cloudlab-2581
+    description: OCT CloudLab Vlan 2581
+    managed: true
+  2582:
+    name: oct-cloudlab-2582
+    description: OCT CloudLab Vlan 2582
+    managed: true
+  2583:
+    name: oct-cloudlab-2583
+    description: OCT CloudLab Vlan 2583
+    managed: true
+  2584:
+    name: oct-cloudlab-2584
+    description: OCT CloudLab Vlan 2584
+    managed: true
+  2585:
+    name: oct-cloudlab-2585
+    description: OCT CloudLab Vlan 2585
+    managed: true
+  2586:
+    name: oct-cloudlab-2586
+    description: OCT CloudLab Vlan 2586
+    managed: true
+  2587:
+    name: oct-cloudlab-2587
+    description: OCT CloudLab Vlan 2587
+    managed: true
+  2588:
+    name: oct-cloudlab-2588
+    description: OCT CloudLab Vlan 2588
+    managed: true
+  2589:
+    name: oct-cloudlab-2589
+    description: OCT CloudLab Vlan 2589
+    managed: true
+  2590:
+    name: oct-cloudlab-2590
+    description: OCT CloudLab Vlan 2590
+    managed: true
+  2591:
+    name: oct-cloudlab-2591
+    description: OCT CloudLab Vlan 2591
+    managed: true
+  2592:
+    name: oct-cloudlab-2592
+    description: OCT CloudLab Vlan 2592
+    managed: true
+  2593:
+    name: oct-cloudlab-2593
+    description: OCT CloudLab Vlan 2593
+    managed: true
+  2594:
+    name: oct-cloudlab-2594
+    description: OCT CloudLab Vlan 2594
+    managed: true
+  2595:
+    name: oct-cloudlab-2595
+    description: OCT CloudLab Vlan 2595
+    managed: true
+  2596:
+    name: oct-cloudlab-2596
+    description: OCT CloudLab Vlan 2596
+    managed: true
+  2597:
+    name: oct-cloudlab-2597
+    description: OCT CloudLab Vlan 2597
+    managed: true
+  2598:
+    name: oct-cloudlab-2598
+    description: OCT CloudLab Vlan 2598
+    managed: true
+  2599:
+    name: oct-cloudlab-2599
+    description: OCT CloudLab Vlan 2599
+    managed: true
+  2600:
+    name: oct-cloudlab-2600
+    description: OCT CloudLab Vlan 2600
+    managed: true
+  2601:
+    name: oct-cloudlab-2601
+    description: OCT CloudLab Vlan 2601
+    managed: true
+  2602:
+    name: oct-cloudlab-2602
+    description: OCT CloudLab Vlan 2602
+    managed: true
+  2603:
+    name: oct-cloudlab-2603
+    description: OCT CloudLab Vlan 2603
+    managed: true
+  2604:
+    name: oct-cloudlab-2604
+    description: OCT CloudLab Vlan 2604
+    managed: true
+  2605:
+    name: oct-cloudlab-2605
+    description: OCT CloudLab Vlan 2605
+    managed: true
+  2606:
+    name: oct-cloudlab-2606
+    description: OCT CloudLab Vlan 2606
+    managed: true
+  2607:
+    name: oct-cloudlab-2607
+    description: OCT CloudLab Vlan 2607
+    managed: true
+  2608:
+    name: oct-cloudlab-2608
+    description: OCT CloudLab Vlan 2608
+    managed: true
+  2609:
+    name: oct-cloudlab-2609
+    description: OCT CloudLab Vlan 2609
+    managed: true
+  2610:
+    name: oct-cloudlab-2610
+    description: OCT CloudLab Vlan 2610
+    managed: true
+  2611:
+    name: oct-cloudlab-2611
+    description: OCT CloudLab Vlan 2611
+    managed: true
+  2612:
+    name: oct-cloudlab-2612
+    description: OCT CloudLab Vlan 2612
+    managed: true
+  2613:
+    name: oct-cloudlab-2613
+    description: OCT CloudLab Vlan 2613
+    managed: true
+  2614:
+    name: oct-cloudlab-2614
+    description: OCT CloudLab Vlan 2614
+    managed: true
+  2615:
+    name: oct-cloudlab-2615
+    description: OCT CloudLab Vlan 2615
+    managed: true
+  2616:
+    name: oct-cloudlab-2616
+    description: OCT CloudLab Vlan 2616
+    managed: true
+  2617:
+    name: oct-cloudlab-2617
+    description: OCT CloudLab Vlan 2617
+    managed: true
+  2618:
+    name: oct-cloudlab-2618
+    description: OCT CloudLab Vlan 2618
+    managed: true
+  2619:
+    name: oct-cloudlab-2619
+    description: OCT CloudLab Vlan 2619
+    managed: true
+  2620:
+    name: oct-cloudlab-2620
+    description: OCT CloudLab Vlan 2620
+    managed: true
+  2621:
+    name: oct-cloudlab-2621
+    description: OCT CloudLab Vlan 2621
+    managed: true
+  2622:
+    name: oct-cloudlab-2622
+    description: OCT CloudLab Vlan 2622
+    managed: true
+  2623:
+    name: oct-cloudlab-2623
+    description: OCT CloudLab Vlan 2623
+    managed: true
+  2624:
+    name: oct-cloudlab-2624
+    description: OCT CloudLab Vlan 2624
+    managed: true
+  2625:
+    name: oct-cloudlab-2625
+    description: OCT CloudLab Vlan 2625
+    managed: true
+  2626:
+    name: oct-cloudlab-2626
+    description: OCT CloudLab Vlan 2626
+    managed: true
+  2627:
+    name: oct-cloudlab-2627
+    description: OCT CloudLab Vlan 2627
+    managed: true
+  2628:
+    name: oct-cloudlab-2628
+    description: OCT CloudLab Vlan 2628
+    managed: true
+  2629:
+    name: oct-cloudlab-2629
+    description: OCT CloudLab Vlan 2629
+    managed: true
+  2630:
+    name: oct-cloudlab-2630
+    description: OCT CloudLab Vlan 2630
+    managed: true
+  2631:
+    name: oct-cloudlab-2631
+    description: OCT CloudLab Vlan 2631
+    managed: true
+  2632:
+    name: oct-cloudlab-2632
+    description: OCT CloudLab Vlan 2632
+    managed: true
+  2633:
+    name: oct-cloudlab-2633
+    description: OCT CloudLab Vlan 2633
+    managed: true
+  2634:
+    name: oct-cloudlab-2634
+    description: OCT CloudLab Vlan 2634
+    managed: true
+  2635:
+    name: oct-cloudlab-2635
+    description: OCT CloudLab Vlan 2635
+    managed: true
+  2636:
+    name: oct-cloudlab-2636
+    description: OCT CloudLab Vlan 2636
+    managed: true
+  2637:
+    name: oct-cloudlab-2637
+    description: OCT CloudLab Vlan 2637
+    managed: true
+  2638:
+    name: oct-cloudlab-2638
+    description: OCT CloudLab Vlan 2638
+    managed: true
+  2639:
+    name: oct-cloudlab-2639
+    description: OCT CloudLab Vlan 2639
+    managed: true
+  2640:
+    name: oct-cloudlab-2640
+    description: OCT CloudLab Vlan 2640
+    managed: true
+  2641:
+    name: oct-cloudlab-2641
+    description: OCT CloudLab Vlan 2641
+    managed: true
+  2642:
+    name: oct-cloudlab-2642
+    description: OCT CloudLab Vlan 2642
+    managed: true
+  2643:
+    name: oct-cloudlab-2643
+    description: OCT CloudLab Vlan 2643
+    managed: true
+  2644:
+    name: oct-cloudlab-2644
+    description: OCT CloudLab Vlan 2644
+    managed: true
+  2645:
+    name: oct-cloudlab-2645
+    description: OCT CloudLab Vlan 2645
+    managed: true
+  2646:
+    name: oct-cloudlab-2646
+    description: OCT CloudLab Vlan 2646
+    managed: true
+  2647:
+    name: oct-cloudlab-2647
+    description: OCT CloudLab Vlan 2647
+    managed: true
+  2648:
+    name: oct-cloudlab-2648
+    description: OCT CloudLab Vlan 2648
+    managed: true
+  2649:
+    name: oct-cloudlab-2649
+    description: OCT CloudLab Vlan 2649
+    managed: true
+  2650:
+    name: oct-cloudlab-2650
+    description: OCT CloudLab Vlan 2650
+    managed: true
+  2651:
+    name: oct-cloudlab-2651
+    description: OCT CloudLab Vlan 2651
+    managed: true
+  2652:
+    name: oct-cloudlab-2652
+    description: OCT CloudLab Vlan 2652
+    managed: true
+  2653:
+    name: oct-cloudlab-2653
+    description: OCT CloudLab Vlan 2653
+    managed: true
+  2654:
+    name: oct-cloudlab-2654
+    description: OCT CloudLab Vlan 2654
+    managed: true
+  2655:
+    name: oct-cloudlab-2655
+    description: OCT CloudLab Vlan 2655
+    managed: true
+  2656:
+    name: oct-cloudlab-2656
+    description: OCT CloudLab Vlan 2656
+    managed: true
+  2657:
+    name: oct-cloudlab-2657
+    description: OCT CloudLab Vlan 2657
+    managed: true
+  2658:
+    name: oct-cloudlab-2658
+    description: OCT CloudLab Vlan 2658
+    managed: true
+  2659:
+    name: oct-cloudlab-2659
+    description: OCT CloudLab Vlan 2659
+    managed: true
+  2660:
+    name: oct-cloudlab-2660
+    description: OCT CloudLab Vlan 2660
+    managed: true
+  2661:
+    name: oct-cloudlab-2661
+    description: OCT CloudLab Vlan 2661
+    managed: true
+  2662:
+    name: oct-cloudlab-2662
+    description: OCT CloudLab Vlan 2662
+    managed: true
+  2663:
+    name: oct-cloudlab-2663
+    description: OCT CloudLab Vlan 2663
+    managed: true
+  2664:
+    name: oct-cloudlab-2664
+    description: OCT CloudLab Vlan 2664
+    managed: true
+  2665:
+    name: oct-cloudlab-2665
+    description: OCT CloudLab Vlan 2665
+    managed: true
+  2666:
+    name: oct-cloudlab-2666
+    description: OCT CloudLab Vlan 2666
+    managed: true
+  2667:
+    name: oct-cloudlab-2667
+    description: OCT CloudLab Vlan 2667
+    managed: true
+  2668:
+    name: oct-cloudlab-2668
+    description: OCT CloudLab Vlan 2668
+    managed: true
+  2669:
+    name: oct-cloudlab-2669
+    description: OCT CloudLab Vlan 2669
+    managed: true
+  2670:
+    name: oct-cloudlab-2670
+    description: OCT CloudLab Vlan 2670
+    managed: true
+  2671:
+    name: oct-cloudlab-2671
+    description: OCT CloudLab Vlan 2671
+    managed: true
+  2672:
+    name: oct-cloudlab-2672
+    description: OCT CloudLab Vlan 2672
+    managed: true
+  2673:
+    name: oct-cloudlab-2673
+    description: OCT CloudLab Vlan 2673
+    managed: true
+  2674:
+    name: oct-cloudlab-2674
+    description: OCT CloudLab Vlan 2674
+    managed: true
+  2675:
+    name: oct-cloudlab-2675
+    description: OCT CloudLab Vlan 2675
+    managed: true
+  2676:
+    name: oct-cloudlab-2676
+    description: OCT CloudLab Vlan 2676
+    managed: true
+  2677:
+    name: oct-cloudlab-2677
+    description: OCT CloudLab Vlan 2677
+    managed: true
+  2678:
+    name: oct-cloudlab-2678
+    description: OCT CloudLab Vlan 2678
+    managed: true
+  2679:
+    name: oct-cloudlab-2679
+    description: OCT CloudLab Vlan 2679
+    managed: true
+  2680:
+    name: oct-cloudlab-2680
+    description: OCT CloudLab Vlan 2680
+    managed: true
+  2681:
+    name: oct-cloudlab-2681
+    description: OCT CloudLab Vlan 2681
+    managed: true
+  2682:
+    name: oct-cloudlab-2682
+    description: OCT CloudLab Vlan 2682
+    managed: true
+  2683:
+    name: oct-cloudlab-2683
+    description: OCT CloudLab Vlan 2683
+    managed: true
+  2684:
+    name: oct-cloudlab-2684
+    description: OCT CloudLab Vlan 2684
+    managed: true
+  2685:
+    name: oct-cloudlab-2685
+    description: OCT CloudLab Vlan 2685
+    managed: true
+  2686:
+    name: oct-cloudlab-2686
+    description: OCT CloudLab Vlan 2686
+    managed: true
+  2687:
+    name: oct-cloudlab-2687
+    description: OCT CloudLab Vlan 2687
+    managed: true
+  2688:
+    name: oct-cloudlab-2688
+    description: OCT CloudLab Vlan 2688
+    managed: true
+  2689:
+    name: oct-cloudlab-2689
+    description: OCT CloudLab Vlan 2689
+    managed: true
+  2690:
+    name: oct-cloudlab-2690
+    description: OCT CloudLab Vlan 2690
+    managed: true
+  2691:
+    name: oct-cloudlab-2691
+    description: OCT CloudLab Vlan 2691
+    managed: true
+  2692:
+    name: oct-cloudlab-2692
+    description: OCT CloudLab Vlan 2692
+    managed: true
+  2693:
+    name: oct-cloudlab-2693
+    description: OCT CloudLab Vlan 2693
+    managed: true
+  2694:
+    name: oct-cloudlab-2694
+    description: OCT CloudLab Vlan 2694
+    managed: true
+  2695:
+    name: oct-cloudlab-2695
+    description: OCT CloudLab Vlan 2695
+    managed: true
+  2696:
+    name: oct-cloudlab-2696
+    description: OCT CloudLab Vlan 2696
+    managed: true
+  2697:
+    name: oct-cloudlab-2697
+    description: OCT CloudLab Vlan 2697
+    managed: true
+  2698:
+    name: oct-cloudlab-2698
+    description: OCT CloudLab Vlan 2698
+    managed: true
+  2699:
+    name: oct-cloudlab-2699
+    description: OCT CloudLab Vlan 2699
+    managed: true
+  2700:
+    name: oct-cloudlab-2700
+    description: OCT CloudLab Vlan 2700
+    managed: true
+  2701:
+    name: oct-cloudlab-2701
+    description: OCT CloudLab Vlan 2701
+    managed: true
+  2702:
+    name: oct-cloudlab-2702
+    description: OCT CloudLab Vlan 2702
+    managed: true
+  2703:
+    name: oct-cloudlab-2703
+    description: OCT CloudLab Vlan 2703
+    managed: true
+  2704:
+    name: oct-cloudlab-2704
+    description: OCT CloudLab Vlan 2704
+    managed: true
+  2705:
+    name: oct-cloudlab-2705
+    description: OCT CloudLab Vlan 2705
+    managed: true
+  2706:
+    name: oct-cloudlab-2706
+    description: OCT CloudLab Vlan 2706
+    managed: true
+  2707:
+    name: oct-cloudlab-2707
+    description: OCT CloudLab Vlan 2707
+    managed: true
+  2708:
+    name: oct-cloudlab-2708
+    description: OCT CloudLab Vlan 2708
+    managed: true
+  2709:
+    name: oct-cloudlab-2709
+    description: OCT CloudLab Vlan 2709
+    managed: true
+  2710:
+    name: oct-cloudlab-2710
+    description: OCT CloudLab Vlan 2710
+    managed: true
+  2711:
+    name: oct-cloudlab-2711
+    description: OCT CloudLab Vlan 2711
+    managed: true
+  2712:
+    name: oct-cloudlab-2712
+    description: OCT CloudLab Vlan 2712
+    managed: true
+  2713:
+    name: oct-cloudlab-2713
+    description: OCT CloudLab Vlan 2713
+    managed: true
+  2714:
+    name: oct-cloudlab-2714
+    description: OCT CloudLab Vlan 2714
+    managed: true
+  2715:
+    name: oct-cloudlab-2715
+    description: OCT CloudLab Vlan 2715
+    managed: true
+  2716:
+    name: oct-cloudlab-2716
+    description: OCT CloudLab Vlan 2716
+    managed: true
+  2717:
+    name: oct-cloudlab-2717
+    description: OCT CloudLab Vlan 2717
+    managed: true
+  2718:
+    name: oct-cloudlab-2718
+    description: OCT CloudLab Vlan 2718
+    managed: true
+  2719:
+    name: oct-cloudlab-2719
+    description: OCT CloudLab Vlan 2719
+    managed: true
+  2720:
+    name: oct-cloudlab-2720
+    description: OCT CloudLab Vlan 2720
+    managed: true
+  2721:
+    name: oct-cloudlab-2721
+    description: OCT CloudLab Vlan 2721
+    managed: true
+  2722:
+    name: oct-cloudlab-2722
+    description: OCT CloudLab Vlan 2722
+    managed: true
+  2723:
+    name: oct-cloudlab-2723
+    description: OCT CloudLab Vlan 2723
+    managed: true
+  2724:
+    name: oct-cloudlab-2724
+    description: OCT CloudLab Vlan 2724
+    managed: true
+  2725:
+    name: oct-cloudlab-2725
+    description: OCT CloudLab Vlan 2725
+    managed: true
+  2726:
+    name: oct-cloudlab-2726
+    description: OCT CloudLab Vlan 2726
+    managed: true
+  2727:
+    name: oct-cloudlab-2727
+    description: OCT CloudLab Vlan 2727
+    managed: true
+  2728:
+    name: oct-cloudlab-2728
+    description: OCT CloudLab Vlan 2728
+    managed: true
+  2729:
+    name: oct-cloudlab-2729
+    description: OCT CloudLab Vlan 2729
+    managed: true
+  2730:
+    name: oct-cloudlab-2730
+    description: OCT CloudLab Vlan 2730
+    managed: true
+  2731:
+    name: oct-cloudlab-2731
+    description: OCT CloudLab Vlan 2731
+    managed: true
+  2732:
+    name: oct-cloudlab-2732
+    description: OCT CloudLab Vlan 2732
+    managed: true
+  2733:
+    name: oct-cloudlab-2733
+    description: OCT CloudLab Vlan 2733
+    managed: true
+  2734:
+    name: oct-cloudlab-2734
+    description: OCT CloudLab Vlan 2734
+    managed: true
+  2735:
+    name: oct-cloudlab-2735
+    description: OCT CloudLab Vlan 2735
+    managed: true
+  2736:
+    name: oct-cloudlab-2736
+    description: OCT CloudLab Vlan 2736
+    managed: true
+  2737:
+    name: oct-cloudlab-2737
+    description: OCT CloudLab Vlan 2737
+    managed: true
+  2738:
+    name: oct-cloudlab-2738
+    description: OCT CloudLab Vlan 2738
+    managed: true
+  2739:
+    name: oct-cloudlab-2739
+    description: OCT CloudLab Vlan 2739
+    managed: true
+  2740:
+    name: oct-cloudlab-2740
+    description: OCT CloudLab Vlan 2740
+    managed: true
+  2741:
+    name: oct-cloudlab-2741
+    description: OCT CloudLab Vlan 2741
+    managed: true
+  2742:
+    name: oct-cloudlab-2742
+    description: OCT CloudLab Vlan 2742
+    managed: true
+  2743:
+    name: oct-cloudlab-2743
+    description: OCT CloudLab Vlan 2743
+    managed: true
+  2744:
+    name: oct-cloudlab-2744
+    description: OCT CloudLab Vlan 2744
+    managed: true
+  2745:
+    name: oct-cloudlab-2745
+    description: OCT CloudLab Vlan 2745
+    managed: true
+  2746:
+    name: oct-cloudlab-2746
+    description: OCT CloudLab Vlan 2746
+    managed: true
+  2747:
+    name: oct-cloudlab-2747
+    description: OCT CloudLab Vlan 2747
+    managed: true
+  2748:
+    name: oct-cloudlab-2748
+    description: OCT CloudLab Vlan 2748
+    managed: true
+  2749:
+    name: oct-cloudlab-2749
+    description: OCT CloudLab Vlan 2749
+    managed: true
+  2750:
+    name: oct-cloudlab-2750
+    description: OCT CloudLab Vlan 2750
+    managed: true
+  2751:
+    name: oct-cloudlab-2751
+    description: OCT CloudLab Vlan 2751
+    managed: true
+  2752:
+    name: oct-cloudlab-2752
+    description: OCT CloudLab Vlan 2752
+    managed: true
+  2753:
+    name: oct-cloudlab-2753
+    description: OCT CloudLab Vlan 2753
+    managed: true
+  2754:
+    name: oct-cloudlab-2754
+    description: OCT CloudLab Vlan 2754
+    managed: true
+  2755:
+    name: oct-cloudlab-2755
+    description: OCT CloudLab Vlan 2755
+    managed: true
+  2756:
+    name: oct-cloudlab-2756
+    description: OCT CloudLab Vlan 2756
+    managed: true
+  2757:
+    name: oct-cloudlab-2757
+    description: OCT CloudLab Vlan 2757
+    managed: true
+  2758:
+    name: oct-cloudlab-2758
+    description: OCT CloudLab Vlan 2758
+    managed: true
+  2759:
+    name: oct-cloudlab-2759
+    description: OCT CloudLab Vlan 2759
+    managed: true
+  2760:
+    name: oct-cloudlab-2760
+    description: OCT CloudLab Vlan 2760
+    managed: true
+  2761:
+    name: oct-cloudlab-2761
+    description: OCT CloudLab Vlan 2761
+    managed: true
+  2762:
+    name: oct-cloudlab-2762
+    description: OCT CloudLab Vlan 2762
+    managed: true
+  2763:
+    name: oct-cloudlab-2763
+    description: OCT CloudLab Vlan 2763
+    managed: true
+  2764:
+    name: oct-cloudlab-2764
+    description: OCT CloudLab Vlan 2764
+    managed: true
+  2765:
+    name: oct-cloudlab-2765
+    description: OCT CloudLab Vlan 2765
+    managed: true
+  2766:
+    name: oct-cloudlab-2766
+    description: OCT CloudLab Vlan 2766
+    managed: true
+  2767:
+    name: oct-cloudlab-2767
+    description: OCT CloudLab Vlan 2767
+    managed: true
+  2768:
+    name: oct-cloudlab-2768
+    description: OCT CloudLab Vlan 2768
+    managed: true
+  2769:
+    name: oct-cloudlab-2769
+    description: OCT CloudLab Vlan 2769
+    managed: true
+  2770:
+    name: oct-cloudlab-2770
+    description: OCT CloudLab Vlan 2770
+    managed: true
+  2771:
+    name: oct-cloudlab-2771
+    description: OCT CloudLab Vlan 2771
+    managed: true
+  2772:
+    name: oct-cloudlab-2772
+    description: OCT CloudLab Vlan 2772
+    managed: true
+  2773:
+    name: oct-cloudlab-2773
+    description: OCT CloudLab Vlan 2773
+    managed: true
+  2774:
+    name: oct-cloudlab-2774
+    description: OCT CloudLab Vlan 2774
+    managed: true
+  2775:
+    name: oct-cloudlab-2775
+    description: OCT CloudLab Vlan 2775
+    managed: true
+  2776:
+    name: oct-cloudlab-2776
+    description: OCT CloudLab Vlan 2776
+    managed: true
+  2777:
+    name: oct-cloudlab-2777
+    description: OCT CloudLab Vlan 2777
+    managed: true
+  2778:
+    name: oct-cloudlab-2778
+    description: OCT CloudLab Vlan 2778
+    managed: true
+  2779:
+    name: oct-cloudlab-2779
+    description: OCT CloudLab Vlan 2779
+    managed: true
+  2780:
+    name: oct-cloudlab-2780
+    description: OCT CloudLab Vlan 2780
+    managed: true
+  2781:
+    name: oct-cloudlab-2781
+    description: OCT CloudLab Vlan 2781
+    managed: true
+  2782:
+    name: oct-cloudlab-2782
+    description: OCT CloudLab Vlan 2782
+    managed: true
+  2783:
+    name: oct-cloudlab-2783
+    description: OCT CloudLab Vlan 2783
+    managed: true
+  2784:
+    name: oct-cloudlab-2784
+    description: OCT CloudLab Vlan 2784
+    managed: true
+  2785:
+    name: oct-cloudlab-2785
+    description: OCT CloudLab Vlan 2785
+    managed: true
+  2786:
+    name: oct-cloudlab-2786
+    description: OCT CloudLab Vlan 2786
+    managed: true
+  2787:
+    name: oct-cloudlab-2787
+    description: OCT CloudLab Vlan 2787
+    managed: true
+  2788:
+    name: oct-cloudlab-2788
+    description: OCT CloudLab Vlan 2788
+    managed: true
+  2789:
+    name: oct-cloudlab-2789
+    description: OCT CloudLab Vlan 2789
+    managed: true
+  2790:
+    name: oct-cloudlab-2790
+    description: OCT CloudLab Vlan 2790
+    managed: true
+  2791:
+    name: oct-cloudlab-2791
+    description: OCT CloudLab Vlan 2791
+    managed: true
+  2792:
+    name: oct-cloudlab-2792
+    description: OCT CloudLab Vlan 2792
+    managed: true
+  2793:
+    name: oct-cloudlab-2793
+    description: OCT CloudLab Vlan 2793
+    managed: true
+  2794:
+    name: oct-cloudlab-2794
+    description: OCT CloudLab Vlan 2794
+    managed: true
+  2795:
+    name: oct-cloudlab-2795
+    description: OCT CloudLab Vlan 2795
+    managed: true
+  2796:
+    name: oct-cloudlab-2796
+    description: OCT CloudLab Vlan 2796
+    managed: true
+  2797:
+    name: oct-cloudlab-2797
+    description: OCT CloudLab Vlan 2797
+    managed: true
+  2798:
+    name: oct-cloudlab-2798
+    description: OCT CloudLab Vlan 2798
+    managed: true
+  2799:
+    name: oct-cloudlab-2799
+    description: OCT CloudLab Vlan 2799
+    managed: true
+  2800:
+    name: oct-cloudlab-2800
+    description: OCT CloudLab Vlan 2800
+    managed: true
   3100:
     name: "AL2S-3100"
     description: "AL2S VLAN 3100 for Fabric"
