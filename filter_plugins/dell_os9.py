@@ -91,7 +91,7 @@ def OS9_GETINTFCONFIG(intf, sw_config):
 
     return output
 
-def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
+def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list):
     """
     This will generate a sequence of OS9 commands for a single interface based on existing and manifest config.
 
@@ -393,7 +393,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
 
         return out,def_intf
 
-    def os9_untagged(intf_label, sw_config, man_fields, default_port):
+    def os9_untagged(intf_label, sw_config, man_fields, default_port, managed_vlan_list):
         """
         Create OS9 commands for "untagged" attribute
 
@@ -420,7 +420,8 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
 
             for existing_vlan in existing_vlan_list:
                 vlan_id = existing_vlan.split(" ")[-1]
-                if not ("untagged" in man_fields and man_fields["untagged"] == int(vlan_id)):
+                if not ("untagged" in man_fields and man_fields["untagged"] == int(vlan_id)) and not vlan_id in managed_vlan_list:
+                    # don't remove managed vlan assignement
                     cur_intf_cfg = []
                     
                     cur_intf_cfg.append(f"interface {existing_vlan}")
@@ -445,7 +446,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
 
         return out
     
-    def os9_tagged(intf_label, sw_config, man_fields, default_port):
+    def os9_tagged(intf_label, sw_config, man_fields, default_port, managed_vlan_list):
         """
         Create OS9 commands for "tagged" attribute
 
@@ -498,7 +499,8 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
 
             for existing_vlan in existing_vlan_list:
                 vlan_id = existing_vlan.split(" ")[-1]
-                if not vlan_id in tagged_vllist:
+                if not vlan_id in tagged_vllist and not vlan_id in managed_vlan_list:
+                    # Don't remove managed vlan
                     cur_intf_cfg = []
 
                     cur_intf_cfg.append(f"interface {existing_vlan}")
@@ -723,12 +725,11 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config):
     cur_intf_cfg += portmode_out
     cur_intf_cfg += os9_mlag(intf_fields, running_config, default_port)
 
-    if not("managed" in intf_fields and intf_fields["managed"] == "vlans"):
-        untag_list = os9_untagged(intf_label, sw_config, intf_fields, default_port)
-        output += untag_list
+    untag_list = os9_untagged(intf_label, sw_config, intf_fields, default_port, managed_vlan_list)
+    output += untag_list
 
-        tag_list = os9_tagged(intf_label, sw_config, intf_fields, default_port)
-        output += tag_list
+    tag_list = os9_tagged(intf_label, sw_config, intf_fields, default_port, managed_vlan_list)
+    output += tag_list
 
     # These change physical interfaces
     lacp_members_active_list = os9_lacpmembersactive(intf_label, sw_config, intf_fields)
@@ -878,13 +879,14 @@ def OS9_GETCONFIG(sw_config, intf, vlans):
     conf_lines = sw_config["ansible_facts"]["ansible_net_config"].splitlines()
     conf_lines = OS9_GETEXTENDEDCFG(conf_lines)
 
+    managed_vlan_list = [str(key) for key, value in vlans.items() if "managed" in value and value["managed"]]
     vlans = {"Vlan " + str(key): value for key, value in vlans.items()}
     manifest = merge_dicts(vlans, intf)
 
     out = []
 
     for key,fields in manifest.items():
-        if "managed" in fields and fields["managed"] == "yes":
+        if "managed" in fields and fields["managed"]:
             # Don't edit managed interfaces
             continue
 
@@ -892,7 +894,7 @@ def OS9_GETCONFIG(sw_config, intf, vlans):
             # Skip fanouts
             continue
 
-        intf_lines = OS9_GENERATEINTFCONFIG(key, fields, conf_lines)
+        intf_lines = OS9_GENERATEINTFCONFIG(key, fields, conf_lines, managed_vlan_list)
         if len(intf_lines) > 0:
             out += intf_lines
 
