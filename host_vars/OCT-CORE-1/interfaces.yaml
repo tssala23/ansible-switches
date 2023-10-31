@@ -170,13 +170,12 @@ interfaces:
       # CSAIL
       - 10
       # UMA Public IPs
-      - 57
       - 84
-      - 86
       # MOC Public IPs
       - 105
       - 127
       # MOC
+      - 204
       - 207
       - 208
       - 213
@@ -191,8 +190,6 @@ interfaces:
       # MGMT
       - 911
       - 913
-      # UMA NESE
-      - 950
       # AL2S VLANs
       - 3100
       - 3101
@@ -206,6 +203,7 @@ interfaces:
       - 3109
       # CSAIL
       - 3801
+      - 3802
       - 3803
     portmode: "trunk"
     mtu: 9216
