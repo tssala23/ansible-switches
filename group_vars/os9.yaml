@@ -1,5 +1,0 @@
----
-ansible_network_os: dellemc.os9.os9
-
-ansible_become: true
-ansible_become_method: enable
