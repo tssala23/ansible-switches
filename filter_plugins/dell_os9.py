@@ -401,17 +401,16 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
         out = []
 
         # Every edge port interface will be defined as an edge port for all 3 protocols
-        os9_stp_types = ["rstp", "pstp", "mstp"]
+        os9_stp_types = ["rstp", "pvst", "mstp"]
 
         is_edgeport = "stp-edge" in man_fields and man_fields["stp-edge"]
         for stp_type in os9_stp_types:
             # Loop through each stp type available
+            conf_line = f"spanning-tree {stp_type} edge-port"
             if is_edgeport:
-                conf_line = f"spanning-tree {stp_type} edge-port"
                 if conf_line not in running_fields or default_port:
                     out.append(conf_line)  # add to out only if not already in switch conf
             else:
-                conf_line = f"spanning-tree {stp_type} edge-port"
                 if conf_line in running_fields and not default_port:
                     out.append(f"no {conf_line}")
 
