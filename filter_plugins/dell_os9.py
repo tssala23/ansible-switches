@@ -327,7 +327,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
             out.append(conf_line)
 
         return out
-        
+
     def os9_ip4(man_fields, running_fields, default_port):
         """
         Create OS9 commands for "ip4" attribute
@@ -355,7 +355,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
             out.append("no ip address")
 
         return out
-        
+
     def os9_ip6(man_fields, running_fields, default_port):
         """
         Create OS9 commands for "ip6" attribute
