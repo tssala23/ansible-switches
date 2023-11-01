@@ -141,8 +141,7 @@ interfaces:
       - 3107
       - 3108
       - 3109
-    custom:
-      - "no intf-type cr4 autoneg"
+    autoneg: false
   hundredGigE 1/30:
     fanout:
       type: "quad"
