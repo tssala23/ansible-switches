@@ -190,6 +190,7 @@ interfaces:
       # MGMT
       - 911
       - 913
+      - 930
       # AL2S VLANs
       - 3100
       - 3101
