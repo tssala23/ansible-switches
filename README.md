@@ -150,3 +150,5 @@ Switches will need some manual configuration before being able to be set up from
 * Case-insensitive matching for interface labels
 * VLAN groups to be defined in tagged/untagged sections
 * Switch system configuration (STP, etc.)
+* Add "speed" field for some interfaces
+* Ability to map connections between devices
