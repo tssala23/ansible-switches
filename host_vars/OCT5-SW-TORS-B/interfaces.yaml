@@ -1,347 +1,372 @@
 interfaces:
-  1/1:
+  twentyFiveGigE 1/1:
     description: "OCT5-U1"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/2:
+    portmode: "hybrid"
+  twentyFiveGigE 1/2:
     description: "OCT5-U2"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/3:
+    portmode: "hybrid"
+  twentyFiveGigE 1/3:
     description: "OCT5-U3"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/4:
+    portmode: "hybrid"
+  twentyFiveGigE 1/4:
     description: "OCT5-U4"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/5:
+    portmode: "hybrid"
+  twentyFiveGigE 1/5:
     description: "OCT5-U5"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/6:
+    portmode: "hybrid"
+  twentyFiveGigE 1/6:
     description: "OCT5-U6"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/7:
+    portmode: "hybrid"
+  twentyFiveGigE 1/7:
     description: "OCT5-U7"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/8:
+    portmode: "hybrid"
+  twentyFiveGigE 1/8:
     description: "OCT5-U8"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/9:
+    portmode: "hybrid"
+  twentyFiveGigE 1/9:
     description: "OCT5-U9"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/10:
+    portmode: "hybrid"
+  twentyFiveGigE 1/10:
     description: "OCT5-U10"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/11:
+    portmode: "hybrid"
+  twentyFiveGigE 1/11:
     description: "OCT5-U11"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/12:
+    portmode: "hybrid"
+  twentyFiveGigE 1/12:
     description: "OCT5-U12"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/13:
+    portmode: "hybrid"
+  twentyFiveGigE 1/13:
     description: "OCT5-U13"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/14:
+    portmode: "hybrid"
+  twentyFiveGigE 1/14:
     description: "OCT5-U14"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/15:
+    portmode: "hybrid"
+  twentyFiveGigE 1/15:
     description: "OCT5-U15"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/16:
+    portmode: "hybrid"
+  twentyFiveGigE 1/16:
     description: "OCT5-U16"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/17:
+    portmode: "hybrid"
+  twentyFiveGigE 1/17:
     description: "OCT5-U17"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/18:
+    portmode: "hybrid"
+  twentyFiveGigE 1/18:
     description: "OCT5-U18"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/19:
+    portmode: "hybrid"
+  twentyFiveGigE 1/19:
     description: "OCT5-U19"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/20:
+    portmode: "hybrid"
+  twentyFiveGigE 1/20:
     description: "OCT5-U20"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/21:
+    portmode: "hybrid"
+  twentyFiveGigE 1/21:
     description: "OCT5-U21"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/22:
+    portmode: "hybrid"
+  twentyFiveGigE 1/22:
     description: "OCT5-U22"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/23:
+    portmode: "hybrid"
+  twentyFiveGigE 1/23:
     description: "OCT5-U23"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/24:
+    portmode: "hybrid"
+  twentyFiveGigE 1/24:
     description: "OCT5-U24"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/25:
+    portmode: "hybrid"
+  twentyFiveGigE 1/25:
     description: "OCT5-U25"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/26:
+    portmode: "hybrid"
+  twentyFiveGigE 1/26:
     description: "OCT5-U26"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/27:
+    portmode: "hybrid"
+  twentyFiveGigE 1/27:
     description: "OCT5-U27"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/28:
+    portmode: "hybrid"
+  twentyFiveGigE 1/28:
     description: "OCT5-U28"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/29:
+    portmode: "hybrid"
+  twentyFiveGigE 1/29:
     description: "OCT5-U29"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/30:
+    portmode: "hybrid"
+  twentyFiveGigE 1/30:
     description: "OCT5-U30"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/31:
+    portmode: "hybrid"
+  twentyFiveGigE 1/31:
     description: "OCT5-U31"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/32:
+    portmode: "hybrid"
+  twentyFiveGigE 1/32:
     description: "OCT5-U32"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/33:
+    portmode: "hybrid"
+  twentyFiveGigE 1/33:
     description: "OCT5-U33"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/34:
+    portmode: "hybrid"
+  twentyFiveGigE 1/34:
     description: "OCT5-U34"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/35:
+    portmode: "hybrid"
+  twentyFiveGigE 1/35:
     description: "OCT5-U35"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/36:
+    portmode: "hybrid"
+  twentyFiveGigE 1/36:
     description: "OCT5-U36"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/37:
+    portmode: "hybrid"
+  twentyFiveGigE 1/37:
     description: "OCT5-U37"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/38:
+    portmode: "hybrid"
+  twentyFiveGigE 1/38:
     description: "OCT5-U38"
     state: "up"
     mtu: 9216
     untagged: 209
     tagged:
       - 250
-    switchport: "hybrid"
-  1/39:
+    portmode: "hybrid"
+  twentyFiveGigE 1/39:
     state: "down"
-  1/40:
+  twentyFiveGigE 1/40:
     state: "down"
-  1/41:
+  twentyFiveGigE 1/41:
     state: "down"
-  1/42:
+  twentyFiveGigE 1/42:
     state: "down"
-  1/43:
+  twentyFiveGigE 1/43:
     state: "down"
-  1/44:
+  twentyFiveGigE 1/44:
     state: "down"
-  1/45:
+  twentyFiveGigE 1/45:
     state: "down"
-  1/46:
+  twentyFiveGigE 1/46:
     state: "down"
-  1/47:
+  twentyFiveGigE 1/47:
     state: "down"
-  1/48:
+  twentyFiveGigE 1/48:
     description: "OCT5-SW-TORS-A Port 48 VLT Heartbeat"
     state: "up"
     ip4: "10.255.255.2/30"
-  1/49:
-    fanout: "single"
-    fanout_speed: "40G"
-  1/49/1:
+  hundredGigE 1/49:
+    fanout: {
+      speed: "40G",
+      type: "single"
+    }
+  fortyGigE 1/49/1:
     description: "Alan Liu DPDK"
     state: "up"
-  1/50:
+  hundredGigE 1/50:
     state: "down"
-  1/51:
+  hundredGigE 1/51:
     description: "OCT5-SW-TORS-A Port 51 VLT"
     state: "up"
-  1/52:
+  hundredGigE 1/52:
     description: "OCT5-SW-TORS-A Port 52 VLT"
     state: "up"
-  1/53:
+  hundredGigE 1/53:
     state: "down"
-  1/54:
+  hundredGigE 1/54:
     description: "OCT-CORE-2 Port 54"
     state: "up"
     mtu: 9216
+  Port-channel 10:
+    description: "OCT-CORE-2 LAG"
+    state: "up"
+    tagged:
+      - 207
+      - 209
+      - 250
+    portmode: "trunk"
+    mtu: 9216
+    lacp-rate: "fast"
+    lacp-members-active:
+      - "hundredGigE 1/54"
+    mlag: "Port-channel 10"
+  Port-channel 100:
+    description: "OCT5-SW-TORS-A VLT LAG"
+    state: "up"
+    mtu: 9216
+    lag-members:
+      - "hundredGigE 1/51"
+      - "hundredGigE 1/52"
+  Vlan 207:
+    state: "up"
+    ip4: "10.1.0.16/24"

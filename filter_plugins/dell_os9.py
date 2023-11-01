@@ -1,511 +1,1017 @@
-from pprint import pprint
+import re
+import pprint
 
-def os9_getFactDict(sw_facts):
+physical_interface_types = [
+    "gigabitethernet",
+    "tengigabitethernet",
+    "twentyfivegige",
+    "fortygige",
+    "hundredgige"
+]
+
+vlan_interface_types = [
+    "vlan"
+]
+
+lag_interface_types = [
+    "port-channel"
+]
+
+def OS9_PARSEINTFRANGE(s, sw_config):
+    output = []  # output list will store all interfaces in the range
+
+    s_parts = s.split(" ")  # Split input string into type and range parts
+    s_type = s_parts[0]
+    s_range_str = s_parts[1]
+
+    s_rangelist = s_range_str.split(",")  # split by commas
+
+    for range in s_rangelist:
+        range_parts = range.split("-")  # split by dashes
+        if len(range_parts) == 1:
+            output.append(f"{s_type} {range}")  # no range here
+        else:
+            # this is a range (-)
+            range_0 = range_parts[0]
+            range_1 = range_parts[1]
+
+            storing = False
+            for line in sw_config:
+                if line.startswith(f"interface {s_type} {range_0}"):
+                    # found range_0
+                    storing = True
+
+                if storing and line.startswith("interface"):
+                    line_parts = line.split(" ")
+                    intf_label = " ".join(line_parts[1:])
+                    output.append(intf_label)
+
+                if line.startswith(f"interface {s_type} {range_1}"):
+                    # found range_1
+                    break
+
+    return output
+
+def OS9_GETEXTENDEDCFG(sw_config):
+    output = []
+
+    for line in sw_config:
+        if line.startswith("!"):
+            continue
+
+        line_parts = line.split(" ")
+        num_spaces = line_parts.count("")
+        line_header = line_parts[num_spaces]
+
+        if line_header == "untagged" or line_header == "tagged" or line_header == "channel-member":  #! any others?
+            range_str = " ".join(line_parts[num_spaces + 1:])
+            intf_list = OS9_PARSEINTFRANGE(range_str, sw_config)
+            cfg_list = [f'{" " * num_spaces}{line_header} {i}' for i in intf_list]
+            output += cfg_list
+        else:
+            output.append(line)
+
+    return output
+
+def OS9_GETINTFCONFIG(intf, sw_config):
+    output = []
+
+    search_label = f"interface {intf}"
+    recording = False
+    for line in sw_config:
+        if line == search_label:
+            recording = True
+            continue
+
+        if recording and not line.startswith(" "):
+            break
+
+        if recording:
+            output.append(line.strip())
+
+    return output
+
+def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list):
     """
-    Method which converts the switch facts gathered by ansible into a more python-usable dict
+    This will generate a sequence of OS9 commands for a single interface based on existing and manifest config.
 
-    :param sw_facts: raw configuration output from switch
-    :type sw_facts: str
-    :return: dict of parsed switch configuration
+    :param intf_label: Name of interface
+    :type intf_label: str
+    :param intf_fields: Fields from manifest of interface
+    :type intf_fields: str
+    :param sw_config: Switch configuration lines
+    :type sw_config: list
+    :return list of os9 commands:
+    :rtype: list
+    """
+    def os9_searchconfig(sw_config, search_keys, line_keys, intf_search, intf_index):
+        """
+        Searches through config lines for specific subitem "line keys" from parent "search keys"
+        This is useful for finding existing VLAN/LACP mappins since OS9 does it backwards
+
+        :param sw_config: Switch configuration lines
+        :type sw_config: list
+        :param search_keys: List of parent keys to find in the config
+        :type search_keys: list
+        :param line_keys: List of subitem items to find below the parent (no leading spaces)
+        :type line_keys: list
+        :param intf_search: name of interface to match
+        :type intf_search: str
+        :return: List of parents found that match a all keys
+        :rtype: list
+        """
+        out = []
+
+        search_keys = ["interface " + i for i in search_keys]
+
+        cur_line = ""
+        for line in sw_config:
+            line_str = line.strip()
+            if line_str.lower().startswith(tuple(search_keys)):
+                cur_line = line
+            elif line_str.startswith("interface") and cur_line != "":
+                cur_line = ""
+
+            if line_str.startswith(tuple(line_keys)) and cur_line != "":
+                line_parts = line_str.split(" ")
+                line_intf_label = " ".join(line_parts[1:])
+                parent_label = " ".join(cur_line.split(" ")[intf_index[0]:intf_index[1]])
+
+                if line_intf_label == intf_search:
+                    # found interface
+                    out.append(parent_label)
+
+        return out
+
+    def os9_name(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "name" attribute (only for VLAN interfaces)
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set name
+        :rtype: list
+        """
+
+        out = []
+
+        if "name" in man_fields:
+            # Name attribute exists in the manifest
+            conf_line = f"name {man_fields['name']}"
+            if conf_line not in running_fields or default_port:
+                out.append(conf_line)  # add to out only if not already in switch conf
+
+        elif any(item.startswith("name") for item in running_fields) and not default_port:
+            # Name attribute exists on the switch, but shouldn't
+            out.append("no name")
+
+        return out
+
+    def os9_description(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "description" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set description
+        :rtype: list
+        """
+
+        out = []
+
+        if "description" in man_fields:
+            # Description attribute exists in the manifest
+            conf_line = f"description {man_fields['description']}"
+            if conf_line not in running_fields or default_port:
+                out.append(conf_line)  # add to out only if not already in switch conf
+
+        elif any(item.startswith("description") for item in running_fields) and not default_port:
+            # Description attribute exists on the switch, but shouldn't
+            out.append("no description")
+
+        return out
+
+    def os9_state(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "state" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set state
+        :rtype: list
+        """
+
+        out = []
+
+        # Create a no prefix based on manifest value
+        if "state" in man_fields and man_fields["state"] == "up":
+            no_str = "no "
+        else:
+            no_str = ""
+
+        conf_line = f"{no_str}shutdown"
+        if conf_line not in running_fields or default_port:
+            out.append(conf_line)  # add to out only if not already in switch conf
+
+        return out
+
+    def os9_mtu(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "mtu" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set mtu
+        :rtype: list
+        """
+
+        out = []
+
+        if "mtu" in man_fields:
+            # mtu attribute exists in the manifest
+            conf_line = f"mtu {str(intf_fields['mtu'])}"
+            if conf_line not in running_fields or default_port:
+                out.append(conf_line)  # add to out only if not already in switch conf
+
+        elif any(item.startswith("mtu") for item in running_fields) and not default_port:
+            # mtu attribute exists on the switch, but shouldn't
+            out.append("no mtu")
+
+        return out
+
+    def os9_autoneg(intf_label, man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "autoneg" attribute
+
+        :param intf_label: Name of interface
+        :type intf_label: str
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set autoneg
+        :rtype: list
+        """
+
+        intf_type = intf_label.split(" ")[0].lower()
+
+        if intf_type == "gigabitethernet" or intf_type == "tengigabitethernet":
+            # support negotiation command
+            conf_line = "negotiation auto"
+        elif intf_type == "twentyfivegige":
+            conf_line = "intf-type cr1 autoneg"
+        elif intf_type == "fiftygige":
+            conf_line = "intf-type cr2 autoneg"
+        elif intf_type == "hundredgige" or intf_type == "fortygige":
+            conf_line = "intf-type cr4 autoneg"
+
+        out = []
+
+        if "autoneg" in man_fields and not man_fields["autoneg"]:
+            conf_line = f"no {conf_line}"
+
+            if conf_line not in running_config or default_port:
+                out.append(conf_line)
+
+        elif any("autoneg" in i for i in running_fields) or any("negotiation" in i for i in running_fields):
+            out.append(conf_line)
+
+        return out
+
+    def os9_fec(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "fec" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set fec
+        :rtype: list
+        """
+
+        out = []
+
+        # Create a no prefix based on manifest value
+        if "fec" in man_fields:
+            if man_fields["fec"]:
+                conf_line = "fec enable"
+            else:
+                conf_line = "no fec enable"
+
+            if conf_line not in running_fields or default_port:
+                out.append(conf_line)
+        elif any("fec" in i for i in running_fields):
+            # fec field exists
+            conf_line = "fec default"
+            out.append(conf_line)
+
+        return out
+
+    def os9_ip4(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "ip4" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set ip4
+        :rtype: list
+        """
+
+        out = []
+
+        if "ip4" in man_fields:
+            # ip4 attribute exists in the manifest
+            conf_line = f"ip address {man_fields['ip4']}"
+            if conf_line not in running_fields or default_port:
+                out.append(conf_line)  # add to out only if not already in switch conf
+
+        elif any(item.startswith("ip address") for item in running_fields) and not default_port:
+            # ip4 attribute exists on the switch, but shouldn't
+            out.append("no ip address")
+
+        return out
+
+    def os9_ip6(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "ip6" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set ip6
+        :rtype: list
+        """
+
+        out = []
+
+        if "ip6" in man_fields:
+            # ip6 attribute exists in the manifest
+            conf_line = f"ipv6 address {man_fields['ip6']}"
+            if conf_line not in running_fields or default_port:
+                out.append(conf_line)  # add to out only if not already in switch conf
+
+        elif any(item.startswith("ipv6 address") for item in running_fields) and not default_port:
+            # ip6 attribute exists on the switch, but shouldn't
+            out.append("no ipv6 address")
+
+        return out
+
+    def os9_edgeport(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "edge-port" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set edge-port
+        :rtype: list
+        """
+
+        out = []
+
+        # Every edge port interface will be defined as an edge port for all 3 protocols
+        os9_stp_types = ["rstp", "pvst", "mstp"]
+
+        is_edgeport = "stp-edge" in man_fields and man_fields["stp-edge"]
+        for stp_type in os9_stp_types:
+            # Loop through each stp type available
+            conf_line = f"spanning-tree {stp_type} edge-port"
+            if is_edgeport:
+                if conf_line not in running_fields or default_port:
+                    out.append(conf_line)  # add to out only if not already in switch conf
+            else:
+                if conf_line in running_fields and not default_port:
+                    out.append(f"no {conf_line}")
+
+        return out
+
+    def os9_portmode(man_fields, running_fields):
+        """
+        Create OS9 commands for "portmode" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :return: Tuple of <OS9 commands to set portmode>,<defaulted port>
+        :rtype: tuple
+        """
+
+        out = []
+        def_intf = False  # if true then the interface needs to be defaulted before continuing
+
+        if "portmode" in man_fields:
+            intf_portmode = intf_fields["portmode"]
+
+            has_switchport = "switchport" in running_fields
+            has_portmode = "portmode hybrid" in running_fields
+
+            if intf_portmode == "hybrid":
+                # for hybrid port, portmode hybrid needs to go first
+                if not has_portmode:
+                    out.append("portmode hybrid")
+
+                    if has_switchport:
+                        # You cannot apply portmode hybrid unless switchport doesn't exist
+                        def_intf = True
+
+            if not has_switchport or def_intf:
+                out.append("switchport")  # only apply if not already on switch
+
+            if not def_intf:
+                # remove L3 fields since they are mutually exclusive if they exist
+                if any(item.startswith("ip address") for item in running_fields):
+                    out.insert(0, "no ip address")
+
+                if any(item.startswith("ipv6 address") for item in running_fields):
+                    out.insert(0, "no ipv6 address")
+        else:
+            if "switchport" in running_fields:
+                def_intf = True
+
+            if "portmode hybrid" in running_fields and not def_intf:
+                out.append("no portmode hybrid")
+
+        return out,def_intf
+
+    def os9_untagged(intf_label, sw_config, man_fields, default_port, managed_vlan_list):
+        """
+        Create OS9 commands for "untagged" attribute
+
+        :param intf_label: Label of the interface
+        :type: str
+        :param sw_config: Switch config lines
+        :type: list
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param defaulted: If true, this interface is defaulted before executing
+        :type defaulted: boolean
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set untagged
+        :rtype: list
+        """
+
+        out = []
+
+        # clean old vlans
+        if not default_port:
+            # no need to clean vlans if interface is being defaulted
+            existing_vlan_list = os9_searchconfig(sw_config, vlan_interface_types, ["untagged"], intf_label, (1,3))
+
+            for existing_vlan in existing_vlan_list:
+                vlan_id = existing_vlan.split(" ")[-1]
+                if not ("untagged" in man_fields and man_fields["untagged"] == int(vlan_id)) and not vlan_id in managed_vlan_list:
+                    # don't remove managed vlan assignement
+                    cur_intf_cfg = []
+
+                    cur_intf_cfg.append(f"interface {existing_vlan}")
+                    conf_line = f"no untagged {intf_label}"
+                    cur_intf_cfg.append(conf_line)
+
+                    out.append(cur_intf_cfg)
+
+        if "untagged" in man_fields:
+            untagged_vlan = str(man_fields["untagged"])
+            vlan_intf_label = f"Vlan {untagged_vlan}"
+
+            vlan_running_fields = OS9_GETINTFCONFIG(vlan_intf_label, sw_config)
+            conf_line = f"untagged {intf_label}"
+
+            if conf_line not in vlan_running_fields or default_port:
+                cur_intf_cfg = []
+
+                cur_intf_cfg.append(f"interface {vlan_intf_label}")
+                cur_intf_cfg.append(conf_line)
+                out.append(cur_intf_cfg)
+
+        return out
+
+    def os9_tagged(intf_label, sw_config, man_fields, default_port, managed_vlan_list):
+        """
+        Create OS9 commands for "tagged" attribute
+
+        :param intf_label: Label of the interface
+        :type: str
+        :param sw_config: Switch config lines
+        :type: list
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param defaulted: If true, this interface is defaulted before executing
+        :type defaulted: boolean
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set tagged
+        :rtype: list
+        """
+
+        def getTaggedVlanList(tagList):
+            """
+            The manifest allows tagged vlans to be specified as a range like 1000:1010
+            This method parses that
+
+            :param tagList: String to be parsed
+            :type tagList: str
+            :return: List of each vlan in the list
+            :rtype: list
+            """
+
+            out = []
+
+            for list_item in tagList:
+                item_parts = str(list_item).split(":")
+
+                if len(item_parts) == 1:
+                    out += item_parts
+                else:
+                    vlan_list = list(range(int(item_parts[0]), int(item_parts[1]) + 1))
+                    out += map(str, vlan_list)
+
+            return out
+
+        out = []
+
+        if "tagged" in man_fields:
+            tagged_vllist = getTaggedVlanList(man_fields["tagged"])
+
+        if not default_port:
+            # no need to clean vlans if interface is being defaulted
+            existing_vlan_list = os9_searchconfig(sw_config, vlan_interface_types, ["tagged"], intf_label, (1,3))
+
+            for existing_vlan in existing_vlan_list:
+                vlan_id = existing_vlan.split(" ")[-1]
+                if not vlan_id in tagged_vllist and not vlan_id in managed_vlan_list:
+                    # Don't remove managed vlan
+                    cur_intf_cfg = []
+
+                    cur_intf_cfg.append(f"interface {existing_vlan}")
+                    conf_line = f"no tagged {intf_label}"
+                    cur_intf_cfg.append(conf_line)
+
+                    out.append(cur_intf_cfg)
+
+        if "tagged" in man_fields:
+            for cur_vlan in tagged_vllist:
+                vlan_intf_label = f"Vlan {str(cur_vlan)}"
+
+                vlan_running_fields = OS9_GETINTFCONFIG(vlan_intf_label, sw_config)
+                conf_line = f"tagged {intf_label}"
+
+                if conf_line not in vlan_running_fields or default_port:
+                    cur_intf_cfg = []
+
+                    cur_intf_cfg.append(f"interface {vlan_intf_label}")
+                    cur_intf_cfg.append(conf_line)
+                    out.append(cur_intf_cfg)
+
+        return out
+
+    def os9_lagmembers(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "lag-members" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set lag-members
+        :rtype: list
+        """
+
+        out = []
+
+        if "lag-members" in man_fields:
+            channel_members = man_fields["lag-members"]
+
+            for lag_member in channel_members:
+                conf_line = f"channel-member {lag_member}"
+
+                if conf_line not in running_fields or default_port:
+                    out.append(conf_line)  # add channel member if not on switch
+
+            for cfg_line in running_fields:
+                if cfg_line.startswith("channel-member"):
+                    mem_intf_label = " ".join(cfg_line.split(" ")[1:])
+                    if mem_intf_label not in channel_members and not default_port:
+                        conf_line = f"no channel-member {mem_intf_label}"
+                        out.insert(0, conf_line)  # remove any existing channel members if they exist
+
+        return out
+
+    def os9_lacpmembersactive(intf_label, sw_config, man_fields):
+        """
+        Create OS9 commands for "lag-members-active" attribute
+
+        :param intf_label: Label of the interface
+        :type: str
+        :param sw_config: Switch config lines
+        :type: list
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :return: List of OS9 commands to set lag-members-active
+        :rtype: list
+        """
+
+        out = []
+
+        # clean existing members
+        existing_member_list = os9_searchconfig(sw_config, physical_interface_types, ["port-channel"], intf_label, (0,2))
+        for existing_member in existing_member_list:
+            if not("lacp-members-active" in man_fields and existing_member in man_fields["lacp-members-active"]):
+                out.append(f"interface {existing_member}")
+                conf_line = "no port-channel-protocol LACP"
+                out.append(conf_line)
+
+        if "lacp-members-active" in man_fields:
+            channel_members = man_fields["lacp-members-active"]
+
+            for lag_member in channel_members:
+                lag_member_fields = OS9_GETINTFCONFIG(lag_member, sw_config)
+
+                conf_line = f"{intf_label.lower()} mode active"
+                if conf_line not in lag_member_fields:
+                    cur_intf_cfg = []
+
+                    cur_intf_cfg.append(f"interface {lag_member}")
+                    cur_intf_cfg.append("port-channel-protocol LACP")
+                    cur_intf_cfg.append(conf_line)
+
+                    out.append(cur_intf_cfg)
+
+        return out
+
+    def os9_lacpmemberspassive(intf_label, sw_config, man_fields):
+        """
+        Create OS9 commands for "lag-members-passive" attribute
+
+        :param intf_label: Label of the interface
+        :type: str
+        :param sw_config: Switch config lines
+        :type: list
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :return: List of OS9 commands to set lag-members-passive
+        :rtype: list
+        """
+
+        out = []
+
+        # clean existing members
+        existing_member_list = os9_searchconfig(sw_config, physical_interface_types, ["port-channel"], intf_label, (0,2))
+        for existing_member in existing_member_list:
+            if not("lacp-members-passive" in man_fields and existing_member in man_fields["lacp-members-passive"]):
+                out.append(f"interface {existing_member}")
+                conf_line = "no port-channel-protocol LACP"
+                out.append(conf_line)
+
+        if "lacp-members-passive" in man_fields:
+            channel_members = man_fields["lacp-members-passive"]
+
+            for lag_member in channel_members:
+                lag_member_fields = OS9_GETINTFCONFIG(lag_member, sw_config)
+
+                conf_line = f"{intf_label.lower()} mode passive"
+                if conf_line not in lag_member_fields:
+                    cur_intf_cfg = []
+
+                    cur_intf_cfg.append(f"interface {lag_member}")
+                    cur_intf_cfg.append("port-channel-protocol LACP")
+                    cur_intf_cfg.append(conf_line)
+
+                    out.append(cur_intf_cfg)
+
+        return out
+
+    def os9_lacprate(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "lacp-rate" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set lacp-rate
+        :rtype: list
+        """
+
+        out = []
+
+        if "lacp-rate" in man_fields:
+            if man_fields["lacp-rate"] == "fast":
+                conf_line = "lacp fast-switchover"
+
+                if conf_line not in running_fields or default_port:
+                    out.append(conf_line)
+
+        elif "lacp fast-switchover" in running_fields and not default_port:
+            out.append("no lacp fast-switchover")
+
+        return out
+
+    def os9_mlag(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "mlag" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set mlag
+        :rtype: list
+        """
+
+        out = []
+
+        if "mlag" in man_fields:
+            conf_line = f"vlt-peer-lag {man_fields['mlag'].lower()}"
+            if conf_line not in running_fields or default_port:
+                out.append(conf_line)
+
+        elif any(item.startswith("vlt-peer-lag") for item in running_fields) and not default_port:
+            out.append("no vlt-peer-lag")
+
+        return out
+
+    #
+    # Combine all configuration for the interface
+    #
+
+    running_config = OS9_GETINTFCONFIG(intf_label, sw_config)
+
+    cur_intf_cfg = []
+    output = []
+
+    portmode_out,default_port = os9_portmode(intf_fields, running_config)
+    # General
+    cur_intf_cfg += os9_name(intf_fields, running_config, default_port)
+    cur_intf_cfg += os9_description(intf_fields, running_config, default_port)
+    cur_intf_cfg += os9_state(intf_fields, running_config, default_port)
+    cur_intf_cfg += os9_mtu(intf_fields, running_config, default_port)
+    cur_intf_cfg += os9_autoneg(intf_label, intf_fields, running_config, default_port)
+    cur_intf_cfg += os9_fec(intf_fields, running_config, default_port)
+    # L3
+    cur_intf_cfg += os9_ip4(intf_fields, running_config, default_port)
+    cur_intf_cfg += os9_ip6(intf_fields, running_config, default_port)
+    # STP
+    cur_intf_cfg += os9_edgeport(intf_fields, running_config, default_port)
+    # LAG
+    cur_intf_cfg += os9_lagmembers(intf_fields, running_config, default_port)
+    cur_intf_cfg += os9_lacprate(intf_fields, running_config, default_port)
+
+    # VLAN interfaces / L2
+    cur_intf_cfg += portmode_out
+    cur_intf_cfg += os9_mlag(intf_fields, running_config, default_port)
+
+    untag_list = os9_untagged(intf_label, sw_config, intf_fields, default_port, managed_vlan_list)
+    output += untag_list
+
+    tag_list = os9_tagged(intf_label, sw_config, intf_fields, default_port, managed_vlan_list)
+    output += tag_list
+
+    # These change physical interfaces
+    lacp_members_active_list = os9_lacpmembersactive(intf_label, sw_config, intf_fields)
+    output += lacp_members_active_list
+
+    lacp_members_passive_list = os9_lacpmemberspassive(intf_label, sw_config, intf_fields)
+    output += lacp_members_passive_list
+
+    # add interface config line
+    if len(cur_intf_cfg) > 0:
+        cur_intf_cfg.insert(0, f"interface {intf_label}")
+
+        if default_port:
+            intf_type = intf_label.split(" ")[0]
+            if intf_type.lower() in physical_interface_types:
+                # this is a physical interface
+                cur_intf_cfg.insert(0, f"default interface {intf_label}")
+            elif intf_type.lower() in lag_interface_types:
+                # this is a port channel, so it just needs to be delete
+                cur_intf_cfg.insert(0, f"no interface {intf_label}")
+
+        output.insert(0, cur_intf_cfg)
+
+    return output
+
+def OS9_GETFANOUT(sw_config, intf):
+    out = []
+
+    return out
+
+def OS9_FANOUTCFG(sw_config, manifest):
+    """
+    This method will create OS9 commands for fanout interfaces
+
+    :param sw_config: Switch configuration
+    :type sw_config: str
+    :param manifest: YAML manifest
+    :type manifest: dict
+    :return: List of OS9 commands
+    :rtype: list
+    """
+
+    conf_lines = sw_config["ansible_facts"]["ansible_net_config"].splitlines()
+    conf_lines = OS9_GETEXTENDEDCFG(conf_lines)
+
+    out = []
+
+    manifest_stackunits = []  # hold existing stuff for 2nd for loop
+
+    # Add fanouts that need to be added
+    for intf,items in manifest.items():
+        if "fanout" in items:
+            # this is a fanout interface
+            fanout_speed = items["fanout"]["speed"]
+            fanout_type = items["fanout"]["type"]
+            port_num = intf.split("/")[-1]
+
+            conf_line_base = f"stack-unit 1 port {port_num} portmode {fanout_type}"
+            manifest_stackunits.append(conf_line_base)
+            conf_line = f"{conf_line_base} speed {fanout_speed}"
+            manifest_stackunits.append(conf_line)
+
+            if conf_line not in conf_lines and conf_line_base not in conf_lines:
+                parent_port_num = f"1/{port_num}"
+                search_pattern = rf'^interface .*{re.escape(parent_port_num)}$'
+                search_matches = [line for line in conf_lines if re.match(search_pattern, line)]
+                parent_port_label = " ".join(search_matches[0].split(" ")[1:])
+
+                out.append(f"default interface {parent_port_label}")
+                out.append(f"{conf_line} no-confirm")
+
+    # Remove fanouts that need to be removed
+    for line in [s for s in conf_lines if s.startswith("stack-unit 1 port")]:
+        # loop through existing stack-units
+        if line in manifest_stackunits:
+            # supposed to be there
+            continue
+
+        line_parts = line.split(" ")
+        port_num = line_parts[3]
+
+        search_pattern = rf'^interface .*1/{port_num}/\d$'
+        search_matches = [match_line for match_line in conf_lines if re.match(search_pattern, match_line)]
+
+        for child_intf in search_matches:
+            out.append(f"default {child_intf}")
+
+        conf_line_index = line.find("speed")
+        if conf_line_index == -1:
+            conf_line = line
+        else:
+            conf_line = line[:conf_line_index - 1]
+
+        out.append(f"no {conf_line} no-confirm")
+
+    return out
+
+def OS9_CLEANINTF(sw_config, manifest, vlans):
+    """
+    This method will create os9 commands to delete interfaces that have been removed from the manifest
+    This can happen when a vlan interface or a port channel is deleted
+
+    :param sw_config: existing switch config
+    :type sw_config: str
+    :param manifst: interface manifest from YAML
+    :type manifest: dict
+    :param vlans: vlan manifest from YAML
+    :type vlans: dict
+    :return: List of os9 commands
+    :rtype: list
+    """
+
+    conf_lines = sw_config["ansible_facts"]["ansible_net_config"].splitlines()
+    conf_lines = OS9_GETEXTENDEDCFG(conf_lines)
+
+    search_keys = ["interface " + i for i in vlan_interface_types] + ["interface " + i for i in lag_interface_types]
+
+    out = []
+
+    for line in conf_lines:
+        if line == "interface Vlan 1":
+            # skip default vlan
+            continue
+
+        if line.lower().startswith(tuple(search_keys)):
+            line_parts = line.split(" ")
+            intf_type = line_parts[1]
+            intf_num = line_parts[-1]
+            intf_label = " ".join(line_parts[1:])
+
+            not_manifest_vlan = intf_type == "Vlan" and int(intf_num) not in vlans
+            not_manifest_lag = intf_type == "Port-channel" and intf_label not in manifest
+
+            if not_manifest_vlan or not_manifest_lag:
+                out.append(f"no {line}")
+
+    return out
+
+def OS9_GETCONFIG(sw_config, intf, vlans):
+    """
+    Main method which returns a 2d list of commands, where each nested list is an interface
+
+    :param sw_config: Running switch config
+    :type sw_config: str
+    :param manifest: YAML manifest
+    :type manifest: dict
+    :param type: Type of manifest (vlan or intf)
+    :type type: str
+    :return: 2D List os os9 commands
+    :rtype: list
+    """
+
+    conf_lines = sw_config["ansible_facts"]["ansible_net_config"].splitlines()
+    conf_lines = OS9_GETEXTENDEDCFG(conf_lines)
+
+    managed_vlan_list = [str(key) for key, value in vlans.items() if "managed" in value and value["managed"]]
+    vlans = {"Vlan " + str(key): value for key, value in vlans.items()}
+    manifest = merge_dicts(vlans, intf)
+
+    out = []
+
+    for key,fields in manifest.items():
+        if "managed" in fields and fields["managed"]:
+            # Don't edit managed interfaces
+            continue
+
+        if "fanout" in fields:
+            # Skip fanouts
+            continue
+
+        intf_lines = OS9_GENERATEINTFCONFIG(key, fields, conf_lines, managed_vlan_list)
+        if len(intf_lines) > 0:
+            out += intf_lines
+
+    #pprint.pprint(out)
+    #exit(0)
+
+    return out
+
+def merge_dicts(dict1, dict2):
+    """
+    Merges 2 nested dicts together
+
+    :param dict1: First dict
+    :type dict1: dict
+    :param dict2: Second dict
+    :type dict2: dict
+    :return: Merged dict
     :rtype: dict
     """
 
-    def getSpacesInStartOfString(s):
-        return len(s) - len(s.lstrip())
+    if not isinstance(dict1, dict) or not isinstance(dict2, dict):
+        return dict2
 
-    def os9_recurseLines(index, split_conf):
-        """
-        Recurseive method which takes a nested configuration from a dell switch and converts it into a usable dict
+    merged = dict1.copy()
 
-        :param index: Index to begin recursing through
-        :type index: int
-        :param split_conf: List of lines from raw switch output configuration
-        :type split_conf: list
-        :return: dict of parsed switch configuration
-        :rtype: dict
-        """
-
-        out = {}
-
-        trimmed_split_conf = split_conf[index:]
-        numIndex = getSpacesInStartOfString(trimmed_split_conf[0])
-
-        lastLine = ""
-        lastIndex = 0
-        skipint = 0
-        for i, line in enumerate(trimmed_split_conf):
-            if skipint > 0:
-                skipint -= 1
-                continue
-
-            if "!" in line:
-                continue
-
-            cur_numSpaces = getSpacesInStartOfString(line)
-
-            # remove whitespace after counting
-            line = line.strip()
-
-            if cur_numSpaces < numIndex:
-                # we're done with this section
-                return i - 1,out
-
-            if cur_numSpaces == numIndex:
-                # we can add this directly
-                out[line] = {}
-
-            if cur_numSpaces > numIndex:
-                # start a new recursion
-                rec_line = os9_recurseLines(i, trimmed_split_conf)
-
-                out[lastLine] = rec_line[1]
-                skipint = rec_line[0]  # skip the lines that were covered by the recursion
-
-            lastLine = line
-            lastIndex = i
-
-        return lastIndex - 1, out
-
-    split_conf = sw_facts["ansible_facts"]["ansible_net_config"].splitlines()
-
-    return os9_recurseLines(0, split_conf)[1]
-
-def os9_extendConfigDict(sw_config):
-    """
-    Methods which extends all the range (-) parts of the switch config into individual lines
-    """
-    def parseRange(s, sw_config):
-        """
-        Method which parses a range of interfaces into a list of interfaces
-        param s: String to parse
-        type s: str
-        param sw_config: Switch configuration
-        type sw_config: dict
-        return: List of interfaces
-        rtype: list
-        """
-        def remove_trailing_zeros(value):
-            parts = value.split("/")
-            while parts and parts[-1] == "0":
-                parts.pop()
-            return "/".join(parts)
-
-        def normalize_length(intf):
-            return intf + "/0" * (2 - intf.count("/"))
-
-        def increment_parts(parts):
-            return [str(int(part) + 1) for part in parts]
-
-        def generate_check_list(intf_parts, iterate_parts):
-            return [
-                "/".join([intf_parts[0], intf_parts[1], iterate_parts[2]]),
-                "/".join([intf_parts[0], iterate_parts[1], "0"]),
-                "/".join([intf_parts[0], iterate_parts[1], "1"]),
-                "/".join([iterate_parts[0], "0", "0"]),
-                "/".join([iterate_parts[0], "0", "1"]),
-                "/".join([iterate_parts[0], "1", "0"]),
-                "/".join([iterate_parts[0], "1", "1"]),
-            ]
-
-        def iterate_intf(intf, sw_keys):
-            intf = normalize_length(intf)
-            intf_parts = intf.split("/")
-            iterate_parts = increment_parts(intf_parts)
-            check_list = generate_check_list(intf_parts, iterate_parts)
-
-            for item in check_list:
-                if item in sw_keys:
-                    return remove_trailing_zeros(item)
-            return None
-
-        sw_keys = [normalize_length(key.split()[-1]) for key in sw_config if key.startswith("interface") and not key.startswith("interface Vlan")]
-        out = []
-
-        s_parts = s.split(",")
-
-        for s_cur in s_parts:
-            if "-" in s_cur:
-                range_parts = s_cur.split("-")
-                cur_part = range_parts[0]
-
-                while cur_part != range_parts[1]:
-                    out.append(cur_part)
-                    cur_part = iterate_intf(cur_part, sw_keys)
-                out.append(range_parts[1])
-            else:
-                out.append(s_cur)
-
-        return out
-
-    def handleLines(lines, prefix_list, sw_config):
-        out = {}
-
-        for line in lines:
-            if any(line.startswith(prefix) for prefix in prefix_list):
-                line_parts = line.split(" ")
-                line_prefix = " ".join(line_parts[0:2])
-                line_elements = line_parts[2]
-
-                range_items = parseRange(line_elements, sw_config)
-                for item in range_items:
-                    os9_line = f"{line_prefix} {item}"
-                    out[os9_line] = {}
-            else:
-                out[line] = {}
-
-        return out
-
-    out = {}
-
-    for name,fields in sw_config.items():
-        if name.startswith("interface ManagementEthernet"): continue  # Skip managementethernet
-        if name == "interface Vlan 1": continue  # Skip default vlan
-
-        if name.startswith("interface Vlan"):
-            out[name] = handleLines(fields.keys(), ["untagged", "tagged"], sw_config)
-        elif name.startswith("interface Port-channel"):
-            out[name] = handleLines(fields.keys(), ["channel-member"], sw_config)
-        elif name.startswith("interface"):
-            out[name] = fields
-        elif name.startswith("stack-unit 1 port"):
-            out[name] = fields
-
-    return out
-
-def os9_convertNames(sw_config, intf_dict, vlan_dict, po_dict, vlan_names):
-    def GetIntfClass(name):
-        intf_conf = [ i.split(" ") for i in sw_config if name in i.split(" ") ]
-
-        if len(intf_conf) == 0:
-            # Interface not found - could be a fanout interface that doesn't exist yet
-            return f"<UNKNOWNTYPE> {name}"
-
-        return f"{intf_conf[0][1]} {name}"
-
-    out = {}
-
-    #
-    # Convert Interface Manifest
-    #
-    if intf_dict is not None:
-        for intf,fields in intf_dict.items():
-            if "fanout" in fields:
-                # Don't include fanout interfaces
-                continue
-
-            os9_name = GetIntfClass(intf)
-            out[os9_name] = fields
-
-    #
-    # Convert VLAN Names Manifest
-    #
-    if vlan_names is not None:
-        for vlan in vlan_names.keys():
-            os9_name = f"Vlan {vlan}"
-            out[os9_name] = vlan_names[vlan]
-
-    #
-    # Convert VLAN Interfaces Manifest
-    #
-    if vlan_dict is not None:
-        for vlan_intf in vlan_dict.keys():
-            os9_name = f"Vlan {vlan_intf}"
-            out[os9_name] = vlan_dict[vlan_intf]
-
-    #
-    # Convert Port-Channel Manifest
-    #
-    if po_dict is not None:
-        for po_intf,fields in po_dict.items():
-            os9_name = f"Port-channel {po_intf}"
-            os9_member_names = [ GetIntfClass(i) for i in fields["interfaces"] ]
-            out[os9_name] = fields
-            out[os9_name]["interfaces"] = os9_member_names
-
-    return out
-
-def os9_generateConfig(manifest):
-    """
-    Method which converts the config manifests to configuration readable by dell os9
-    """
-
-    # Interface Handlers
-    def ProcessDescription(name, fields, out = {}):
-        if "description" not in fields: return out
-
-        os9_line = f"description {fields['description']}"
-        out[name][os9_line] = {}
-
-        return out
-
-    def ProcessState(name, fields, out = {}):
-        prefix = ""
-        if "state" not in fields: return out
-
-        if fields["state"] == "up": prefix = "no "
-
-        os9_line = f"{prefix}shutdown"
-        out[name][os9_line] = {}
-
-        return out
-
-    def ProcessMTU(name, fields, out = {}):
-        if "mtu" not in fields: return out
-
-        os9_line = f"mtu {fields['mtu']}"
-        out[name][os9_line] = {}
-
-        return out
-
-    def ProcessCustom(name, fields, out = {}):
-        if "custom" not in fields: return out
-
-        for line in fields["custom"]:
-            out[name][line] = {}
-
-        return out
-
-    def ProcessPortmode(name, fields, out = {}):
-        if "portmode" not in fields: return out
-
-        if fields["portmode"] == "hybrid":
-            out[name]["portmode hybrid"] = {}
-
-        if fields["portmode"] == "access" \
-            or fields["portmode"] == "trunk" \
-            or fields["portmode"] == "hybrid":
-            out[name]["switchport"] = {}
-
-        return out
-
-    def ProcessUntagged(name, fields, out = {}):
-        if "untagged" not in fields: return out
-
-        vlan = fields["untagged"]
-
-        os9_vlan_name = f"Vlan {vlan}"
-        if os9_vlan_name not in out: out[os9_vlan_name] = {}
-
-        os9_line = f"untagged {name}"
-        out[os9_vlan_name][os9_line] = {}
-
-        return out
-
-    def ProcessTagged(name, fields, out = {}):
-        if "tagged" not in fields: return out
-
-        vlan_list = fields["tagged"]
-
-        for vlan in vlan_list:
-            vlan = str(vlan)
-            if ":" in vlan:
-                # process range
-                vlan_parts = vlan.split(":")
-                cur_vlan_list = range(int(vlan_parts[0]), int(vlan_parts[1]) + 1)
-            else:
-                cur_vlan_list = [vlan]
-
-            for cur_vlan in cur_vlan_list:
-                os9_vlan_name = f"Vlan {cur_vlan}"
-                if os9_vlan_name not in out: out[os9_vlan_name] = {}
-
-                os9_line = f"tagged {name}"
-                out[os9_vlan_name][os9_line] = {}
-
-        return out
-
-    def ProcessIP4(name, fields, out = {}):
-        if "ip4" in fields:
-            os9_line = f"ip address {fields['ip4']}"
-        else:
-            os9_line = "no ip address"
-
-        out[name][os9_line] = {}
-
-        return out
-
-    def ProcessIP6(name, fields, out = {}):
-        if "ip6" not in fields: return out
-
-        os9_line = f"ipv6 address {fields['ip6']}"
-        out[name][os9_line] = {}
-
-        return out
-
-    # Port Channel Handlers
-    def ProcessLACPRate(name, fields, out = {}):
-        if "lacp-rate" not in fields: return out
-
-        prefix = ""
-        if fields["lacp-rate"] == "slow": prefix = "no "
-
-        os9_line = f"{prefix}lacp fast-switchover"
-        out[name][os9_line] = {}
-
-        return out
-
-    def ProcessLAGInterfaces(name, fields, out = {}):
-        if "interfaces" not in fields: return out
-        if "mode" not in fields: return out
-
-        for intf in fields["interfaces"]:
-            if fields["mode"] == "normal":
-                os9_line = f"channel-member {intf}"
-                out[name][os9_line] = {}
-            elif fields["mode"] == "lacp":
-                if intf not in out: out[intf] = {}
-                if "port-channel-protocol LACP" not in out[intf]: out[intf]["port-channel-protocol LACP"] = {}
-
-                os9_line = f"{name.lower()} mode active"
-                out[intf]["port-channel-protocol LACP"][os9_line] = {}
-
-        return out
-
-    # VLAN name handlers
-    def ProcessName(name, fields, out = {}):
-        if "name" not in fields: return out
-
-        os9_line = f"name {fields['name']}"
-        out[name][os9_line] = {}
-
-        return out
-
-    out = {}
-
-    for name,fields in manifest.items():
-        if name not in out: out[name] = {}
-
-        out = ProcessName(name, fields, out)
-        out = ProcessDescription(name, fields, out)
-        out = ProcessState(name, fields, out)
-        out = ProcessMTU(name, fields, out)
-        out = ProcessCustom(name, fields, out)
-        out = ProcessPortmode(name, fields, out)
-        out = ProcessUntagged(name, fields, out)
-        out = ProcessTagged(name, fields, out)
-        out = ProcessIP4(name, fields, out)
-        out = ProcessIP6(name, fields, out)
-        out = ProcessLAGInterfaces(name, fields, out)
-        out = ProcessLACPRate(name, fields, out)
-
-    # Prefix interface in dictionary to match the os9 config
-    out = {"interface " + key: value for key, value in out.items()}
-
-    return out
-
-def os9_manifestToAnsible(manifest):
-    def traverseLeaves(d, path = [], out = []):
-        if not isinstance(d, dict) or not d:
-            out.append((path[:-1], path[-1]))
-        else:
-            for k, v in d.items():
-                if k.startswith("stack-unit"): k = k + " no-confirm"
-
-                traverseLeaves(v, path + [k])
-
-        return out
-
-    if len(manifest) > 0:
-        out_list = traverseLeaves(manifest)
-    else:
-        out_list = []
-
-    out_list.sort(key=lambda x: x[0][0].startswith("interface Vlan") if len(x[0]) > 0 else False)
-
-    return out_list
-
-def os9_getSwConfigDict(sw_facts):
-    sw_config = os9_getFactDict(sw_facts)
-    sw_config = os9_extendConfigDict(sw_config)
-
-    return sw_config
-
-def os9_getConfigDict(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
-    # Generate Interface Config
-    sw_config = os9_getSwConfigDict(sw_facts)
-
-    # Create os9_manifest, which is an os9 switch config as a dictionary for what the config manifests are
-    os9_manifest = os9_convertNames(sw_config, intf_dict, vlan_dict, po_dict, vlan_names)
-    os9_manifest = os9_generateConfig(os9_manifest)
-
-    return os9_manifest
-
-def os9_getFanoutConfigDict(intf_dict):
-    # Get dict of fanout interfaces
-    fanout_intf = { k: v for k, v in intf_dict.items() if "fanout" in v }
-    out = {}
-
-    # Generate correct stack-unit config
-    for intf,fields in fanout_intf.items():
-        port_num = intf.split("/")[1]
-        fanout_cfg = fields["fanout"]
-        fanout_speed = fields["fanout_speed"]
-
-        conf_str = f"stack-unit 1 port {port_num} portmode {fanout_cfg} speed {fanout_speed}"
-
-        out[conf_str] = {}
-
-    return out
-
-def os9_getConfig(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names):
-    os9_config = os9_getConfigDict(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names)
-    ansible_cfg = os9_manifestToAnsible(os9_config)
-
-    return ansible_cfg
-
-def os9_getFanoutConfig(sw_facts, intf_dict):
-    os9_config = os9_getFanoutConfigDict(intf_dict)
-    ansible_cfg = os9_manifestToAnsible(os9_config)
-
-    return ansible_cfg
-
-def dict_diff(dict1, dict2):
-    diff = {}
     for key, value in dict2.items():
-        if key not in dict1:
-            diff[key] = value
-        elif isinstance(value, dict) and isinstance(dict1[key], dict):
-            nested_diff = dict_diff(dict1[key], value)
-            if nested_diff:
-                diff[key] = nested_diff
+        if key in merged and isinstance(merged[key], dict) and isinstance(value, dict):
+            merged[key] = merge_dicts(merged[key], value)
+        else:
+            merged[key] = value
 
-    return diff
+    return merged
 
-def os9_getConfigDiff(
-        sw_facts,
-        intf_dict,
-        vlan_dict,
-        po_dict,
-        vlan_names,
-        cfg_type = "config",
-        type = "on_switch",
-        return_ansible = False
-        ):
-
-    sw_config = os9_getSwConfigDict(sw_facts)
-
-    if cfg_type == "config":
-        os9_manifest = os9_getConfigDict(sw_facts, intf_dict, vlan_dict, po_dict, vlan_names)
-        sw_config = {k: v for k, v in sw_config.items() if not k.startswith("stack-unit 1 port")}
-    elif cfg_type == "fanout":
-        os9_manifest = os9_getFanoutConfigDict(intf_dict)
-        sw_config = {k: v for k, v in sw_config.items() if k.startswith("stack-unit 1 port")}
-
-    if type == "on_switch":
-        diff = dict_diff(os9_manifest, sw_config)
-    elif type == "on_manifest":
-        diff = dict_diff(sw_config, os9_manifest)
-
-    if return_ansible:
-        diff = os9_manifestToAnsible(diff)
-
-    return diff
-
-# This class is required for ansible to find the filter plugins
 class FilterModule(object):
     def filters(self):
         return {
-            "os9_getConfig": os9_getConfig,
-            "os9_getFanoutConfig": os9_getFanoutConfig,
-            "os9_getConfigDiff": os9_getConfigDiff
+            "OS9_GETCONFIG": OS9_GETCONFIG,
+            "OS9_CLEANINTF": OS9_CLEANINTF,
+            "OS9_FANOUTCFG": OS9_FANOUTCFG
         }

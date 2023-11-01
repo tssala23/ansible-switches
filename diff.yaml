@@ -1,9 +1,0 @@
----
-- name: Diff checker for switch config
-  hosts: all
-  connection: network_cli
-  gather_facts: false
-  tasks:
-    - name: Include Diff Role
-      ansible.builtin.include_role:
-        name: diff

@@ -39,21 +39,26 @@ The following tables list all available fields for interface configuration. L2 c
 
 #### General Fields
 
-| Field Label | Description                         | Possible Values           |
-| ----------- | ----------------------------------- | ------------------------- |
-| description | Description of the interface        | Any string                |
-| state       | Admin state of interface            | "up" or "down"            |
-| mtu         | MTU of interface                    | Integer with range 1-9216 |
-| custom      | Custom fields in switch conf format | List of strings           |
+| Field Label | Description                    | Possible Values           |
+| ----------- | ------------------------------ | ------------------------- |
+| description | Description of the interface   | Any string                |
+| state       | Admin state of interface       | "up" or "down"            |
+| mtu         | MTU of interface               | Integer with range 1-9216 |
+| edge-port   | Set port as STP edge-port      | True / False              |
+| managed     | Port is managed (conf ignored) | "yes", "no", or "vlans"   |
 
 #### Fanout Fields
 
 If you enable fanout on a port, **none** of the other fields can be used. Instead, make subport configurations.
 
-| Field Label  | Description          | Possible Values                  |
-| ------------ | -------------------- | -------------------------------- |
-| fanout       | Fanout configuration | "single", "dual", or "quad"      |
-| fanout_speed | Fanout speed         | In the format ##G, such as "10G" |
+Example:
+
+```
+fanout: {
+  type: "quad",
+  speed: "10G"
+}
+```
 
 #### L2 Fields
 
@@ -96,11 +101,13 @@ port_channels:
 
 All fields in interface configuration are available, with the following additional fields:
 
-| Field Label | Description                            | Possible Values    |
-| ----------- | -------------------------------------- | ------------------ |
-| mode        | LAG mode (LACP or normal)              | "LACP" or "normal" |
-| lacp-rate   | LACP rate configuration                | "fast" or "slow"   |
-| interfaces  | Interfaces that are a part of this LAG | ["1/1", "1/2"]     |
+| Field Label          | Description                    | Possible Values                          |
+| -------------------- | ------------------------------ | ---------------------------------------- |
+| lag-members          | Interfaces in normal LAG       | List of interfaces                       |
+| lacp-members-active  | LACP members in active config  | List of interfaces                       |
+| lacp-members-passive | LACP members in passive config | List of interfaces                       |
+| lacp-rate            | Set LACP rate to fast or slow  | "fast" or "slow"                         |
+| mlag                 | Define mlag peer               | Interface of port channel on peer switch |
 
 ### VLANs
 
@@ -121,10 +128,11 @@ vlans:
 
 The following fields are available for each VLAN:
 
-| Field Label | Description                                          | Possible Values                            |
-| ----------- | ---------------------------------------------------- | ------------------------------------------ |
-| name        | Name of VLAN                                         | Short string                               |
-| description | Description of VLAN                                  | Any string                                 |
+| Field Label | Description         | Possible Values |
+| ----------- | ------------------- | --------------- |
+| name        | Name of VLAN        | Short string    |
+| description | Description of VLAN | Any string      |
+| managed     | Managed VLAN        | "yes" or "no"   |
 
 ## Switch Configuration
 
@@ -136,3 +144,11 @@ Switches will need some manual configuration before being able to be set up from
 1. Set the ssh user `username admin password <DEFAULT_OS9_PASSWD>`
 1. Enable ssh server `ip ssh server enable`
 1. Set the access IP (usually `managementethernet 1/1`)
+
+## Future Improvements
+
+* Case-insensitive matching for interface labels
+* VLAN groups to be defined in tagged/untagged sections
+* Switch system configuration (STP, etc.)
+* Add "speed" field for some interfaces
+* Ability to map connections between devices

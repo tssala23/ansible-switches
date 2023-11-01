@@ -1,4 +1,0 @@
-vlan_interfaces:
-  910:
-    state: "up"
-    ip4: "10.0.0.20/22"

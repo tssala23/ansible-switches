@@ -1,0 +1,106 @@
+interfaces:
+  hundredGigE 1/1:
+    state: "down"
+  hundredGigE 1/2:
+    state: "down"
+  hundredGigE 1/3:
+    state: "down"
+  hundredGigE 1/4:
+    state: "down"
+  hundredGigE 1/5:
+    state: "down"
+  hundredGigE 1/6:
+    state: "down"
+  hundredGigE 1/7:
+    state: "down"
+  hundredGigE 1/8:
+    state: "down"
+  hundredGigE 1/9:
+    state: "down"
+  hundredGigE 1/10:
+    state: "down"
+  hundredGigE 1/11:
+    state: "down"
+  hundredGigE 1/12:
+    state: "down"
+  hundredGigE 1/13:
+    state: "down"
+  hundredGigE 1/14:
+    state: "down"
+  hundredGigE 1/15:
+    state: "down"
+  hundredGigE 1/16:
+    state: "down"
+  hundredGigE 1/17:
+    state: "down"
+  hundredGigE 1/18:
+    state: "down"
+  hundredGigE 1/19:
+    state: "down"
+  hundredGigE 1/20:
+    state: "down"
+  hundredGigE 1/21:
+    state: "down"
+  hundredGigE 1/22:
+    state: "down"
+  hundredGigE 1/23:
+    state: "down"
+  hundredGigE 1/24:
+    state: "down"
+  hundredGigE 1/25:
+    state: "down"
+  hundredGigE 1/26:
+    state: "down"
+  hundredGigE 1/27:
+    state: "down"
+  hundredGigE 1/28:
+    state: "down"
+  hundredGigE 1/29:
+    description: "MOC-CORE-1 Port 29"
+    state: "up"
+    mtu: 9216
+  hundredGigE 1/30:
+    description: "MOC-CORE-2 Port 30"
+    state: "up"
+    mtu: 9216
+  hundredGigE 1/31:
+    description: "MOC-CORE-4 Port 31 VLT"
+    state: "up"
+  hundredGigE 1/32:
+    description: "MOC-CORE-4 Port 32 VLT"
+    state: "up"
+  tengigabitethernet 1/33:
+    state: "down"
+  tengigabitethernet 1/34:
+    description: "MOC-CORE-4 Port 34 VLT Heartbeat"
+    state: "up"
+    ip4: "10.255.255.1/30"
+  Port-channel 10:
+    description: "MOC Core Link to CORE-1 and CORE-2"
+    state: "up"
+    portmode: "trunk"
+    tagged:
+      - 10
+      - 213
+      - 351:499
+      - 520:622
+      - 623
+      - 624:630
+      - 911
+      - 930
+      - 3801
+      - 3802
+      - 3803
+    mtu: 9216
+    lacp-rate: "fast"
+    lacp-members-active:
+      - "hundredGigE 1/29"
+      - "hundredGigE 1/30"
+    mlag: "Port-channel 10"
+  Port-channel 100:
+    description: "MOC-CORE-4 VLT LAG"
+    state: "up"
+    mtu: 9216
+    lag-members:
+      - "hundredGigE 1/31"
+      - "hundredGigE 1/32"

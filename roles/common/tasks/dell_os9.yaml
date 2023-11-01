@@ -1,6 +1,9 @@
 ---
-- name: Define OS9 credentials from AWS securet
-  set_fact:
+# Define OS9 connection parameters
+- name: Define OS9 Connection Parameters
+  ansible.builtin.set_fact:
+    ansible_become: true
+    ansible_become_method: enable
     ansible_ssh_user: "{{ sw_secret['user'] }}"
     ansible_ssh_pass: "{{ sw_secret['pass'] }}"
     ansible_become_pass: "{{ sw_secret['pass'] }}"
@@ -10,12 +13,14 @@
   dellemc.os9.os9_config:
     lines:
       - ip ssh connection-rate-limit 60
+  notify: Save Config
 
 # Set the hostname of the switch to the value in the hosts file
 - name: Set Hostname
   dellemc.os9.os9_config:
     lines:
       - hostname {{ inventory_hostname }}
+  notify: Save Config
 
 # Gather the current output of "show running configuration" on the switch
 - name: Gather Current Configuration
@@ -24,44 +29,35 @@
       - config
   register: cur_config
 
-# Fanout is done separately since it changes the interface config
+# Apply fanout config
 - name: Apply Fanout Configuration
   dellemc.os9.os9_config:
-    lines: "{{ item.1 }}"
-    parents: "{{ item.0 }}"
-  loop: "{{ cur_config | os9_getFanoutConfig(interfaces) }}"
-  when: not diff_only and not skip_fanout
+    lines:
+      - "{{ item }}"
+    match: none
+  loop: "{{ cur_config | OS9_FANOUTCFG(interfaces) }}"
+  notify: Save Config
 
-- name: Apply Fanout Configuration (Diff Only)
-  dellemc.os9.os9_config:
-    lines: "{{ item.1 }}"
-    parents: "{{ item.0 }}"
-  loop: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlans, 'fanout', 'on_manifest', true) }}"
-  when: diff_only and not skip_fanout
-
-# Update config after fanout change (can't ever be skipped, even if above changed nothing, because than variable will register as error)
+# Gather the current output of "show running configuration" on the switch
 - name: Gather Current Configuration after Fanout Change
   dellemc.os9.os9_facts:
     gather_subset:
       - config
   register: cur_config
 
-# This task reads the host vars and updates configuration
-- name: Apply Configuration
+# Apply manifest config (vlans and interfaces)
+- name: Apply Manifest Configuration
   dellemc.os9.os9_config:
-    lines: "{{ item.1 }}"
-    parents: "{{ item.0 }}"
-  loop: "{{ cur_config | os9_getConfig(interfaces, vlan_interfaces, port_channels, vlans) }}"
-  when: not diff_only
+    lines: "{{ item }}"
+    replace: block
+    match: none
+  loop: "{{ cur_config | OS9_GETCONFIG(interfaces, vlans) }}"
+  notify: Save Config
 
-- name: Apply Configuration (Diff Only)
+- name: Clean Deleted Interfaces
   dellemc.os9.os9_config:
-    lines: "{{ item.1 }}"
-    parents: "{{ item.0 }}"
-  loop: "{{ cur_config | os9_getConfigDiff(interfaces, vlan_interfaces, port_channels, vlans, 'config', 'on_manifest', true) }}"
-  when: diff_only
-
-# Save config
-- name: Save Switch Configuration
-  dellemc.os9.os9_config:
-    save: true
+    lines:
+      - "{{ item }}"
+    match: none
+  loop: "{{ cur_config | OS9_CLEANINTF(interfaces, vlans) }}"
+  notify: Save Config
