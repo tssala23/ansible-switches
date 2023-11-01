@@ -13,14 +13,14 @@
   dellemc.os9.os9_config:
     lines:
       - ip ssh connection-rate-limit 60
-  notify: save_config
+  notify: Save Config
 
 # Set the hostname of the switch to the value in the hosts file
 - name: Set Hostname
   dellemc.os9.os9_config:
     lines:
       - hostname {{ inventory_hostname }}
-  notify: save_config
+  notify: Save Config
 
 # Gather the current output of "show running configuration" on the switch
 - name: Gather Current Configuration
@@ -36,7 +36,7 @@
       - "{{ item }}"
     match: none
   loop: "{{ cur_config | OS9_FANOUTCFG(interfaces) }}"
-  notify: save_config
+  notify: Save Config
 
 # Gather the current output of "show running configuration" on the switch
 - name: Gather Current Configuration after Fanout Change
@@ -52,7 +52,7 @@
     replace: block
     match: none
   loop: "{{ cur_config | OS9_GETCONFIG(interfaces, vlans) }}"
-  notify: save_config
+  notify: Save Config
 
 - name: Clean Deleted Interfaces
   dellemc.os9.os9_config:
