@@ -62,7 +62,7 @@ def OS9_GETEXTENDEDCFG(sw_config):
         line_parts = line.split(" ")
         num_spaces = line_parts.count("")
         line_header = line_parts[num_spaces]
-        
+
         if line_header == "untagged" or line_header == "tagged" or line_header == "channel-member":  #! any others?
             range_str = " ".join(line_parts[num_spaces + 1:])
             intf_list = OS9_PARSEINTFRANGE(range_str, sw_config)
@@ -196,7 +196,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
         elif any(item.startswith("description") for item in running_fields) and not default_port:
             # Description attribute exists on the switch, but shouldn't
             out.append("no description")
-        
+
         return out
 
     def os9_state(man_fields, running_fields, default_port):
@@ -226,7 +226,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
             out.append(conf_line)  # add to out only if not already in switch conf
 
         return out
-    
+
     def os9_mtu(man_fields, running_fields, default_port):
         """
         Create OS9 commands for "mtu" attribute
@@ -254,7 +254,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
             out.append("no mtu")
 
         return out
-    
+
     def os9_autoneg(intf_label, man_fields, running_fields, default_port):
         """
         Create OS9 commands for "autoneg" attribute
@@ -295,7 +295,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
             out.append(conf_line)
 
         return out
-    
+
     def os9_fec(man_fields, running_fields, default_port):
         """
         Create OS9 commands for "fec" attribute
@@ -349,7 +349,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
             conf_line = f"ip address {man_fields['ip4']}"
             if conf_line not in running_fields or default_port:
                 out.append(conf_line)  # add to out only if not already in switch conf
-            
+
         elif any(item.startswith("ip address") for item in running_fields) and not default_port:
             # ip4 attribute exists on the switch, but shouldn't
             out.append("no ip address")
@@ -377,13 +377,13 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
             conf_line = f"ipv6 address {man_fields['ip6']}"
             if conf_line not in running_fields or default_port:
                 out.append(conf_line)  # add to out only if not already in switch conf
-            
+
         elif any(item.startswith("ipv6 address") for item in running_fields) and not default_port:
             # ip6 attribute exists on the switch, but shouldn't
             out.append("no ipv6 address")
 
         return out
-        
+
     def os9_edgeport(man_fields, running_fields, default_port):
         """
         Create OS9 commands for "edge-port" attribute
@@ -453,7 +453,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
                 # remove L3 fields since they are mutually exclusive if they exist
                 if any(item.startswith("ip address") for item in running_fields):
                     out.insert(0, "no ip address")
-                
+
                 if any(item.startswith("ipv6 address") for item in running_fields):
                     out.insert(0, "no ipv6 address")
         else:
@@ -495,7 +495,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
                 if not ("untagged" in man_fields and man_fields["untagged"] == int(vlan_id)) and not vlan_id in managed_vlan_list:
                     # don't remove managed vlan assignement
                     cur_intf_cfg = []
-                    
+
                     cur_intf_cfg.append(f"interface {existing_vlan}")
                     conf_line = f"no untagged {intf_label}"
                     cur_intf_cfg.append(conf_line)
@@ -517,7 +517,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
                 out.append(cur_intf_cfg)
 
         return out
-    
+
     def os9_tagged(intf_label, sw_config, man_fields, default_port, managed_vlan_list):
         """
         Create OS9 commands for "tagged" attribute
@@ -672,7 +672,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
                     out.append(cur_intf_cfg)
 
         return out
-    
+
     def os9_lacpmemberspassive(intf_label, sw_config, man_fields):
         """
         Create OS9 commands for "lag-members-passive" attribute
@@ -714,7 +714,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
                     out.append(cur_intf_cfg)
 
         return out
-    
+
     def os9_lacprate(man_fields, running_fields, default_port):
         """
         Create OS9 commands for "lacp-rate" attribute
@@ -737,12 +737,12 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
 
                 if conf_line not in running_fields or default_port:
                     out.append(conf_line)
-            
+
         elif "lacp fast-switchover" in running_fields and not default_port:
             out.append("no lacp fast-switchover")
 
         return out
-        
+
     def os9_mlag(man_fields, running_fields, default_port):
         """
         Create OS9 commands for "mlag" attribute
@@ -763,7 +763,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
             conf_line = f"vlt-peer-lag {man_fields['mlag'].lower()}"
             if conf_line not in running_fields or default_port:
                 out.append(conf_line)
-  
+
         elif any(item.startswith("vlt-peer-lag") for item in running_fields) and not default_port:
             out.append("no vlt-peer-lag")
 
@@ -1007,6 +1007,7 @@ def merge_dicts(dict1, dict2):
             merged[key] = value
 
     return merged
+
 class FilterModule(object):
     def filters(self):
         return {
