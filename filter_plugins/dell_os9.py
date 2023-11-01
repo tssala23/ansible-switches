@@ -254,6 +254,79 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
             out.append("no mtu")
 
         return out
+    
+    def os9_autoneg(intf_label, man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "autoneg" attribute
+
+        :param intf_label: Name of interface
+        :type intf_label: str
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set autoneg
+        :rtype: list
+        """
+
+        intf_type = intf_label.split(" ")[0].lower()
+
+        if intf_type == "gigabitethernet" or intf_type == "tengigabitethernet":
+            # support negotiation command
+            conf_line = "negotiation auto"
+        elif intf_type == "twentyfivegige":
+            conf_line = "intf-type cr1 autoneg"
+        elif intf_type == "fiftygige":
+            conf_line = "intf-type cr2 autoneg"
+        elif intf_type == "hundredgige" or intf_type == "fortygige":
+            conf_line = "intf-type cr4 autoneg"
+
+        out = []
+
+        if "autoneg" in man_fields and not man_fields["autoneg"]:
+            conf_line = f"no {conf_line}"
+
+            if conf_line not in running_config or default_port:
+                out.append(conf_line)
+
+        elif any("autoneg" in i for i in running_fields) or any("negotiation" in i for i in running_fields):
+            out.append(conf_line)
+
+        return out
+    
+    def os9_fec(man_fields, running_fields, default_port):
+        """
+        Create OS9 commands for "fec" attribute
+
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param running_fields: Interface attributes in the running config
+        :type running_fields: list
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :return: List of OS9 commands to set fec
+        :rtype: list
+        """
+
+        out = []
+
+        # Create a no prefix based on manifest value
+        if "fec" in man_fields:
+            if man_fields["fec"]:
+                conf_line = "fec enable"
+            else:
+                conf_line = "no fec enable"
+
+            if conf_line not in running_fields or default_port:
+                out.append(conf_line)
+        elif any("fec" in i for i in running_fields):
+            # fec field exists
+            conf_line = "fec default"
+            out.append(conf_line)
+
+        return out
         
     def os9_ip4(man_fields, running_fields, default_port):
         """
@@ -712,6 +785,8 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
     cur_intf_cfg += os9_description(intf_fields, running_config, default_port)
     cur_intf_cfg += os9_state(intf_fields, running_config, default_port)
     cur_intf_cfg += os9_mtu(intf_fields, running_config, default_port)
+    cur_intf_cfg += os9_autoneg(intf_label, intf_fields, running_config, default_port)
+    cur_intf_cfg += os9_fec(intf_fields, running_config, default_port)
     # L3
     cur_intf_cfg += os9_ip4(intf_fields, running_config, default_port)
     cur_intf_cfg += os9_ip6(intf_fields, running_config, default_port)
