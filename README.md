@@ -27,116 +27,47 @@ An example of this file is below:
 
 ```
 interfaces:
-  1/1:
+  twentyFiveGigE 1/1:
     description: "example interface"
     state: "up"
     mtu: 9216
+  Port-channel 1:
+    state: "up"
+    lag-members:
+      - "hundredGigE 1/1"
+      - "hundredGigE 1/2"
+    portmode: "access"
+    untagged: 10
+  Vlan 207:
+    state: "up"
+    ip4: "10.10.10.10/20"
 ```
 
-The interface label must be in the format `STACK/PORT` or `STACK/PORT/FANOUT`
+### Available Fields
 
-The following tables list all available fields for interface configuration. L2 configurations are mutually exclusive with L3 configurations.
-
-#### General Fields
-
-| Field Label | Description                    | Possible Values           |
-| ----------- | ------------------------------ | ------------------------- |
-| description | Description of the interface   | Any string                |
-| state       | Admin state of interface       | "up" or "down"            |
-| mtu         | MTU of interface               | Integer with range 1-9216 |
-| edge-port   | Set port as STP edge-port      | True / False              |
-| managed     | Port is managed (conf ignored) | "yes", "no", or "vlans"   |
-
-#### Fanout Fields
-
-If you enable fanout on a port, **none** of the other fields can be used. Instead, make subport configurations.
-
-Example:
-
-```
-fanout: {
-  type: "quad",
-  speed: "10G"
-}
-```
-
-#### L2 Fields
-
-| Field Label | Description                            | Possible Values                                                          |
-| ----------- | -------------------------------------- | ------------------------------------------------------------------------ |
-| untagged    | VLAN to untag on this interface        | Integer with range 1-4095                                                |
-| tagged      | List of VLANs to tag on this interface | List of integers with range 1-4095, or "all" for all VLANs on the switch |  |
-| portmode    | L2 mode of the port                    | "access", "trunk", or "hybrid"                                           |
-
-#### L3 Fields
-
-| Field Label | Description                     | Possible Values                     |
-| ----------- | ------------------------------- | ----------------------------------- |
-| ip4         | IPv4 address for this interface | [IP]/[Prefix] IPv4 formatted string |
-| ip6         | IPv6 address for this interface | [IP]/[Prefix] IPv6 formatted string |
-
-### VLAN Interfaces
-
-Example configuration which adds a vlan interface for vlan `100` with an ipv4 address `10.0.80.3/20`:
-
-```
-vlan_interfaces:
-  100:
-    ip4: "10.0.80.3/20"
-```
-
-All fields in interface configuration except L2 fields are available
-
-### Port Channel Interfaces
-
-Example configuration which adds a port channel `79` with a description, in lacp mode, with interface `1/1` and `1/2` part of it:
-
-```
-port_channels:
-  79:
-    description: "example port channel"
-    mode: "lacp"
-    interfaces: ["1/2", "1/1"]
-```
-
-All fields in interface configuration are available, with the following additional fields:
-
-| Field Label          | Description                    | Possible Values                          |
-| -------------------- | ------------------------------ | ---------------------------------------- |
-| lag-members          | Interfaces in normal LAG       | List of interfaces                       |
-| lacp-members-active  | LACP members in active config  | List of interfaces                       |
-| lacp-members-passive | LACP members in passive config | List of interfaces                       |
-| lacp-rate            | Set LACP rate to fast or slow  | "fast" or "slow"                         |
-| mlag                 | Define mlag peer               | Interface of port channel on peer switch |
-
-### VLANs
-
-VLANs are defined in the `group_vars/all/vlans.yaml` file. An example of this file is below:
-
-```
-vlans:
-  100:
-    name: "VLAN 100"
-    description: "This is the description of example vlan 100"
-  101:
-    name: "VLAN 101"
-    description: "This is the description of example vlan 101"
-  102:
-    name: "VLAN 102"
-    description: "hello world"
-```
-
-The following fields are available for each VLAN:
-
-| Field Label | Description         | Possible Values |
-| ----------- | ------------------- | --------------- |
-| name        | Name of VLAN        | Short string    |
-| description | Description of VLAN | Any string      |
-| managed     | Managed VLAN        | "yes" or "no"   |
+* `name` Only for VLANs, sets the name of interfaces. (String)
+* `description` Sets the description of the interface. (String)
+* `state` Sets the admin state of the mode ("up", or "down")
+* `mtu` Sets the MTU of the interface (Integer 576-9416)
+* `fec` If false, forward-error-correction is disabled on the interface (Boolean)
+* `autoneg` If false, auto-negotiation is disabled on the interface (Boolean)
+* `stp-edge` Sets the port as an edge-port for STP (Boolean)
+* `managed` If true, this interface will not be configured by ansible. Works for both VLANs and interfaces (Boolean)
+* `portmode` L2 portmode of an interface (String "access", "trunk", or "hybrid")
+* `untagged` Single vlan to untag, requires portmode access or hybrid (Integer 2-4094)
+* `tagged` List of vlans to tag, requires portmode trunk or hybrid (List of Integers 2-4094)
+* `ip4` Sets the IPv4 address of the interface (String "X.X.X.X/YY")
+* `ip6` Sets the IPv6 address of the interface (String)
+* `lag-members` List of non-LACP lag members for a port channel (List of Strings, interface names)
+* `lacp-members-active` List of LACP active members for a port channel (List of Strings, interface names)
+* `lacp-members-passive` List of LACP passive members for a port channel (List of Strings, interface names)
+* `lacp-rate` Sets the switch rate for LACP only (String "fast" or "slow")
+* `mlag` Set the label of the peer port-channel for a paired switch (String interface name)
 
 ## Switch Configuration
 
 Switches will need some manual configuration before being able to be set up from this ansible site.
+
 ### Dell OS9 Switches
 
 1. On the switch, enter `conf` mode
@@ -147,6 +78,7 @@ Switches will need some manual configuration before being able to be set up from
 
 ## Future Improvements
 
+* Validation scripts that don't require access to switches
 * Case-insensitive matching for interface labels
 * VLAN groups to be defined in tagged/untagged sections
 * Switch system configuration (STP, etc.)
