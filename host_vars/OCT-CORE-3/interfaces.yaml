@@ -203,6 +203,8 @@ interfaces:
     tagged:
       # UMA Public IPs
       - 84
+      # MGMT
+      - 910
     mtu: 9216
     lacp-rate: "fast"
     lacp-members-active:
@@ -215,6 +217,8 @@ interfaces:
     tagged:
       # UMA Public IPs
       - 84
+      # MGMT
+      - 910
     mtu: 9216
     lacp-rate: "fast"
     lacp-members-active:
