@@ -222,6 +222,7 @@ interfaces:
     state: "up"
     portmode: "trunk"
     tagged:
+      - 910
       - 930
     mtu: 9216
     lacp-rate: "fast"
