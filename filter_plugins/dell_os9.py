@@ -789,8 +789,6 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
     # L3
     cur_intf_cfg += os9_ip4(intf_fields, running_config, default_port)
     cur_intf_cfg += os9_ip6(intf_fields, running_config, default_port)
-    # STP
-    cur_intf_cfg += os9_edgeport(intf_fields, running_config, default_port)
     # LAG
     cur_intf_cfg += os9_lagmembers(intf_fields, running_config, default_port)
     cur_intf_cfg += os9_lacprate(intf_fields, running_config, default_port)
@@ -798,6 +796,8 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
     # VLAN interfaces / L2
     cur_intf_cfg += portmode_out
     cur_intf_cfg += os9_mlag(intf_fields, running_config, default_port)
+    # STP
+    cur_intf_cfg += os9_edgeport(intf_fields, running_config, default_port)
 
     untag_list = os9_untagged(intf_label, sw_config, intf_fields, default_port, managed_vlan_list)
     output += untag_list
