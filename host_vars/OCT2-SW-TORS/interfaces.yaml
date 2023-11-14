@@ -235,6 +235,8 @@ interfaces:
     portmode: "trunk"
     tagged:
       - 84
+      # MGMT
+      - 910
     mtu: 9216
     lacp-rate: "fast"
     lacp-members-active:
