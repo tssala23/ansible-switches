@@ -26,7 +26,7 @@ interfaces:
     state: "up"
     untagged: 127
     tagged:
-      - 250
+      - 207
       - 3801
     portmode: "hybrid"
     mtu: 9216
@@ -39,7 +39,7 @@ interfaces:
     state: "up"
     untagged: 127
     tagged:
-      - 250
+      - 207
       - 3801
     portmode: "hybrid"
     mtu: 9216
@@ -48,7 +48,7 @@ interfaces:
     state: "up"
     untagged: 127
     tagged:
-      - 250
+      - 207
       - 3801
     portmode: "hybrid"
     mtu: 9216
