@@ -35,7 +35,8 @@ interfaces:
     untagged: 214
     tagged:
       - 911
-      - 207
+      - 250
+      - 213
   hundredGigE 1/2:
     fanout:
       type: "quad"
@@ -48,7 +49,8 @@ interfaces:
     untagged: 214
     tagged:
       - 911
-      - 207
+      - 250
+      - 213
   TenGigabitEthernet 1/2/2:
     description: "ESI-CTRL-U31-R"
     state: "up"
@@ -57,7 +59,8 @@ interfaces:
     untagged: 214
     tagged:
       - 911
-      - 207
+      - 250
+      - 213
   TenGigabitEthernet 1/2/3:
     description: "ALANLIU-L"
     state: "up"
