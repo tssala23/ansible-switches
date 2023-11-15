@@ -473,7 +473,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
                 out.append("no portmode hybrid")
 
         return out,def_intf
-    
+
     def getTaggedVlanList(tagList):
         """
         The manifest allows tagged vlans to be specified as a range like 1000:1010
