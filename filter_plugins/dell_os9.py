@@ -1,5 +1,4 @@
 import re
-import pprint
 
 physical_interface_types = [
     "gigabitethernet",
@@ -91,7 +90,7 @@ def OS9_GETINTFCONFIG(intf, sw_config):
 
     return output
 
-def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list):
+def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list, default_list):
     """
     This will generate a sequence of OS9 commands for a single interface based on existing and manifest config.
 
@@ -104,7 +103,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
     :return list of os9 commands:
     :rtype: list
     """
-    def os9_searchconfig(sw_config, search_keys, line_keys, intf_search, intf_index):
+    def os9_searchconfig(sw_config, search_keys, line_keys, intf_search):
         """
         Searches through config lines for specific subitem "line keys" from parent "search keys"
         This is useful for finding existing VLAN/LACP mappins since OS9 does it backwards
@@ -134,10 +133,16 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
 
             if line_str.startswith(tuple(line_keys)) and cur_line != "":
                 line_parts = line_str.split(" ")
-                line_intf_label = " ".join(line_parts[1:])
-                parent_label = " ".join(cur_line.split(" ")[intf_index[0]:intf_index[1]])
 
-                if line_intf_label == intf_search:
+                if line_parts[0].lower() == "port-channel":
+                    # port channel is part of the name so that has to stay
+                    line_intf_label = " ".join(line_parts[:2])
+                else:
+                    line_intf_label = " ".join(line_parts[1:])
+
+                parent_label = " ".join(cur_line.split(" ")[1:3])
+
+                if line_intf_label.lower() == intf_search.lower():
                     # found interface
                     out.append(parent_label)
 
@@ -432,6 +437,10 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
         def_intf = False  # if true then the interface needs to be defaulted before continuing
 
         if "portmode" in man_fields:
+            if "port-channel-protocol LACP" in running_fields:
+                # default interface if part of lag
+                def_intf = True
+
             intf_portmode = intf_fields["portmode"]
 
             has_switchport = "switchport" in running_fields
@@ -464,8 +473,81 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
                 out.append("no portmode hybrid")
 
         return out,def_intf
+    
+    def getTaggedVlanList(tagList):
+        """
+        The manifest allows tagged vlans to be specified as a range like 1000:1010
+        This method parses that
 
-    def os9_untagged(intf_label, sw_config, man_fields, default_port, managed_vlan_list):
+        :param tagList: String to be parsed
+        :type tagList: str
+        :return: List of each vlan in the list
+        :rtype: list
+        """
+
+        out = []
+
+        for list_item in tagList:
+            item_parts = str(list_item).split(":")
+
+            if len(item_parts) == 1:
+                out += item_parts
+            else:
+                vlan_list = list(range(int(item_parts[0]), int(item_parts[1]) + 1))
+                out += map(str, vlan_list)
+
+        return out
+
+    def os9_cleanvlans(intf_label, sw_config, man_fields, default_port, managed_vlan_list):
+        """
+        Create OS9 commands for cleaning vlans
+
+        :param intf_label: Label of the interface
+        :type: str
+        :param sw_config: Switch config lines
+        :type: list
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :param defaulted: If true, this interface is defaulted before executing
+        :type defaulted: boolean
+        :param default_port: If true, this port is being defaulted
+        :type default_port: boolean
+        :param managed_vlan_list: List of VLANs that are managed
+        :type managed_vlan_list: list
+        :return: List of OS9 commands to set clean vlans
+        :rtype: list
+        """
+
+        out = []
+
+        if default_port:
+            return out
+
+        for vlan_mode in ["untagged", "tagged"]:
+            existing_vlan_list = os9_searchconfig(sw_config, vlan_interface_types, [vlan_mode], intf_label)
+
+            if vlan_mode == "tagged" and "tagged" in man_fields:
+                check_vllist = getTaggedVlanList(man_fields["tagged"])
+            elif vlan_mode == "untagged" and "untagged" in man_fields:
+                check_vllist = [str(man_fields["untagged"])]
+            else:
+                check_vllist = []
+
+            for existing_vlan in existing_vlan_list:
+                vlan_id = existing_vlan.split(" ")[-1]
+                if not vlan_id in check_vllist and not vlan_id in managed_vlan_list:
+                    # Don't remove managed vlan
+                    cur_intf_cfg = []
+
+                    cur_intf_cfg.append(f"interface {str(existing_vlan)}")
+                    conf_line = f"no {vlan_mode} {intf_label}"
+                    cur_intf_cfg.append(conf_line)
+
+                    out.append(cur_intf_cfg)
+
+        return out
+
+    def os9_untagged(intf_label, sw_config, man_fields, default_port):
         """
         Create OS9 commands for "untagged" attribute
 
@@ -485,23 +567,6 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
 
         out = []
 
-        # clean old vlans
-        if not default_port:
-            # no need to clean vlans if interface is being defaulted
-            existing_vlan_list = os9_searchconfig(sw_config, vlan_interface_types, ["untagged"], intf_label, (1,3))
-
-            for existing_vlan in existing_vlan_list:
-                vlan_id = existing_vlan.split(" ")[-1]
-                if not ("untagged" in man_fields and man_fields["untagged"] == int(vlan_id)) and not vlan_id in managed_vlan_list:
-                    # don't remove managed vlan assignement
-                    cur_intf_cfg = []
-
-                    cur_intf_cfg.append(f"interface {existing_vlan}")
-                    conf_line = f"no untagged {intf_label}"
-                    cur_intf_cfg.append(conf_line)
-
-                    out.append(cur_intf_cfg)
-
         if "untagged" in man_fields:
             untagged_vlan = str(man_fields["untagged"])
             vlan_intf_label = f"Vlan {untagged_vlan}"
@@ -518,7 +583,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
 
         return out
 
-    def os9_tagged(intf_label, sw_config, man_fields, default_port, managed_vlan_list):
+    def os9_tagged(intf_label, sw_config, man_fields, default_port):
         """
         Create OS9 commands for "tagged" attribute
 
@@ -536,50 +601,12 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
         :rtype: list
         """
 
-        def getTaggedVlanList(tagList):
-            """
-            The manifest allows tagged vlans to be specified as a range like 1000:1010
-            This method parses that
-
-            :param tagList: String to be parsed
-            :type tagList: str
-            :return: List of each vlan in the list
-            :rtype: list
-            """
-
-            out = []
-
-            for list_item in tagList:
-                item_parts = str(list_item).split(":")
-
-                if len(item_parts) == 1:
-                    out += item_parts
-                else:
-                    vlan_list = list(range(int(item_parts[0]), int(item_parts[1]) + 1))
-                    out += map(str, vlan_list)
-
-            return out
-
         out = []
 
         if "tagged" in man_fields:
             tagged_vllist = getTaggedVlanList(man_fields["tagged"])
-
-        if not default_port:
-            # no need to clean vlans if interface is being defaulted
-            existing_vlan_list = os9_searchconfig(sw_config, vlan_interface_types, ["tagged"], intf_label, (1,3))
-
-            for existing_vlan in existing_vlan_list:
-                vlan_id = existing_vlan.split(" ")[-1]
-                if not vlan_id in tagged_vllist and not vlan_id in managed_vlan_list:
-                    # Don't remove managed vlan
-                    cur_intf_cfg = []
-
-                    cur_intf_cfg.append(f"interface {existing_vlan}")
-                    conf_line = f"no tagged {intf_label}"
-                    cur_intf_cfg.append(conf_line)
-
-                    out.append(cur_intf_cfg)
+        else:
+            tagged_vllist = []
 
         if "tagged" in man_fields:
             for cur_vlan in tagged_vllist:
@@ -631,6 +658,41 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
 
         return out
 
+    def os9_cleanlacpmembers(intf_label, sw_config, man_fields, default_list):
+        """
+        Removed LACP config from ports that need it
+
+        :param intf_label: Label of the interface
+        :type: str
+        :param sw_config: Switch config lines
+        :type: list
+        :param man_fields: Manifest fields for current interface
+        :type man_fields: dict
+        :return: List of OS9 commands to clean LACP interfaces
+        :rtype: list
+        """
+
+        out = []
+
+        # clean existing members
+        existing_member_list = os9_searchconfig(sw_config, physical_interface_types, ["port-channel"], intf_label)
+
+        for existing_member in existing_member_list:
+            if not("lacp-members-active" in man_fields and existing_member in man_fields["lacp-members-active"]) and\
+               not("lacp-members-passive" in man_fields and existing_member in man_fields["lacp-members-passive"]):
+                if existing_member in default_list:
+                    continue
+
+                cur_intf_cfg = []
+
+                cur_intf_cfg.append(f"interface {existing_member}")
+                conf_line = "no port-channel-protocol LACP"
+                cur_intf_cfg.append(conf_line)
+
+                out.append(cur_intf_cfg)
+
+        return out
+
     def os9_lacpmembersactive(intf_label, sw_config, man_fields):
         """
         Create OS9 commands for "lag-members-active" attribute
@@ -646,14 +708,6 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
         """
 
         out = []
-
-        # clean existing members
-        existing_member_list = os9_searchconfig(sw_config, physical_interface_types, ["port-channel"], intf_label, (0,2))
-        for existing_member in existing_member_list:
-            if not("lacp-members-active" in man_fields and existing_member in man_fields["lacp-members-active"]):
-                out.append(f"interface {existing_member}")
-                conf_line = "no port-channel-protocol LACP"
-                out.append(conf_line)
 
         if "lacp-members-active" in man_fields:
             channel_members = man_fields["lacp-members-active"]
@@ -688,14 +742,6 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
         """
 
         out = []
-
-        # clean existing members
-        existing_member_list = os9_searchconfig(sw_config, physical_interface_types, ["port-channel"], intf_label, (0,2))
-        for existing_member in existing_member_list:
-            if not("lacp-members-passive" in man_fields and existing_member in man_fields["lacp-members-passive"]):
-                out.append(f"interface {existing_member}")
-                conf_line = "no port-channel-protocol LACP"
-                out.append(conf_line)
 
         if "lacp-members-passive" in man_fields:
             channel_members = man_fields["lacp-members-passive"]
@@ -779,6 +825,9 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
     output = []
 
     portmode_out,default_port = os9_portmode(intf_fields, running_config)
+    if default_port:
+        default_list.append(intf_label)
+
     # General
     cur_intf_cfg += os9_name(intf_fields, running_config, default_port)
     cur_intf_cfg += os9_description(intf_fields, running_config, default_port)
@@ -799,13 +848,20 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
     # STP
     cur_intf_cfg += os9_edgeport(intf_fields, running_config, default_port)
 
-    untag_list = os9_untagged(intf_label, sw_config, intf_fields, default_port, managed_vlan_list)
+    # these go directly to output because they are controlling other interfaces
+    cleanvlan_list = os9_cleanvlans(intf_label, sw_config, intf_fields, default_port, managed_vlan_list)
+    output += cleanvlan_list
+
+    untag_list = os9_untagged(intf_label, sw_config, intf_fields, default_port)
     output += untag_list
 
-    tag_list = os9_tagged(intf_label, sw_config, intf_fields, default_port, managed_vlan_list)
+    tag_list = os9_tagged(intf_label, sw_config, intf_fields, default_port)
     output += tag_list
 
     # These change physical interfaces
+    lacp_members_cleaned = os9_cleanlacpmembers(intf_label, sw_config, intf_fields, default_list)
+    output += lacp_members_cleaned
+
     lacp_members_active_list = os9_lacpmembersactive(intf_label, sw_config, intf_fields)
     output += lacp_members_active_list
 
@@ -827,12 +883,7 @@ def OS9_GENERATEINTFCONFIG(intf_label, intf_fields, sw_config, managed_vlan_list
 
         output.insert(0, cur_intf_cfg)
 
-    return output
-
-def OS9_GETFANOUT(sw_config, intf):
-    out = []
-
-    return out
+    return output,default_list
 
 def OS9_FANOUTCFG(sw_config, manifest):
     """
@@ -964,6 +1015,7 @@ def OS9_GETCONFIG(sw_config, intf, vlans):
     manifest = merge_dicts(vlans, intf)
 
     out = []
+    default_list = []
 
     for key,fields in manifest.items():
         if "managed" in fields and fields["managed"]:
@@ -974,12 +1026,9 @@ def OS9_GETCONFIG(sw_config, intf, vlans):
             # Skip fanouts
             continue
 
-        intf_lines = OS9_GENERATEINTFCONFIG(key, fields, conf_lines, managed_vlan_list)
+        intf_lines,default_list = OS9_GENERATEINTFCONFIG(key, fields, conf_lines, managed_vlan_list, default_list)
         if len(intf_lines) > 0:
             out += intf_lines
-
-    #pprint.pprint(out)
-    #exit(0)
 
     return out
 
