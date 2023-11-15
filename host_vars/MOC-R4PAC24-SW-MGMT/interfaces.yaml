@@ -156,12 +156,12 @@ interfaces:
   GigabitEthernet 1/42:
     state: "down"
   GigabitEthernet 1/43:
-    description: "MOC-R4PAC21-SW-TORS-A mgmt"
+    description: "MOC-R4PAC24-SW-TORS-A mgmt"
     state: "up"
     portmode: "access"
     untagged: 930
   GigabitEthernet 1/44:
-    description: "MOC-R4PAC21-SW-TORS-B mgmt"
+    description: "MOC-R4PAC24-SW-TORS-B mgmt"
     state: "up"
     portmode: "access"
     untagged: 930
