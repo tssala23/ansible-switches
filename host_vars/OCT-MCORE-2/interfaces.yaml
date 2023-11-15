@@ -1,111 +1,87 @@
 interfaces:
   GigabitEthernet 1/1:
-    description: "U3-CMC"
+    description: "####-SW-MGMT Link"
     state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    portmode: "trunk"
+    tagged:
+      - 910
+      - 911
+      - 912
+      - 913
+      - 930
   GigabitEthernet 1/2:
-    description: "U5-CMC"
+    description: "####-SW-MGMT Link"
     state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    portmode: "trunk"
+    tagged:
+      - 910
+      - 911
+      - 912
+      - 913
+      - 930
   GigabitEthernet 1/3:
-    description: "U7-CMC"
+    description: "####-SW-MGMT Link"
     state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    portmode: "trunk"
+    tagged:
+      - 910
+      - 911
+      - 912
+      - 913
+      - 930
   GigabitEthernet 1/4:
-    description: "U9-CMC"
+    description: "####-SW-MGMT Link"
     state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    portmode: "trunk"
+    tagged:
+      - 910
+      - 911
+      - 912
+      - 913
+      - 930
   GigabitEthernet 1/5:
-    description: "U11-CMC"
+    description: "####-SW-MGMT Link"
     state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    portmode: "trunk"
+    tagged:
+      - 910
+      - 911
+      - 912
+      - 913
+      - 930
   GigabitEthernet 1/6:
-    description: "U13-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/7:
-    description: "U15-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/8:
-    description: "U17-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/9:
-    description: "U19-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/10:
-    description: "U21-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/11:
-    description: "U23-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/12:
-    description: "U25-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/13:
-    description: "U27-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/14:
-    description: "U29-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/15:
-    description: "U31-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/16:
-    description: "U33-CMC"
-    state: "up"
-    portmode: "access"
-    untagged: 911
-    stp-edge: true
+    state: "down"
   GigabitEthernet 1/17:
-    description: "U35-CMC"
+    description: "OCT-CORE-3 MGMT"
     state: "up"
     portmode: "access"
-    untagged: 911
+    untagged: 930
     stp-edge: true
   GigabitEthernet 1/18:
-    description: "U37-CMC"
+    description: "OCT-CORE-4 MGMT"
     state: "up"
     portmode: "access"
-    untagged: 911
+    untagged: 930
     stp-edge: true
   GigabitEthernet 1/19:
     state: "down"
@@ -156,15 +132,13 @@ interfaces:
   GigabitEthernet 1/42:
     state: "down"
   GigabitEthernet 1/43:
-    description: "MOC-R4PAC24-SW-TORS-A mgmt"
-    state: "up"
-    portmode: "access"
-    untagged: 930
+    state: "down"
   GigabitEthernet 1/44:
-    description: "MOC-R4PAC24-SW-TORS-B mgmt"
+    description: "#### Unknown Netgear"
     state: "up"
     portmode: "access"
-    untagged: 930
+    tagged:
+      - 930
   GigabitEthernet 1/45:
     state: "down"
   GigabitEthernet 1/46:
@@ -172,33 +146,30 @@ interfaces:
   GigabitEthernet 1/47:
     state: "down"
   GigabitEthernet 1/48:
-    description: "MOC-MCORE-2 Uplink"
-    state: "up"
-    portmode: "trunk"
-    tagged:
-      - 911
-      - 930
+    state: "down"
   TenGigabitEthernet 1/49:
     state: "down"
   TenGigabitEthernet 1/50:
     state: "down"
   TenGigabitEthernet 1/51:
-    description: "Po1 Member MOC-R4PAC24-SW-TORS-A"
+    description: "OCT-CORE-3 Port 33"
     state: "up"
   TenGigabitEthernet 1/52:
-    description: "Po1 Member MOC-R4PAC24-SW-TORS-B"
+    description: "OCT-CORE-4 Port 34"
     state: "up"
-  Port-channel 1:
-    description: "MOC-R4PAC24-SW-TORS LAG"
+  Port-channel 10:
+    description: "OCT-CORE-1 and OCT-CORE-2 LAG"
     state: "up"
     portmode: "trunk"
     tagged:
+      - 910
       - 911
-      - 930
+      - 912
+      - 913
     lacp-rate: "fast"
-    interfaces:
+    lacp-members-active:
       - "TenGigabitEthernet 1/51"
       - "TenGigabitEthernet 1/52"
   Vlan 930:
     state: "up"
-    ip4: "10.80.3.25/20"
+    ip4: "10.80.1.12/20"

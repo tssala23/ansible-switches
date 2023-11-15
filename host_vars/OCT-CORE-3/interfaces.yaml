@@ -285,7 +285,7 @@ interfaces:
       - 930
     mtu: 9216
     lacp-rate: "fast"
-    interfaces:
+    lacp-members-active:
       - "hundredGigE 1/14"
   Port-channel 10:
     description: "OCT-CORE-1 and OCT-CORE-2 Core LAG"
@@ -366,7 +366,6 @@ interfaces:
       - 911
       - 912
       - 913
-      - 930
     lacp-rate: "fast"
     lacp-members-active:
       - "TenGigabitEthernet 1/33"

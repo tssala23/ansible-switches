@@ -195,7 +195,7 @@ interfaces:
       - 911
       - 930
     lacp-rate: "fast"
-    interfaces:
+    lacp-members-active:
       - "TenGigabitEthernet 1/51"
       - "TenGigabitEthernet 1/52"
   Vlan 930:

@@ -156,12 +156,12 @@ interfaces:
   GigabitEthernet 1/42:
     state: "down"
   GigabitEthernet 1/43:
-    description: "MOC-R4PAC24-SW-TORS-A mgmt"
+    description: "MOC-R4PAC22-SW-TORS-A mgmt"
     state: "up"
     portmode: "access"
     untagged: 930
   GigabitEthernet 1/44:
-    description: "MOC-R4PAC24-SW-TORS-B mgmt"
+    description: "MOC-R4PAC22-SW-TORS-B mgmt"
     state: "up"
     portmode: "access"
     untagged: 930
@@ -183,13 +183,13 @@ interfaces:
   TenGigabitEthernet 1/50:
     state: "down"
   TenGigabitEthernet 1/51:
-    description: "Po1 Member MOC-R4PAC24-SW-TORS-A"
+    description: "Po1 Member MOC-R4PAC22-SW-TORS-A"
     state: "up"
   TenGigabitEthernet 1/52:
-    description: "Po1 Member MOC-R4PAC24-SW-TORS-B"
+    description: "Po1 Member MOC-R4PAC22-SW-TORS-B"
     state: "up"
   Port-channel 1:
-    description: "MOC-R4PAC24-SW-TORS LAG"
+    description: "MOC-R4PAC22-SW-TORS LAG"
     state: "up"
     portmode: "trunk"
     tagged:
