@@ -295,7 +295,7 @@ interfaces:
       - 3109
     mtu: 9216
     lacp-rate: "fast"
-    lag-members-active:
+    lacp-members-active:
       - "hundredGigE 1/30"
     mlag: "Port-channel 30"
   Port-channel 100:

@@ -239,7 +239,7 @@ interfaces:
       - 910
     mtu: 9216
     lacp-rate: "fast"
-    lacp-interfaces-active:
+    lacp-members-active:
       - "fortyGigE 1/53"
       - "fortyGigE 1/54"
   Vlan 910:
