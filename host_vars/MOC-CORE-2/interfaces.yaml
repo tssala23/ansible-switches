@@ -144,3 +144,6 @@ interfaces:
     lag-members:
       - "hundredGigE 1/31"
       - "hundredGigE 1/32"
+  Vlan 2174:
+    state: "up"
+    ip4: "10.30.8.23/24"
