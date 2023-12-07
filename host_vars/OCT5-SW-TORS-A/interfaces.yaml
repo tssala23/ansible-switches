@@ -1,6 +1,6 @@
 interfaces:
   twentyFiveGigE 1/1:
-    description: "OCT5-U1"
+    description: "OCT5-U1 1"
     state: "up"
     mtu: 9216
     portmode: "trunk"
