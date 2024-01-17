@@ -1,6 +1,6 @@
 vlans:
   10:
-    name: "CSAIL-MAINtest4"
+    name: "CSAIL-MAINtest5"
     description: "Various Openshift clusters"
   57:
     name: "UMA-57"
