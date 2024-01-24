@@ -1,6 +1,6 @@
 interfaces:
   twentyFiveGigE 1/1:
-    description: "OCT5-U1test3"
+    description: "OCT5-U1test4"
     state: "up"
     mtu: 9216
     untagged: 209
